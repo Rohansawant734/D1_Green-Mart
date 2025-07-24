@@ -1,8 +1,8 @@
 import React from 'react'
 import Navigate from './Component/Navigate'
-import { Routes,Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 //users
-import Account from './pages/users/Account'
+import DashBoard from './pages/users/DashBoard'
 import Cart from './pages/users/Cart'
 import Categories from './pages/users/Categories'
 import Edit_Profile from './pages/users/Edit_Profile'
@@ -12,6 +12,7 @@ import Product_Details from './pages/users/Product_Details'
 import Registration from './pages/users/Registration'
 import Wish_List from './pages/users/Wish_List'
 import Your_Order from './pages/users/Your_Order'
+import Address from './pages/users/Address'
 
 //admin
 import Add_Supplier from './pages/admins/Add_Supplier'
@@ -25,35 +26,41 @@ import Receipt from './pages/admins/Receipt'
 import AdminRegistration from './pages/admins/Registration'
 import Reviews_Rating from './pages/admins/Reviews_Rating'
 import Supplier from './pages/admins/Supplier'
+import AccountLayout from './pages/users/AccountLayout';
 const App = () => {
   return (
     <div>
-      <Navigate/>
+      <Navigate />
       <main>
         <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registration />} />
-        <Route path="/product/:id" element={<Product_Details />} />
-        <Route path="/wishlist" element={<Wish_List/>} />
-        <Route path="/cart" element={<Cart/>} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/orders" element={<Your_Order/>} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/edit-profile" element={<Edit_Profile />} />
-         {/* Admin Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/register" element={<AdminRegistration/>} />
-        <Route path="/admin/categories" element={<AdminCategories />} />
-        <Route path="/admin/products" element={<Product/>} />
-        <Route path="/admin/add-supplier" element={<Add_Supplier />} />
-        <Route path="/admin/suppliers" element={<Supplier />} />
-        <Route path="/admin/orders" element={<Order_Table />} />
-        <Route path="/admin/receipt" element={<Receipt/>} />
-        <Route path="/admin/customers" element={<Customer />} />
-        <Route path="/admin/payments" element={<Payment_Status />} />
-        <Route path="/admin/reviews" element={<Reviews_Rating/>} />
-      
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Registration />} />
+          <Route path="/product/:id" element={<Product_Details />} />
+          <Route path="/wishlist" element={<Wish_List />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/account" element={<AccountLayout />}>
+            <Route index element={<DashBoard />} />
+            <Route path="orders" element={<Your_Order />} />
+            <Route path="edit-profile" element={<Edit_Profile />} />
+            <Route path="addresses" element={<Address/>} />
+          </Route>
+
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/register" element={<AdminRegistration />} />
+          <Route path="/admin/categories" element={<AdminCategories />} />
+          <Route path="/admin/products" element={<Product />} />
+          <Route path="/admin/add-supplier" element={<Add_Supplier />} />
+          <Route path="/admin/suppliers" element={<Supplier />} />
+          <Route path="/admin/orders" element={<Order_Table />} />
+          <Route path="/admin/receipt" element={<Receipt />} />
+          <Route path="/admin/customers" element={<Customer />} />
+          <Route path="/admin/payments" element={<Payment_Status />} />
+          <Route path="/admin/reviews" element={<Reviews_Rating />} />
+
         </Routes>
       </main>
     </div>
