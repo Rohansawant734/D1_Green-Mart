@@ -1,0 +1,27 @@
+.footer{
+    border-top: 1px solid #c3c3c37d;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.i{
+    height: 50px;
+    padding: 10px;
+}
+
+.buton{
+    background-color: rgb(41, 133, 50);
+    border-radius: 8px;
+    padding: 5px;
+    width: 100px;
+    color: white;
+}
+
+.buton:hover{
+    background-color: white;
+    color:rgb(41, 133, 50);
+    border: 1px solid rgb(41, 133, 50);
+}

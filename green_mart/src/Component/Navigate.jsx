@@ -1,34 +1,47 @@
 import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, useNavigate,NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { assets } from '../assets/assets'
-const Navigate = () => {
-   const [open, setOpen] = React.useState(false)
+
+function Navigate(){
+   const [open, setOpen] = useState(false)
+
+   const navigate = useNavigate()
+
+   const doLogin = () =>{
+        navigate('/login')
+   }
   return (
    <div>
      <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
 
-            <NavLink to='/'>
+            <Link to='/'>
                 <img className='h-9'src='https://el3.thembaydev.com/greenmart_fresh/wp-content/uploads/2021/10/logo-mobile.svg'></img>
-            </NavLink>
+            </Link>
 
             {/* Desktop Menu */}
             <div className="hidden sm:flex items-center gap-8">
-                <NavLink to='/'>Home</NavLink>
-                <NavLink to='/categories'>Categories</NavLink>
-                <NavLink to=''>Contact</NavLink>
+
+                <Link to='/'>Home</Link>
+                <Link to='/categories'>Categories</Link>
+                <Link to='/wishlist' className="hover:text-green-600">Wishlist</Link>
+                <Link to='/orders' className="hover:text-green-600">Your Order</Link>
+                <Link to='/contact' className="hover:text-green-600">Contact</Link>
 
                 <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-                    <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
+                    <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products"
+                    />
                    <img src={assets.search_icon} alt='search' className='w-4 h-4'/>
                 </div>
 
                 <div className="relative cursor-pointer">
-                   <img src={assets.nav_cart_icon} alt='cart' className='w-6 opacity-80'/>
+                    <Link to='/cart'>
+                        <img src={assets.nav_cart_icon} alt='cart' className='w-6 opacity-80'/>
                     <button className="absolute -top-2 -right-3 text-xs text-white bg-green-500 w-[18px] h-[18px] rounded-full">3</button>
+                    </Link>
                 </div>
 
-                <button className="cursor-pointer px-8 py-2 bg-green-500 hover:bg-green-600 transition text-white rounded-full">
+                <button onClick = {doLogin} className="cursor-pointer px-8 py-2 bg-green-500 hover:bg-green-600 transition text-white rounded-full">
                     Login
                 </button>
             </div>
