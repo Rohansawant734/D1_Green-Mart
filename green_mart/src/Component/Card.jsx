@@ -11,7 +11,8 @@ const Card = () => {
     { id: 7, name: 'Strawberry', qty: 5, price: 7 },
     { id: 8, name: 'Blueberry', qty: 3, price: 9 },
     { id: 9, name: 'Watermelon', qty: 2, price: 18 },
-    ]);
+    { id: 10, name: 'Peach', qty: 4, price: 11 }
+  ]);
 
   const total = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
 
