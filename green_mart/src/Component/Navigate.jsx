@@ -16,20 +16,27 @@ const Navigate = () => {
             <div className="hidden sm:flex items-center gap-8">
                 <NavLink to='/'>Home</NavLink>
                 <NavLink to='/categories'>Categories</NavLink>
-                <NavLink to=''>Contact</NavLink>
+                <NavLink to='/wishlist' className="hover:text-green-600">Wishlist</NavLink>
+                <NavLink to='/orders' className="hover:text-green-600">Your Order</NavLink>
+                <NavLink to='/contact' className="hover:text-green-600">Contact</NavLink>
+
 
                 <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-                    <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
+                    <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products"
+                    />
                    <img src={assets.search_icon} alt='search' className='w-4 h-4'/>
                 </div>
 
                 <div className="relative cursor-pointer">
-                   <img src={assets.nav_cart_icon} alt='cart' className='w-6 opacity-80'/>
+                    <NavLink to='/cart'>
+                        <img src={assets.nav_cart_icon} alt='cart' className='w-6 opacity-80'/>
                     <button className="absolute -top-2 -right-3 text-xs text-white bg-green-500 w-[18px] h-[18px] rounded-full">3</button>
+                    </NavLink>
+                   
                 </div>
 
                 <button className="cursor-pointer px-8 py-2 bg-green-500 hover:bg-green-600 transition text-white rounded-full">
-                    Login
+                    <NavLink to='/login'>Login</NavLink>
                 </button>
             </div>
 

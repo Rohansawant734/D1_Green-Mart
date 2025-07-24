@@ -28,7 +28,7 @@ import Supplier from './pages/admins/Supplier'
 const App = () => {
   return (
     <div>
-      <Navigate/>
+      <Navigate />
       <main>
         <Routes>
         <Route path="/" element={<Home />} />
