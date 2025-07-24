@@ -69,7 +69,9 @@ import vanilla_muffins_image from "./vanilla_muffins_image.png";
 import quinoa_image from "./quinoa_image.png";
 import brown_rice_image from "./brown_rice_image.png";
 import barley_image from "./barley_image.png";
-
+import banner_image from "./banner123.png";
+import fruits_video from "./fruits.mp4";
+import apple_video from "./apple.mp4";
 export const assets = {
   logo,
   search_icon,
@@ -839,5 +841,14 @@ export const dummyOrders = [
     isPaid: false,
     createdAt: "2025-03-25T07:17:13.068Z",
     updatedAt: "2025-03-25T07:17:13.068Z",
+  },
+];
+export const bannerDataimage = [
+  {
+    type:"video",
+    video:apple_video,
+    title: "Quality Fruits and Freshness",
+    highlight: "No Preservatives.",
+    subtext: "Delivered fresh at your door.",
   },
 ];

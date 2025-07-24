@@ -1,13 +1,28 @@
 import React from 'react'
-
-const ProductCard = ({product}) => {
+import { FaHeart} from 'react-icons/fa';
+const ProductCard = ({product,isWishlisted = false, toggleWishlist = () => {}, showWishlistIcon = false}) => {
   return (
-    <div className='bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition'>
-      <img src={product.image} alt={product.name} className='w-full h-48 object-cover'/>
-      <div className='p-4'>
+    <div className='relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition'>
+       {showWishlistIcon && (
+        <button
+          onClick={() => toggleWishlist(product)}
+          className="absolute top-3 right-3 text-lg text-gray-400 hover:text-red-500"
+        >
+          <FaHeart className={isWishlisted ? "text-red-500" : ""} />
+        </button>
+      )}
+
+
+      <img src={product.image[0]} alt={product.name} className='w-full h-35 object-cover'/>
+      <div className='p-3'>
         <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
         <p className="text-sm text-gray-500">{product.category}</p>
         <p className="mt-2 font-bold text-green-600">₹{product.price}</p>
+         <ul className="text-xs text-gray-600 my-2 list-disc list-inside text-left">
+          {product.description.slice(0, 2).map((line, index) => (
+            <li key={index}>{line}</li>
+          ))}
+        </ul>
         <button className="mt-4 bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
           Add to Cart
         </button>
