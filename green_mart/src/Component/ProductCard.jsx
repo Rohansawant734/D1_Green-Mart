@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaHeart} from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 const ProductCard = ({product,isWishlisted = false, toggleWishlist = () => {}, showWishlistIcon = false}) => {
   return (
     <div className='relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition'>
