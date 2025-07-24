@@ -1,7 +1,10 @@
 import React from 'react'
-import { Routes,Route } from 'react-router-dom'
+
+import Navigate from './Component/Navigate'
+import { Routes, Route } from 'react-router-dom'
+
 //users
-import Account from './pages/users/Account'
+import DashBoard from './pages/users/DashBoard'
 import Cart from './pages/users/Cart'
 import Categories from './pages/users/Categories'
 import Edit_Profile from './pages/users/Edit_Profile'
@@ -9,6 +12,7 @@ import Home from './pages/users/Home'
 import Product_Details from './pages/users/Product_Details'
 import Wish_List from './pages/users/Wish_List'
 import Your_Order from './pages/users/Your_Order'
+import Address from './pages/users/Address'
 
 //admin
 import Add_Supplier from './pages/admins/Add_Supplier'
@@ -20,6 +24,9 @@ import Product from './pages/admins/Product'
 import Receipt from './pages/admins/Receipt'
 import Reviews_Rating from './pages/admins/Reviews_Rating'
 import Supplier from './pages/admins/Supplier'
+import AccountLayout from './pages/users/AccountLayout';
+
+
 import Container from './Component/Container'
 import Container2 from './Component/Container2'
 import Login from './Component/Login'
@@ -38,8 +45,11 @@ const App = () => {
             <Route path="/cart" element={<Cart/>} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/orders" element={<Your_Order/>} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/edit-profile" element={<Edit_Profile />} />
+            <Route path="/account" element={<AccountLayout />} />
+              <Route index element={<DashBoard />} />
+              <Route path="orders" element={<Your_Order />} />
+              <Route path="edit-profile" element={<Edit_Profile />} />
+              <Route path="addresses" element={<Address/>} />
          {/* Admin Routes */}
             <Route path="/admin/categories" element={<AdminCategories />} />
             <Route path="/admin/products" element={<Product/>} />
