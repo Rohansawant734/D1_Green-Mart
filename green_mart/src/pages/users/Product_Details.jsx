@@ -1,36 +1,38 @@
 import React, { useState } from 'react'
-import { FiMinus , FiPlus} from "react-icons/fi";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
 const Product_Details = () => {
   const stock = 0;
 
   const [count, setCount] = useState(1)
 
-  const onIncrement = ()=>{
+  const onIncrement = () => {
     setCount(count + 1)
   }
 
-  const onDecrement = ()=>{
+  const onDecrement = () => {
     setCount(count - 1)
   }
 
   return (
     <div>
-      <div>
-        <a href="./src/assets/yippee_image.png" target="_self ">
-          <img src="./src/assets/yippee_image.png" alt="Yippee" />
-        </a>
-        <div>
+      <div className='flex flex-row m-15'>
+        <div className='border basis-128'>
+          <a href="./src/assets/yippee_image.png" target="_self ">
+            <img src="./src/assets/yippee_image.png" alt="Yippee" />
+          </a>
+        </div>
+        <div className='flex flex-col w-100 border'>
           <h1>Rs. 15</h1>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem veritatis, illo impedit consequatur explicabo error cumque sapiente odit aspernatur ex ullam qui, neque maiores perspiciatis esse vitae autem, maxime vero.</p>
+          <p className='text-justify w-50'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem veritatis, illo impedit consequatur explicabo error cumque sapiente odit aspernatur ex ullam qui, neque maiores perspiciatis esse vitae autem, maxime vero.</p>
           <p>Availability: {stock} in stock</p>
           <div>
             <button onClick={onDecrement}><FiMinus /></button>
             <span style={{ marginLeft: 10, marginRight: 10 }}>{count}</span>
             <button onClick={onIncrement}><FiPlus /></button>
           </div>
-          <button>Add To Cart</button>
-          <button>Buy Now</button>
+          <button className='w-50'>Add To Cart</button>
+          <button className='w-50'>Buy Now</button>
         </div>
       </div>
     </div>
