@@ -20,7 +20,7 @@ function Navigate(){
             </Link>
 
             {/* Desktop Menu */}
-            <div className="hidden sm:flex items-center gap-8">
+            <div className="hidden sm:flex items-center gap-6">
 
                 <Link to='/'>Home</Link>
                 <Link to='/categories'>Categories</Link>
@@ -40,7 +40,11 @@ function Navigate(){
                     <button className="absolute -top-2 -right-3 text-xs text-white bg-green-500 w-[18px] h-[18px] rounded-full">3</button>
                     </Link>
                 </div>
-
+                <div className="relative cursor-pointer">
+                    <Link to='/account'>
+                        <img src={assets.profile_icon} alt='cart' className='w-10 opacity-80'/>
+                    </Link>
+                </div>
                 <button onClick = {doLogin} className="cursor-pointer px-8 py-2 bg-green-500 hover:bg-green-600 transition text-white rounded-full">
                     Login
                 </button>
