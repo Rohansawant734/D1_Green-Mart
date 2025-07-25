@@ -5,7 +5,7 @@ import './Footer.css'
 function Footer() {
     return (
         <div className='footer'>
-            <div className="flex flex-row m-16 place-content-center">
+            <div className="flex flex-col sm:flex-row m-16 place-content-center">
                 <div className="basis-128">
                     <img className='h-9 mb-10' src='https://el3.thembaydev.com/greenmart_fresh/wp-content/uploads/2021/10/logo-mobile.svg' />
                     <p className='w-90 mb-3'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic veniam quidem porro optio. Et consequatur possimus, quas reiciendis recusandae error?</p>
