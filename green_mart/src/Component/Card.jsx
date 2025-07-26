@@ -1,88 +1,145 @@
 import React, { useState } from 'react';
-
+import { useCart } from '../context/CartCintext';
+import { Link } from 'react-router-dom';
 const Card = () => {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Apple', qty: 2, price: 10 },
-    { id: 2, name: 'Banana', qty: 3, price: 5 },
-    { id: 3, name: 'Orange', qty: 1, price: 8 },
-    { id: 4, name: 'Grapes', qty: 4, price: 12 },
-    { id: 5, name: 'Mango', qty: 2, price: 15 },
-    { id: 6, name: 'Pineapple', qty: 1, price: 20 },
-    { id: 7, name: 'Strawberry', qty: 5, price: 7 },
-    { id: 8, name: 'Blueberry', qty: 3, price: 9 },
-    { id: 9, name: 'Watermelon', qty: 2, price: 18 },
-    ]);
 
-  const total = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
-
-  const handleRemove = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  const handleQtyChange = (id, newQty) => {
-    if (newQty < 1) return;
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, qty: newQty } : item))
-    );
-  };
+  const { cartItems, addToCart, updateQty, removeFromCart } = useCart();
+  const [page, setPage] = useState(1);
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.offerPrice * item.quantity,
+    0
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-200 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-8">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">Your Shopping Cart</h2>
+    <div className="max-w-6xl mx-auto p-6 min-h-screen bg-gray-50">
+      {page === 1 ? (
+        <>
+          <h2 className="text-2xl font-bold mb-4">Cart</h2>
+          {cartItems.length === 0 ? (
+           <div>
+            <p className="text-gray-500 text-xl">Your cart is empty.</p>
+            <Link to="/" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-300"> Continue Shopping</Link>
+           </div>
+           
+          ) : (
+            cartItems.map((item) => (
+              <div
+                key={item._id}
+                className="flex items-center justify-between bg-white p-4 mb-2 shadow rounded"
+              >
+                <div className="flex items-center gap-4">
+                  <img src={item.image[0]} alt={item.name} className="w-14 h-14 object-contain" />
+                  <div flex="flex flex-col">
+                    <p className="font-semibold">{item.name}</p>
+                    <div className="text-sm text-red-600">₹{item.offerPrice} × {item.quantity}</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 px-4">
+                  <button onClick={() => updateQty(item._id, -1)} className="border px-2" > − </button>
+                  <span className='font-bold'>{item.quantity}</span>
+                  <button onClick={() => updateQty(item._id, 1)} className="border px-2" > + </button>
+                </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-auto text-sm">
-            <thead className="text-left bg-gray-100 text-gray-700 uppercase tracking-wider text-xs">
-              <tr>
-                <th className="px-4 py-3">Product</th>
-                <th className="px-4 py-3">Qty</th>
-                <th className="px-4 py-3">Price</th>
-                <th className="px-4 py-3">Subtotal</th>
-                <th className="px-4 py-3 text-center">Remove</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-700">
-              {cartItems.map((item) => (
-                <tr key={item.id} className="border-t hover:bg-gray-50 transition">
-                  <td className="px-4 py-4 font-medium">{item.name}</td>
-                  <td className="px-4 py-4 flex items-center space-x-2">
-                    <button
-                      onClick={() => handleQtyChange(item.id, item.qty - 1)}
-                      className="w-8 h-8 bg-gray-200 rounded hover:bg-gray-300 text-xl font-bold"
-                    >
-                      −
-                    </button>
-                    <span className="w-8 text-center">{item.qty}</span>
-                    <button
-                      onClick={() => handleQtyChange(item.id, item.qty + 1)}
-                      className="w-8 h-8 bg-gray-200 rounded hover:bg-gray-300 text-xl font-bold"
-                    >
-                      +
-                    </button>
-                  </td>
-                  <td className="px-4 py-4">₹{item.price.toFixed(2)}</td>
-                  <td className="px-4 py-4">₹{(item.qty * item.price).toFixed(2)}</td>
-                  <td className="px-4 py-4 text-center">
-                    <button
-                      onClick={() => handleRemove(item.id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded font-medium"
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                <div className="font-bold text-red-600 " >
+                 <button onClick={() => removeFromCart(item._id)} className='bg-red-600 font-bold text-white px-4 py-2 rounded hover:bg-red-800 '>Remove</button>
+                 <span> ₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
+                </div>
+              </div>
+            ))
+          )}
 
-        <div className="mt-6 text-right">
-          <span className="text-2xl font-semibold text-gray-900">
-            Total: ₹ {total.toFixed(2)}
-          </span>
-        </div>
-      </div>
+          {cartItems.length > 0 && (
+            <div className="text-right mt-6">
+              <button
+                onClick={() => setPage(2)}
+                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Proceed to Address →
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <h2 className="text-2xl font-bold mb-4">Shipping & Billing</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="bg-white p-6 rounded shadow">
+              <h3 className="text-lg font-semibold mb-4">Billing Address</h3>
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full border p-2 mb-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="Address"
+                className="w-full border p-2 mb-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="City"
+                className="w-full border p-2 mb-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="Pin Code"
+                className="w-full border p-2 mb-2 rounded"
+              />
+            </div>
+
+            <div className="bg-white p-6 rounded shadow">
+              <h3 className="text-lg font-semibold mb-4">Shipping Address</h3>
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full border p-2 mb-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="Address"
+                className="w-full border p-2 mb-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="City"
+                className="w-full border p-2 mb-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="Pin Code"
+                className="w-full border p-2 mb-2 rounded"
+              />
+            </div>
+          </div>
+
+          {/* Cart Summary */}
+          <div className="bg-white p-6 rounded shadow max-w-md ml-auto">
+            <h3 className="text-lg font-semibold mb-4">Cart Total</h3>
+            <div className="flex justify-between mb-2">
+              <span>Subtotal</span>
+              <span className="text-red-600 font-bold">₹{subtotal}</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-600">
+              <span>Shipping</span>
+              <span>Not available yet</span>
+            </div>
+            <div className="flex justify-between font-bold text-lg mt-2">
+              <span>Total</span>
+              <span className="text-red-600">₹{subtotal}</span>
+            </div>
+            <button className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+              Place Order
+            </button>
+            <button
+              className="mt-2 text-sm underline text-gray-600"
+              onClick={() => setPage(1)}
+            >
+              ← Back to Cart
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
