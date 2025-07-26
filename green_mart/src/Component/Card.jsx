@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { useCart } from '../context/CartCintext';
+import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 const Card = () => {
 
   const { cartItems, addToCart, updateQty, removeFromCart } = useCart();
   const [page, setPage] = useState(1);
   const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.offerPrice * item.quantity,
-    0
-  );
+    (acc, item) => acc + item.offerPrice * item.quantity, 0);
 
   return (
     <div className="max-w-6xl mx-auto p-6 min-h-screen bg-gray-50">
@@ -16,11 +14,10 @@ const Card = () => {
         <>
           <h2 className="text-2xl font-bold mb-4">Cart</h2>
           {cartItems.length === 0 ? (
-           <div>
-            <p className="text-gray-500 text-xl">Your cart is empty.</p>
-            <Link to="/" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-300"> Continue Shopping</Link>
-           </div>
-           
+            <div>
+              <p className="text-gray-500 text-xl">Your cart is empty.</p>
+              <Link to="/" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-300"> Continue Shopping</Link>
+            </div>
           ) : (
             cartItems.map((item) => (
               <div
@@ -37,12 +34,14 @@ const Card = () => {
                 <div className="flex items-center gap-2 px-4">
                   <button onClick={() => updateQty(item._id, -1)} className="border px-2" > − </button>
                   <span className='font-bold'>{item.quantity}</span>
-                  <button onClick={() => updateQty(item._id, 1)} className="border px-2" > + </button>
+                  <button onClick={() => updateQty(item._id, 1) && toast.info(`Increased quantity of ${item.name}`)} className="border px-2" > +
+                  </button>
+
                 </div>
 
                 <div className="font-bold text-red-600 " >
-                 <button onClick={() => removeFromCart(item._id)} className='bg-red-600 font-bold text-white px-4 py-2 rounded hover:bg-red-800 '>Remove</button>
-                 <span> ₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
+                  <button onClick={() => removeFromCart(item._id)} className='bg-red-600 font-bold text-white px-4 py-2 rounded hover:bg-red-800 '>Remove</button>
+                  <span> ₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
                 </div>
               </div>
             ))

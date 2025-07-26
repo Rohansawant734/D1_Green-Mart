@@ -2,6 +2,7 @@ import React from 'react'
 
 import Navigate from './Component/Navigate'
 import { Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 
 //users
 import DashBoard from './pages/users/DashBoard'
@@ -66,6 +67,16 @@ const App = () => {
       
         </Routes>
         <Container2/> 
+        <ToastContainer 
+           position="top-right"
+        autoClose={1500}
+         hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaHeart } from 'react-icons/fa';
-import { useCart } from '../context/CartCintext';
+import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 const ProductCard = ({product ,showWishlistIcon = false}) => {
   const { addToCart } = useCart();
