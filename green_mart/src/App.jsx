@@ -31,6 +31,7 @@ import Container from './Component/Container'
 import Container2 from './Component/Container2'
 import Login from './Component/Login'
 import Register from './Component/Register'
+import Contact from './pages/users/Contact'
 const App = () => {
   return (
     <div>
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/cart" element={<Cart/>} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/orders" element={<Your_Order/>} />
+            <Route path='/contact' element={<Contact/>} />
             <Route path="/account" element={<AccountLayout />} >
               <Route index element={<DashBoard />} />
               <Route path="orders" element={<Your_Order />} />
