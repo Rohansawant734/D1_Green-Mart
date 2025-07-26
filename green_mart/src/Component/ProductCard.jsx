@@ -1,16 +1,25 @@
 import React from 'react'
 import { FaHeart } from 'react-icons/fa';
 import { useCart } from '../context/CartCintext';
-const ProductCard = ({product,isWishlisted = false, toggleWishlist = () => {}, showWishlistIcon = false}) => {
+import { useWishlist } from '../context/WishlistContext';
+const ProductCard = ({product ,showWishlistIcon = false}) => {
   const { addToCart } = useCart();
+  const {wishlist, toggleWishlist} = useWishlist();
+  const isWishlisted = wishlist.some(item => item._id === product._id);
   return (
-    <div className='relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition'>
+    <div className='relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition group'>
        {showWishlistIcon && (
         <button
           onClick={() => toggleWishlist(product)}
-          className="absolute top-3 right-3 text-lg text-gray-400 hover:text-red-500"
+          className={`
+            absolute top-3 right-3 text-xl z-10
+            opacity-0 group-hover:opacity-100
+            scale-90 group-hover:scale-110
+            transition-all duration-300 ease-in-out
+            ${isWishlisted ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}
+          `}
         >
-          <FaHeart className={isWishlisted ? "text-red-500" : ""} />
+          <FaHeart/>
         </button>
       )}
 
