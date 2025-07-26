@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart,FaCheckCircle,FaShoppingCart} from 'react-icons/fa';
 import { useCart } from '../context/CartCintext';
 import { useWishlist } from '../context/WishlistContext';
 const ProductCard = ({product ,showWishlistIcon = false}) => {
@@ -33,8 +33,10 @@ const ProductCard = ({product ,showWishlistIcon = false}) => {
             <li key={index}>{line}</li>
           ))}
         </ul>
-        <button onClick={() => addToCart(product)} className="mt-4 bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
-          Add to Cart
+        <button onClick={() => addToCart(product)} 
+        className="mt-4 bg-green-500 text-white px-4 py-1 rounded flex items-center justify-center gap-2 hover:bg-green-600 transition">
+          <span>Add to Cart</span>
+          <FaShoppingCart className='text-lg' />
         </button>
       </div>
     </div>

@@ -3,7 +3,6 @@ import { Link, useNavigate,NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { assets } from '../assets/assets'
 import { useCart } from '../context/CartCintext'
-
 function Navigate(){
    const [open, setOpen] = useState(false)
    const{cartItems}= useCart();
