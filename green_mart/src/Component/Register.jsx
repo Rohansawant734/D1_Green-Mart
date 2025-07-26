@@ -4,78 +4,48 @@ import './Login.css'
 
 function Register() {
     return (
-        <div className='m-20'>
-            <div className="row">
-                <div className="col"></div>
-                <div className="col-4 border-r border-b shadow-xl border-gray-300">
-                    <h1 className='mb-4 font-sans'>Register</h1>
-                    <div className='container'>
-                        <div className='mb-3'>
-                            <label htmlFor=''>First Name</label>
-                            <input
-                                onChange={(e) => setInfo({ ...info, firstName: e.target.value })}
-                                type='text'
-                                className='form-control'
-                            />
-                        </div>
-                        <div className='mb-3'>
-                            <label htmlFor=''>Last Name</label>
-                            <input
-                                onChange={(e) => setInfo({ ...info, lastName: e.target.value })}
-                                type='text'
-                                className='form-control'
-                            />
-                        </div>
-                        <div className='mb-3'>
-                            <label htmlFor=''>Email</label>
-                            <input
-                                onChange={(e) => setInfo({ ...info, email: e.target.value })}
-                                type='text'
-                                className='form-control'
-                            />
-                        </div>
-                        <div className='mb-3'>
-                            <label htmlFor=''>Phone Number</label>
-                            <input
-                                onChange={(e) => setInfo({ ...info, phone: e.target.value })}
-                                type='text'
-                                className='form-control'
-                            />
-                        </div>
+        <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
+            <div className="w-full max-w-lg bg-white border border-gray-300 shadow-xl rounded-lg p-8">
+                <h1 className="text-2xl font-semibold mb-6">Register</h1>
 
-                        <div className='mb-3'>
-                            <label htmlFor=''>Password</label>
-                            <input
-                                onChange={(e) => setInfo({ ...info, password: e.target.value })}
-                                type='password'
-                                className='form-control'
-                            />
-                        </div>
-
-                        <div className='mb-3'>
-                            <label htmlFor=''>Confirm Password</label>
-                            <input
-                                onChange={(e) =>
-                                    setInfo({ ...info, confirmPassword: e.target.value })
-                                }
-                                type='password'
-                                className='form-control'
-                            />
-                        </div>
-
-                        <div className='mb-3'>
-                            <div className='mb-3'>
-                                Already have an account yet?<Link to='/login'> Login here</Link>
-                            </div>
-                            <button className='button'>
-                                Register
-                            </button>
-                        </div>
-                    </div>
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium text-gray-700">First Name<span className="text-red-500">*</span></label>
+                    <input onChange={(e) => setInfo({ ...info, firstName: e.target.value })} type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required/>
                 </div>
-                <div className="col"></div>
+
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium text-gray-700">Last Name<span className="text-red-500">*</span></label>
+                    <input onChange={(e) => setInfo({ ...info, lastName: e.target.value })} type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required/>
+                </div>
+
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium text-gray-700">Email<span className="text-red-500">*</span></label>
+                    <input onChange={(e) => setInfo({ ...info, email: e.target.value })} type="email" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required/>
+                </div>
+
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium text-gray-700">Phone Number<span className="text-red-500">*</span></label>
+                    <input onChange={(e) => setInfo({ ...info, phone: e.target.value })} type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required/>
+                </div>
+
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium text-gray-700">Password<span className="text-red-500">*</span></label>
+                    <input onChange={(e) => setInfo({ ...info, password: e.target.value })} type="password" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required/>
+                </div>
+
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium text-gray-700">Confirm Password<span className="text-red-500">*</span></label>
+                    <input onChange={(e) => setInfo({ ...info, confirmPassword: e.target.value })} type="password" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required/>
+                </div>
+
+                <div className="mb-4 text-sm">Already have an account?{" "}
+                    <Link to="/login" className="text-green-600 hover:underline">Login here</Link>
+                </div>
+
+                <button className="w-full button" type="submit">Register</button>
             </div>
         </div>
+
     )
 }
 
