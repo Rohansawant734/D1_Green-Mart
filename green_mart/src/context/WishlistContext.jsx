@@ -8,12 +8,15 @@ export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
 
   const toggleWishlist = (product) => {
-    const exists = wishlist.find(item => item._id === product._id);
+    setWishlist((prevWishlist) => {
+    const exists = prevWishlist.some((item) => item._id === product._id);
+
     if (exists) {
-      setWishlist(wishlist.filter(item => item._id !== product._id));
+      return prevWishlist.filter((item) => item._id !== product._id);
     } else {
-      setWishlist([...wishlist, product]);
+      return [...prevWishlist, product];
     }
+  });
   };
 
   return (
