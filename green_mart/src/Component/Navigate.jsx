@@ -2,10 +2,11 @@ import React from 'react'
 import { Link, useNavigate,NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { assets } from '../assets/assets'
+import { useCart } from '../context/CartCintext'
 
 function Navigate(){
    const [open, setOpen] = useState(false)
-
+   const{cartItems}= useCart();
    const navigate = useNavigate()
 
    const doLogin = () =>{
@@ -37,7 +38,7 @@ function Navigate(){
                 <div className="relative cursor-pointer">
                     <Link to='/cart'>
                         <img src={assets.nav_cart_icon} alt='cart' className='w-6 opacity-80'/>
-                    <button className="absolute -top-2 -right-3 text-xs text-white bg-green-500 w-[18px] h-[18px] rounded-full">3</button>
+                    <button className="absolute -top-4 -right-3 text-xs text-green-500 font-bold w-[16px] h-[19px] rounded-full">{cartItems.length}</button>
                     </Link>
                 </div>
                 <div className="relative cursor-pointer">

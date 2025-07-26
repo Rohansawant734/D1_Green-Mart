@@ -1,6 +1,8 @@
 import React from 'react'
 import { FaHeart } from 'react-icons/fa';
+import { useCart } from '../context/CartCintext';
 const ProductCard = ({product,isWishlisted = false, toggleWishlist = () => {}, showWishlistIcon = false}) => {
+  const { addToCart } = useCart();
   return (
     <div className='relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition'>
        {showWishlistIcon && (
@@ -12,7 +14,6 @@ const ProductCard = ({product,isWishlisted = false, toggleWishlist = () => {}, s
         </button>
       )}
 
-
       <img src={product.image[0]} alt={product.name} className='w-full h-35 object-cover'/>
       <div className='p-3'>
         <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
@@ -23,7 +24,7 @@ const ProductCard = ({product,isWishlisted = false, toggleWishlist = () => {}, s
             <li key={index}>{line}</li>
           ))}
         </ul>
-        <button className="mt-4 bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
+        <button onClick={() => addToCart(product)} className="mt-4 bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
           Add to Cart
         </button>
       </div>
