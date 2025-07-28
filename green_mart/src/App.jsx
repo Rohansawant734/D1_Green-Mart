@@ -3,7 +3,7 @@ import React from 'react'
 import Navigate from './Component/Navigate'
 import { Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-
+import ScrollToTop from './Component/ScrollToTop'
 //users
 import DashBoard from './pages/users/DashBoard'
 import Cart from './pages/users/Cart'
@@ -14,6 +14,7 @@ import Product_Details from './pages/users/Product_Details'
 import Wish_List from './pages/users/Wish_List'
 import Your_Order from './pages/users/Your_Order'
 import Address from './pages/users/Address'
+import SearchResult from './pages/users/SearchResults'
 
 //admin
 import Add_Supplier from './pages/admins/Add_Supplier'
@@ -27,7 +28,6 @@ import Reviews_Rating from './pages/admins/Reviews_Rating'
 import Supplier from './pages/admins/Supplier'
 import AccountLayout from './pages/users/AccountLayout';
 
-
 import Container from './Component/Container'
 import Container2 from './Component/Container2'
 import Login from './Component/Login'
@@ -36,11 +36,11 @@ import Contact from './pages/users/Contact'
 const App = () => {
   return (
     <div>
+        <ScrollToTop/>
         <Container/>
         <Routes>
-        
-          <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>}/>
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>}/>
             <Route path="/" element={<Home />} />
             <Route path="/product_details" element={<Product_Details />} />
             <Route path="/wishlist" element={<Wish_List/>} />
@@ -48,6 +48,7 @@ const App = () => {
             <Route path="/categories" element={<Categories />} />
             <Route path="/orders" element={<Your_Order/>} />
             <Route path='/contact' element={<Contact/>} />
+            <Route path='/search' element={<SearchResult/>} />
             <Route path="/account" element={<AccountLayout />} >
               <Route index element={<DashBoard />} />
               <Route path="orders" element={<Your_Order />} />
