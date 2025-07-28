@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { categories, dummyProducts } from '../../assets/assets';
 import ProductCard from '../../Component/ProductCard';
-import { useWishlist } from '../../context/WishlistContext';
 import myImage from '../../assets/farmer.png'
+import { useLocation } from 'react-router-dom';
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -10,8 +10,14 @@ const Categories = () => {
     ? dummyProducts.filter(p => p.category === selectedCategory)
     : [];
 
-  const { wishlist, toggleWishlist } = useWishlist();
 
+  const location = useLocation();
+
+  useEffect(() => {
+    if(location.state && location.state.selectedCategory){
+      setSelectedCategory(location.state.selectedCategory);
+    }
+  },[location.state]);
   return (
     <div className="p-6">
 
@@ -63,8 +69,6 @@ const Categories = () => {
                 key={product.id}
                 product={product}
                 showWishlistIcon={true}
-                toggleWishlist={toggleWishlist}
-                isWishlisted={wishlist.some(item => item.id === product.id)}
               />
             ))}
           </div>

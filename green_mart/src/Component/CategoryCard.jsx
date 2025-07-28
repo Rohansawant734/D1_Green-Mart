@@ -1,9 +1,15 @@
 // src/components/CategoryCard.jsx
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const CategoryCard = ({ category }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/categories',{state:{selectedCategory: category.path}})
+  };
   return (
     <div
+      onClick={handleClick}
       className="rounded-lg p-4 shadow-md hover:shadow-lg transition"
       style={{ backgroundColor: category.bgColor }}
     >
