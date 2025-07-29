@@ -15,6 +15,7 @@ import Wish_List from './pages/users/Wish_List'
 import Your_Order from './pages/users/Your_Order'
 import Address from './pages/users/Address'
 import SearchResult from './pages/users/SearchResults'
+import Checkout from './pages/users/Checkout'
 
 //admin
 import Add_Supplier from './pages/admins/Add_Supplier'
@@ -33,6 +34,7 @@ import Container2 from './Component/Container2'
 import Login from './Component/Login'
 import Register from './Component/Register'
 import Contact from './pages/users/Contact'
+import FloatingStack from './Component/FloatingStack'
 const App = () => {
   return (
     <div>
@@ -49,6 +51,7 @@ const App = () => {
             <Route path="/orders" element={<Your_Order/>} />
             <Route path='/contact' element={<Contact/>} />
             <Route path='/search' element={<SearchResult/>} />
+            <Route path='/checkout' element={<Checkout/>} />
             <Route path="/account" element={<AccountLayout />} >
               <Route index element={<DashBoard />} />
               <Route path="orders" element={<Your_Order />} />
@@ -78,6 +81,7 @@ const App = () => {
         draggable
         theme="colored"
         />
+        <FloatingStack />
     </div>
   )
 }

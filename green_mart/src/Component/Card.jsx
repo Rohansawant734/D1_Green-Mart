@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 const Card = () => {
-
+  const offer = 600; // Example offer price for free shipping
+  const shippingCharge = 199;
   const { cartItems, addToCart, updateQty, removeFromCart } = useCart();
-  const [page, setPage] = useState(1);
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.offerPrice * item.quantity, 0);
-
   return (
-    <div className="max-w-6xl mx-auto p-6 min-h-screen bg-gray-50">
-      {page === 1 ? (
-        <>
-          <h2 className="text-2xl font-bold mb-4">Cart</h2>
+    <div >
+      <h2 className="text-6xl text-amber-900 font-bold mb-40 ">Your Cart</h2>
+      <div className='flex  gap-4'>
+        <div className='basis-3/4 gap-4 mt-6'>
           {cartItems.length === 0 ? (
-            <div>
-              <p className="text-gray-500 text-xl">Your cart is empty.</p>
-              <Link to="/" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-300"> Continue Shopping</Link>
+            <div className="text-center mt-10 text-gray-600">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
+                alt="Empty cart"
+                className="mx-auto w-40 h-40 opacity-70"
+              />
+              <p className="text-2xl font-semibold mt-6">Your cart is empty!</p>
+              <p className="text-sm text-gray-400 mt-2">Looks like you haven’t added anything yet.</p>
+              <Link to="/" className="mt-6 inline-block bg-gradient-to-r from-indigo-500 to-sky-500 text-white px-6 py-2 rounded hover:scale-105 transition">
+                🛒 Start Shopping
+              </Link>
             </div>
           ) : (
             cartItems.map((item) => (
@@ -36,9 +43,7 @@ const Card = () => {
                   <span className='font-bold'>{item.quantity}</span>
                   <button onClick={() => updateQty(item._id, 1) && toast.info(`Increased quantity of ${item.name}`)} className="border px-2" > +
                   </button>
-
                 </div>
-
                 <div className="font-bold text-red-600 " >
                   <button onClick={() => removeFromCart(item._id)} className='bg-red-600 font-bold text-white px-4 py-2 rounded hover:bg-red-800 '>Remove</button>
                   <span> ₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
@@ -46,99 +51,54 @@ const Card = () => {
               </div>
             ))
           )}
-
           {cartItems.length > 0 && (
-            <div className="text-right mt-6">
-              <button
-                onClick={() => setPage(2)}
-                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-              >
-                Proceed to Address →
-              </button>
+            <div className="flex gap-4 items-center mt-4 ">
+              <Link to="/" className="bg-sky-900 bg-gradient-to-r from-sky-500 to-indigo-500 text-white px-4 py-2 rounded hover:bg-green-300">
+                Continue Shopping
+              </Link> </div>
+          )}
+          {subtotal < offer && cartItems.length > 0 && (
+            <div className="text-center mt-2 text-sm text-orange-600 font-medium">
+              Add ₹{offer - subtotal} more to get <span className="font-bold">Free Shipping!</span>
             </div>
           )}
-        </>
-      ) : (
-        <>
-          <h2 className="text-2xl font-bold mb-4">Shipping & Billing</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div className="bg-white p-6 rounded shadow">
-              <h3 className="text-lg font-semibold mb-4">Billing Address</h3>
-              <input
-                type="text"
-                placeholder="Full Name"
-                className="w-full border p-2 mb-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Address"
-                className="w-full border p-2 mb-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                className="w-full border p-2 mb-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Pin Code"
-                className="w-full border p-2 mb-2 rounded"
-              />
+          {subtotal >= offer && cartItems.length > 0 && (
+            <div className="text-center mt-4">
+              <h4>🎉 Congratulations! You get free shipping with your order greater than
+                <span className="font-bold text-green-600"> ₹{offer}</span>.
+              </h4>
             </div>
-
-            <div className="bg-white p-6 rounded shadow">
-              <h3 className="text-lg font-semibold mb-4">Shipping Address</h3>
-              <input
-                type="text"
-                placeholder="Full Name"
-                className="w-full border p-2 mb-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Address"
-                className="w-full border p-2 mb-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                className="w-full border p-2 mb-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Pin Code"
-                className="w-full border p-2 mb-2 rounded"
-              />
-            </div>
-          </div>
-
-          {/* Cart Summary */}
-          <div className="bg-white p-6 rounded shadow max-w-md ml-auto">
+          )}
+        </div>
+        {/* Cart Summary */}
+        <div className="basis-1/4 p-10 bg-white shadow rounded h-100 w-full mt-4 ">
+          <div className="border-b pb-4 mb-4">
             <h3 className="text-lg font-semibold mb-4">Cart Total</h3>
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
-              <span className="text-red-600 font-bold">₹{subtotal}</span>
+              <span className="text-red-600 font-bold"> ₹{cartItems.length === 0 ? 0 : subtotal}
+              </span>
             </div>
             <div className="flex justify-between text-sm text-gray-600">
               <span>Shipping</span>
-              <span>Not available yet</span>
+              <span className={subtotal >= offer ? "text-green-600 font-semibold" : ""}>
+                {cartItems.length === 0 ? "₹0" : subtotal >= offer ? "Free" : `₹${shippingCharge}`}
+              </span>
             </div>
             <div className="flex justify-between font-bold text-lg mt-2">
               <span>Total</span>
-              <span className="text-red-600">₹{subtotal}</span>
+              <span className="text-red-600">
+                ₹ {cartItems.length === 0 ? 0 : subtotal + (subtotal >= offer ? 0 : shippingCharge)}
+              </span>
             </div>
-            <button className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
-              Place Order
-            </button>
-            <button
-              className="mt-2 text-sm underline text-gray-600"
-              onClick={() => setPage(1)}
-            >
-              ← Back to Cart
-            </button>
           </div>
-        </>
-      )}
+          <div className="flex justify-center">
+            <Link to="/checkout" className={`w-full p-3 text-center rounded ${cartItems.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-green-600 text-white hover:bg-green-900"}`}> Proceed To Checkout
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
