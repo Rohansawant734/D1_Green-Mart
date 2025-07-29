@@ -82,7 +82,7 @@ function Navigate(){
                 <div className="relative cursor-pointer">
                     <Link to='/cart'>
                         <img src={assets.nav_cart_icon} alt='cart' className='w-6 opacity-80'/>
-                    <button className="absolute -top-4 -right-3 text-xs text-green-500 font-bold w-[16px] h-[19px] rounded-full">{cartItems.length}</button>
+                    <button className="absolute -top-4 -right-3 text-xs text-green-500 font-bold w-[16px] h-[19px] rounded-full ">{cartItems.length}</button>
                     </Link>
                 </div>
 
@@ -94,7 +94,7 @@ function Navigate(){
                         <img src={assets.profile_icon} alt='cart' className='w-10 opacity-80'/>
                     </Link>
                 </div>
-                <button onClick = {doLogin} className="cursor-pointer px-8 py-2 bg-green-500 hover:bg-green-600 transition text-white rounded-full">
+                <button onClick = {doLogin} className="cursor-pointer px-8 py-2 bg-green-600 hover:bg-green-900 transition text-white rounded-full">
                     Login
                 </button>
             </div>
