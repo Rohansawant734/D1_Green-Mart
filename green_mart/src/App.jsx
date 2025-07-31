@@ -4,6 +4,7 @@ import Navigate from './Component/Navigate'
 import { Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import ScrollToTop from './Component/ScrollToTop'
+import { useLocation } from 'react-router-dom'
 //users
 import DashBoard from './pages/users/DashBoard'
 import Cart from './pages/users/Cart'
@@ -36,52 +37,57 @@ import Register from './Component/Register'
 import Contact from './pages/users/Contact'
 import FloatingStack from './Component/FloatingStack'
 const App = () => {
+
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
   return (
     <div>
-        <ScrollToTop/>
-        <Container/>
-        <Routes>
-            <Route path="/login" element={<Login/>} />
-            <Route path="/register" element={<Register/>}/>
-            <Route path="/" element={<Home />} />
-            <Route path="/product_details" element={<Product_Details />} />
-            <Route path="/wishlist" element={<Wish_List/>} />
-            <Route path="/cart" element={<Cart/>} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/orders" element={<Your_Order/>} />
-            <Route path='/contact' element={<Contact/>} />
-            <Route path='/search' element={<SearchResult/>} />
-            <Route path='/checkout' element={<Checkout/>} />
-            <Route path="/account" element={<AccountLayout />} >
-              <Route index element={<DashBoard />} />
-              <Route path="orders" element={<Your_Order />} />
-              <Route path="edit-profile" element={<Edit_Profile />} />
-              <Route path="addresses" element={<Address/>} />
-            </Route>
-         {/* Admin Routes */}
-            <Route path="/admin/categories" element={<AdminCategories />} />
-            <Route path="/admin/products" element={<Product/>} />
-            <Route path="/admin/add-supplier" element={<Add_Supplier />} />
-            <Route path="/admin/suppliers" element={<Supplier />} />
-            <Route path="/admin/orders" element={<Order_Table />} />
-            <Route path="/admin/receipt" element={<Receipt/>} />
-            <Route path="/admin/customers" element={<Customer />} />
-            <Route path="/admin/payments" element={<Payment_Status />} />
-            <Route path="/admin/reviews" element={<Reviews_Rating/>} />
-      
-        </Routes>
-        <Container2/> 
-        <ToastContainer 
-           position="top-right"
+      <ScrollToTop />
+      {/* Show Navbar only if not on admin routes */}
+      {!isAdminRoute && <Container />}
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/product_details" element={<Product_Details />} />
+        <Route path="/wishlist" element={<Wish_List />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/orders" element={<Your_Order />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/search' element={<SearchResult />} />
+        <Route path='/checkout' element={<Checkout />} />
+        <Route path="/account" element={<AccountLayout />} >
+          <Route index element={<DashBoard />} />
+          <Route path="orders" element={<Your_Order />} />
+          <Route path="edit-profile" element={<Edit_Profile />} />
+          <Route path="addresses" element={<Address />} />
+        </Route>
+        {/* Admin Routes */}
+        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/products" element={<Product />} />
+        <Route path="/admin/add-supplier" element={<Add_Supplier />} />
+        <Route path="/admin/suppliers" element={<Supplier />} />
+        <Route path="/admin/orders" element={<Order_Table />} />
+        <Route path="/admin/receipt" element={<Receipt />} />
+        <Route path="/admin/customers" element={<Customer />} />
+        <Route path="/admin/payments" element={<Payment_Status />} />
+        <Route path="/admin/reviews" element={<Reviews_Rating />} />
+
+      </Routes>
+      {/* Show Footer only if not on admin routes */}
+      {!isAdminRoute && <Container2 />}
+      <ToastContainer
+        position="top-right"
         autoClose={1500}
-         hideProgressBar={true}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         pauseOnHover
         draggable
         theme="colored"
-        />
-        <FloatingStack />
+      />
+      <FloatingStack />
     </div>
   )
 }

@@ -41,7 +41,7 @@ const Card = () => {
                 <div className="flex items-center gap-2 px-4">
                   <button onClick={() => updateQty(item._id, -1)} className="border px-2" > − </button>
                   <span className='font-bold'>{item.quantity}</span>
-                  <button onClick={() => updateQty(item._id, 1) && toast.info(`Increased quantity of ${item.name}`)} className="border px-2" > +
+                  <button onClick={() => {updateQty(item._id, 1) && toast.info(`Increased quantity of ${item.name}`);}} className="border px-2" > +
                   </button>
                 </div>
                 <div className="font-bold text-red-600 " >
