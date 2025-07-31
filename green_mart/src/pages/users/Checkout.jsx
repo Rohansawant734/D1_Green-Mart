@@ -178,3 +178,34 @@ const Checkout = () => {
 }
 
 export default Checkout
+{/* <div className="space-y-3">
+            <label className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-all duration-300 hover:bg-green-100">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="bank"
+                className="accent-green-600 w-4 h-4"
+              />
+              <span>Direct Bank Transfer</span>
+            </label>
+
+            <label className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-all duration-300 hover:bg-green-100">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="check"
+                className="accent-green-600 w-4 h-4"
+              />
+              <span>Check Payments</span>
+            </label>
+
+            <label className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-all duration-300 hover:bg-green-100">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="cod"
+                className="accent-green-600 w-4 h-4"
+              />
+              <span>Cash On Delivery</span>
+            </label>
+          </div> */}

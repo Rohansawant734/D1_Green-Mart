@@ -102,6 +102,29 @@ export const assets = {
   box_icon,
 };
 
+export const dummySuppliers = [
+  {
+    id: 1,
+    name: "Fresh Farm Supplies",
+    email: "freshfarm@example.com",
+    phone: "9876543210",
+    address: "123 Green Street, Pune",
+  },
+  {
+    id: 2,
+    name: "Organic Hub",
+    email: "organichub@example.com",
+    phone: "9988776655",
+    address: "456 Nature Lane, Mumbai",
+  },
+  {
+    id: 3,
+    name: "AgroMart Pvt Ltd",
+    email: "contact@agromart.com",
+    phone: "9123456780",
+    address: "789 Fertile Road, Nashik",
+  },
+];
 export const categories = [
   {
     text: "Organic veggies",
