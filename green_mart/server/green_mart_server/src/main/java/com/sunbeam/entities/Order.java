@@ -53,15 +53,19 @@ public class Order extends BaseEntity {
 	@Column(name = "delivery_charges", length = 10)
 	private long deliveryCharges;
 
-	// 1 Order can be delivered at 1 Address
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	// Many Order can be delivered at 1 Address
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "address_id")
 	private Address address;
 	
-	@ManyToOne(fetch = FetchType.LAZY) //bi directional association
+	// Many Orders can belong to one User
+	// Many Orders <----> 1 User
+	@ManyToOne
 	@JoinColumn(name = "user_id",  nullable = false)
 	private User user;
 
+	// 1 Order has Many OrderLines
+	// 1 Order <-----> Many OrderLines
 	@OneToMany(cascade = CascadeType.ALL, 
 			mappedBy = "order", orphanRemoval = true)
 	private List<OrderLine> orderLines = new ArrayList<>();

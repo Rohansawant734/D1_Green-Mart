@@ -24,15 +24,9 @@ public class ProductReviews extends BaseEntity {
 	private int ratings;
 	
 	// Many Reviews can belong to one user
-	// Many Reviews -----> 1 User
-	@ManyToOne(fetch = FetchType.LAZY)
+	// Many Reviews <-----> 1 User
+	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
-	
-	// Many Reviews can be given for 1 product
-	// Many Reviews ------> 1 Product
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id", nullable = false)
-	private Product myProduct;
 	
 }

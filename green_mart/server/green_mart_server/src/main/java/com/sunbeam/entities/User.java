@@ -27,11 +27,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "new_users") // to specify table name
+@Table(name = "users") // to specify table name
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = "orders")
+@ToString(callSuper = true, exclude = {"orders", "reviews"})
 public class User extends BaseEntity implements UserDetails{
 	@Column(length = 20, name = "first_name") // col name , varchar size
 	private String firstName;
@@ -65,12 +65,17 @@ public class User extends BaseEntity implements UserDetails{
 	
 	//User 1 ----> Many Address
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "address_id") // Foreign key in address table
+	@JoinColumn(name = "user_id") // Foreign key in address table
 	private List<Address> addresses = new ArrayList<>();
 	
 	// 1 User <----> Many Orders
 	@OneToMany(mappedBy = "user", cascade  = CascadeType.ALL, orphanRemoval = true)
 	private List<Order> orders = new ArrayList<>();
+	
+	// 1 User can have many reviews
+	// 1 User <-----> Many reviews
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductReviews> reviews = new ArrayList<>();
 	
 	// parameterized ctor for sign up
 	public User(String firstName, String lastName, String email, String password, LocalDate dob, UserRole userRole) {

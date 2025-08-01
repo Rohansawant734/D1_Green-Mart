@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "cart") // to specify table name
@@ -19,12 +20,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString(callSuper = true, exclude = "myProduct")
 public class Cart extends BaseEntity {
 	
-	@Column(length = 10)
+	@Column(nullable = false)
 	private long quantity;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	// Many cart can contain the same product
+	// Many Cart <----> 1 Product
+	@ManyToOne
 	@JoinColumn(name="product_id",nullable = false)
 	private Product myProduct;
 }

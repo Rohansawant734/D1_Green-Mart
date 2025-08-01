@@ -24,10 +24,14 @@ public class OrderLine extends BaseEntity {
 	private double subTotal;
 	private double price;//price after discount - if any
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	// Many OrderLines can belong to 1 Order
+	// Many OrderLines <----> 1 Order
+	@ManyToOne
 	@JoinColumn(name = "order_id", nullable = false)
 	private Order order;
 	
+	// Many OrderLine can refer to the same product
+	// Many OrderLine ----> 1 Product
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
