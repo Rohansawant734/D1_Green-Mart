@@ -1,14 +1,14 @@
-package com.sunbeam.exception_handler;
+package com.greenmart.exception_handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.sunbeam.custom_exceptions.ApiException;
-import com.sunbeam.custom_exceptions.AuthenticationException;
-import com.sunbeam.custom_exceptions.NoContentException;
-import com.sunbeam.custom_exceptions.ResourceNotFoundException;
+import com.greenmart.custom_exceptions.ApiException;
+import com.greenmart.custom_exceptions.AuthenticationException;
+import com.greenmart.custom_exceptions.NoContentException;
+import com.greenmart.custom_exceptions.ResourceNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

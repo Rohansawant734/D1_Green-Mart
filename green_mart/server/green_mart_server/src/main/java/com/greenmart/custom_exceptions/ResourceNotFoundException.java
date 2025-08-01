@@ -1,4 +1,4 @@
-package com.sunbeam.custom_exceptions;
+package com.greenmart.custom_exceptions;
 
 @SuppressWarnings("serial")
 public class ResourceNotFoundException extends RuntimeException{

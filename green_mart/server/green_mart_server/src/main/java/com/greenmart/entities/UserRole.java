@@ -1,4 +1,4 @@
-package com.sunbeam.entities;
+package com.greenmart.entities;
 
 
 public enum UserRole {

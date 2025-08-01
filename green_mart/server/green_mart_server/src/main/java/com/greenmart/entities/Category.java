@@ -1,4 +1,4 @@
-package com.sunbeam.entities;
+package com.greenmart.entities;
 
 import java.util.ArrayList;
 import java.util.List;

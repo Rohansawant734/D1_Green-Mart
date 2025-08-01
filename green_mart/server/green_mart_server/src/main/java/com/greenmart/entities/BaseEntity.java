@@ -1,4 +1,4 @@
-package com.sunbeam.entities;
+package com.greenmart.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
