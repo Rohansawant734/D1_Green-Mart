@@ -1,4 +1,4 @@
-package com.sunbeam.entities;
+package com.greenmart.entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -58,6 +57,8 @@ public class Product extends BaseEntity {
 	@JoinColumn(name="category_id", nullable = false)
 	private Category myCategory;
 	
+	// 1 Product has many reviews
+	// 1 Product ----> Many reviews
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "product_id")
 	private List<ProductReviews> reviews = new ArrayList<>();

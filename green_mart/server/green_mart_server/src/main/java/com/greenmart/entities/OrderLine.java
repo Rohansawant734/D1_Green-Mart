@@ -1,4 +1,4 @@
- package com.sunbeam.entities;
+ package com.greenmart.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString(callSuper = true, exclude = "order")
 public class OrderLine extends BaseEntity {
 	private int quantity;
-	
+	private double discount;
 	private double subTotal;
 	private double price;//price after discount - if any
 
