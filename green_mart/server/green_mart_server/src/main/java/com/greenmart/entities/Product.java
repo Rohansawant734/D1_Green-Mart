@@ -32,8 +32,8 @@ public class Product extends BaseEntity {
 	
 	private String unit;
 	
-	@Column(name = "stock_quantity")
-	private int stockQuantity;
+	@Column(name = "offer_price")
+	private int offerPrice;
 	
 	@Column(name = "product_image")
 	private String prodImgUrl;
