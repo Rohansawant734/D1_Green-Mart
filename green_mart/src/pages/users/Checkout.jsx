@@ -34,10 +34,7 @@ const Checkout = () => {
       alert('You must agree to the terms and conditions.');
       return;
     }
-    if (!formData.paymentMethod) {
-      alert('Please select a payment method.');
-      return;
-    }
+    
     // Replace this with actual order processing
     console.log('Order placed:', formData);
     alert('Order placed successfully!');
@@ -122,33 +119,33 @@ const Checkout = () => {
         <div className="mt-6">
           <h2 className="text-lg font-semibold mb-3">Payment Method</h2>
 
-          <div className="space-y-3">
-            <label className="flex items-center space-x-2">
+           <div className="space-y-3">
+            <label className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-all duration-300 hover:bg-green-100">
               <input
                 type="radio"
                 name="paymentMethod"
                 value="bank"
-                className="accent-orange-500"
+                className="accent-green-600 w-4 h-4"
               />
               <span>Direct Bank Transfer</span>
             </label>
 
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-all duration-300 hover:bg-green-100">
               <input
                 type="radio"
                 name="paymentMethod"
                 value="check"
-                className="accent-orange-500"
+                className="accent-green-600 w-4 h-4"
               />
               <span>Check Payments</span>
             </label>
 
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-all duration-300 hover:bg-green-100">
               <input
                 type="radio"
                 name="paymentMethod"
                 value="cod"
-                className="accent-orange-500"
+                className="accent-green-600 w-4 h-4"
               />
               <span>Cash On Delivery</span>
             </label>
