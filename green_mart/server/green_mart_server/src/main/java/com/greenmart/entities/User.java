@@ -107,5 +107,13 @@ public class User extends BaseEntity implements UserDetails{
 		return this.email;
 	}
 	
+	public void addAddress(Address address) {
+		this.addresses.add(address);
+	}
+
+	// add helper method to remove food item
+	public void removeAddress(Address address) {
+		this.addresses.remove(address);
+	}
 
 }
