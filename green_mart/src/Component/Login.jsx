@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import './Login.css'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -25,7 +24,7 @@ function Login() {
           <Link to="/register" className="text-blue-600 hover:underline">Sign up here</Link>
         </div>
 
-        <button type="submit" className="w-full button">Sign In</button>
+        <button type="submit" className="cursor-pointer px-8 py-2 bg-green-600 hover:bg-green-900 transition text-white rounded-full relative left-33">Sign In</button>
       </div>
     </div>
   )

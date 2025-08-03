@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import './Login.css'
 import { toast } from 'react-toastify'
 
 function Register() {
@@ -89,7 +88,7 @@ function Register() {
                     <Link to="/login" className="text-green-600 hover:underline">Login here</Link>
                 </div>
 
-                <button className="w-full button" type="submit" onClick={onRegister}>Register</button>
+                <button className="cursor-pointer px-8 py-2 bg-green-600 hover:bg-green-900 transition text-white rounded-full relative left-42" type="submit" onClick={onRegister}>Register</button>
             </div>
         </div>
 
