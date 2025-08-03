@@ -86,12 +86,7 @@ const Checkout = () => {
       toast.error('You must agree to the terms and conditions.');
       return;
     }
-    if (!formData.paymentMethod) {
-      toast.error('Please select a payment method.');
-      return;
-    }
 
-    toast.success('Order placed successfully!');
     console.log('Order placed:', formData);
 
   navigate('/orders', {
@@ -132,43 +127,15 @@ const Checkout = () => {
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-6">Billing Details</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                First name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="Your first name"
-                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
+
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Last name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                placeholder="Your last name"
-                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
+
               />
             </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Company name <span className="text-gray-400">(optional)</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Your company name"
-                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
+
               />
             </div>
 
