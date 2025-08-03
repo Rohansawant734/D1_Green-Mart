@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductResposeDto extends BaseDto{
+public class ProductResponseDTO extends BaseDTO{
 	 private String prodName;
 	    private String description;
 	    private double price;
