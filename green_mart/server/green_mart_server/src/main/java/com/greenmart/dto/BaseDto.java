@@ -13,12 +13,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BaseDto {
-	
+public class BaseDTO {
+
+	//will skipped during de-serialization, will read common fields during serialization
 	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
+
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDate creationDate;
+
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime updatedOn;
 }
