@@ -1,10 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import './Footer.css'
 
 function Footer() {
     return (
-        <div className='footer'>
+        <div className='mt-10 border border-b-gray-600'>
             <div className="flex flex-col sm:flex-row flex-wrap gap-12 justify-between m-10">
                 {/* Logo and Description */}
                 <div className="flex-1 min-w-[250px]">
