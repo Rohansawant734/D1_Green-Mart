@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Order_Table = () => {
+const OrderDetails = () => {
   return (
     <div>
       <h3>order table</h3>
@@ -8,4 +8,4 @@ const Order_Table = () => {
   )
 }
 
-export default Order_Table
+export default OrderDetails

@@ -10,15 +10,22 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ImageUploadService {
 	@Autowired
-	private Cloudinary cloudinary;
+	private final Cloudinary cloudinary;
 	
-	public String uploadImage(MultipartFile file) throws IOException{
-		Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder","product_images"));
-		
-		return uploadResult.get("secure_url").toString();// return Cloudinary image URL
-	}
+	 public String uploadImage(MultipartFile image, String folder) {
+	        try {
+	            Map<?, ?> uploadResult = cloudinary.uploader().upload(image.getBytes(),
+	                    ObjectUtils.asMap("folder", folder));
+	            return uploadResult.get("secure_url").toString();
+	        } catch (IOException e) {
+	            throw new RuntimeException("Image upload failed", e);
+	        }
+	    }
 
 }

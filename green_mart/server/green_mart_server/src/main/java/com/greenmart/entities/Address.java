@@ -3,6 +3,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,5 +44,11 @@ public class Address extends BaseEntity {
 	@Enumerated(EnumType.STRING) // col type - varchar : name of constant
 	@Column(length = 30, name = "addr_type")
 	private AddressType addrType;	
+	
+	// Many Address can belong to one user
+	// Many Address <-----> 1 User
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
 }

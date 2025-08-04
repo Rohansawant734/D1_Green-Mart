@@ -62,9 +62,8 @@ public class User extends BaseEntity implements UserDetails{
 	@JoinColumn(name = "wishlist_id")
 	private Wishlist wishlist;
 	
-	//User 1 ----> Many Address
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "user_id", nullable = false) // Foreign key in address table
+	//User 1 <----> Many Address
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Address> addresses = new ArrayList<>();
 	
 	// 1 User <----> Many Orders
@@ -106,5 +105,13 @@ public class User extends BaseEntity implements UserDetails{
 		return this.email;
 	}
 	
+	public void addAddress(Address address) {
+		this.addresses.add(address);
+	}
+
+	// add helper method to remove food item
+	public void removeAddress(Address address) {
+		this.addresses.remove(address);
+	}
 
 }
