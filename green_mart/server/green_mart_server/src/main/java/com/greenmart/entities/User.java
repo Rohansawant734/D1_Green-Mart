@@ -16,7 +16,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -31,50 +30,49 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = {"orders", "reviews"})
-public class User extends BaseEntity implements UserDetails{
+@ToString(callSuper = true, exclude = { "orders", "reviews" })
+public class User extends BaseEntity implements UserDetails {
 	@Column(length = 20, name = "first_name") // col name , varchar size
 	private String firstName;
-	
+
 	@Column(length = 30, name = "last_name") // col name , varchar size
 	private String lastName;
-	
-	@Column(length = 30, unique = true) // varchar(30), unique constraint	
+
+	@Column(length = 30, unique = true) // varchar(30), unique constraint
 	private String email;
-	
+
 	@Column(length = 300, nullable = false) // not null
 	private String password;
-	
+
 	@Enumerated(EnumType.STRING) // col type - varchar : name of constant
 	@Column(length = 30, name = "user_role")
-	private UserRole userRole;	
-	
+	private UserRole userRole;
+
 	private boolean isDeleted; // for soft Deleting the user
-	
+
 	// 1 User has 1 cart
 	// 1 User -----> 1 Cart
-	@OneToOne( mappedBy = "cartUser" , cascade = CascadeType.ALL, fetch = FetchType.LAZY ,orphanRemoval = true)
+	@OneToOne(mappedBy = "cartUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private Cart cart;
-	
+
 	// 1 User has 1 wishlist
-	// 1 User -----> 1 Wishlist
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "wishlist_id")
-	private Wishlist wishlist;
-	
-	//User 1 <----> Many Address
+	// 1 User -----> 1 WishlistItems
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Wishlist> wishlistItems = new ArrayList<>();
+
+	// User 1 <----> Many Address
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Address> addresses = new ArrayList<>();
-	
+
 	// 1 User <----> Many Orders
-	@OneToMany(mappedBy = "user", cascade  = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Order> orders = new ArrayList<>();
-	
+
 	// 1 User can have many reviews
 	// 1 User <-----> Many reviews
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductReviews> reviews = new ArrayList<>();
-	
+
 	// parameterized ctor for sign up
 	public User(String firstName, String lastName, String email, String password, LocalDate dob, UserRole userRole) {
 		super();
@@ -95,8 +93,7 @@ public class User extends BaseEntity implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return List.of(new SimpleGrantedAuthority
-				(this.userRole.name()));
+		return List.of(new SimpleGrantedAuthority(this.userRole.name()));
 	}
 
 	@Override
@@ -104,7 +101,7 @@ public class User extends BaseEntity implements UserDetails{
 		// TODO Auto-generated method stub
 		return this.email;
 	}
-	
+
 	public void addAddress(Address address) {
 		this.addresses.add(address);
 	}

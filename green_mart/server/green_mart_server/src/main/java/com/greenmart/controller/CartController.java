@@ -20,41 +20,46 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/cart")
 @AllArgsConstructor
- 
+
 @CrossOrigin(origins = "http://localhost:5173")
 
 public class CartController {
-	
+
 	private final CartService cartservice;
-	
+
 	@GetMapping("/{userId}")
 	@Operation(description = "get the cart ")
-	public ResponseEntity<?>getCart(@PathVariable Long userId){
-		
-		CartDTO cartDTO=cartservice.getCartByUserId(userId);
+	public ResponseEntity<?> getCart(@PathVariable Long userId) {
+
+		CartDTO cartDTO = cartservice.getCartByUserId(userId);
 		return ResponseEntity.ok(cartDTO);
-		
+
 	}
-	
+
 	@PostMapping("/add")
 	@Operation(description = "Add to cart")
-	public ResponseEntity<?>addTocart(@RequestParam Long userID,@RequestParam Long productId, @RequestParam int quantity){
+	public ResponseEntity<?> addTocart(@RequestParam Long userID, @RequestParam Long productId,
+			@RequestParam int quantity) {
 		return ResponseEntity.ok(cartservice.addItemToCart(userID, productId, quantity));
-		
+
 	}
-	  @PutMapping("/update")
-	  @Operation(description = "Update the cartItems")
-	    public ResponseEntity<?> updateCartItem(@RequestParam Long userId, @RequestParam Long productId, @RequestParam int quantity) {
-	        return ResponseEntity.ok(cartservice.updateCartItem(userId, productId, quantity));
-	    }
-	  @DeleteMapping("/remove")
-	  @Operation(description = "Remove the Cart")
-	    public ResponseEntity<?> removeItem(@RequestParam Long userId, @RequestParam Long productId) {
-	        return ResponseEntity.ok(cartservice.removeItemFromCart(userId, productId));
-	    }
-	  @DeleteMapping("/clear/{userId}")
-	    public ResponseEntity<?> clearCart(@PathVariable Long userId) {
-	        return ResponseEntity.ok(cartservice.clearCart(userId));
-	    }
+
+	@PutMapping("/update")
+	@Operation(description = "Update the cartItems")
+	public ResponseEntity<?> updateCartItem(@RequestParam Long userId, @RequestParam Long productId,
+			@RequestParam int quantity) {
+		return ResponseEntity.ok(cartservice.updateCartItem(userId, productId, quantity));
+	}
+
+	@DeleteMapping("/remove")
+	@Operation(description = "Remove the Cart")
+	public ResponseEntity<?> removeItem(@RequestParam Long userId, @RequestParam Long productId) {
+		return ResponseEntity.ok(cartservice.removeItemFromCart(userId, productId));
+	}
+
+	@DeleteMapping("/clear/{userId}")
+	public ResponseEntity<?> clearCart(@PathVariable Long userId) {
+		return ResponseEntity.ok(cartservice.clearCart(userId));
+	}
 
 }

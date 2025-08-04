@@ -21,6 +21,8 @@ import DashBoard from './pages/users/DashBoard';
 import Edit_Profile from './pages/users/Edit_Profile';
 import Address from './pages/users/Address';
 import AccountLayout from './pages/users/AccountLayout';
+import Checkout from './pages/users/Checkout'
+import FloatingStack from './Component/FloatingStack'
 
 // Admin Pages
 import Adminlayout from './pages/admins/Adminlayout';
@@ -54,6 +56,8 @@ const App = () => {
         <Route path="/orders" element={<Your_Order />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/search" element={<SearchResult />} />
+        <Route path='/checkout' element={<Checkout />} />
+        
 
         {/* User Account Routes */}
         <Route path="/account" element={<AccountLayout />}>
@@ -89,6 +93,7 @@ const App = () => {
         draggable
         theme="colored"
       />
+       <FloatingStack/>
     </div>
   );
 };
