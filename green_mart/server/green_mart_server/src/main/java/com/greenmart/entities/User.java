@@ -30,8 +30,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = { "orders", "reviews" })
-public class User extends BaseEntity implements UserDetails {
+@ToString(callSuper = true, exclude = {"addresses", "orders", "reviews"})
+public class User extends BaseEntity implements UserDetails{
 	@Column(length = 20, name = "first_name") // col name , varchar size
 	private String firstName;
 
@@ -104,11 +104,13 @@ public class User extends BaseEntity implements UserDetails {
 
 	public void addAddress(Address address) {
 		this.addresses.add(address);
+		address.setUser(this);
 	}
 
 	// add helper method to remove food item
 	public void removeAddress(Address address) {
 		this.addresses.remove(address);
+		address.setUser(null);
 	}
 
 }
