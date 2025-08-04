@@ -7,6 +7,7 @@ import RatingSummary from '../../Component/RatingSummary';
 import ReviewCard from '../../Component/ReviewCard';
 import RelatedProductCard from '../../Component/RelatedProductCard';
 import { dummyProducts } from '../../assets/assets';
+import { useCart } from '../../Context/CartContext';
 
 const Product_Details = ({ isWishlisted = false, toggleWishlist = () => { }, showWishlistIcon = false }) => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const Product_Details = ({ isWishlisted = false, toggleWishlist = () => { }, sho
 
   const [count, setCount] = useState(1);
   const [userRating, setUserRating] = useState(0);
+  const { addToCart } = useCart();
 
   if (!product) {
     return <p className="p-10 text-center text-red-500">Product not found.</p>;
@@ -90,7 +92,7 @@ const Product_Details = ({ isWishlisted = false, toggleWishlist = () => { }, sho
             </div>
 
             <div className="flex flex-col sm:flex-col gap-4 mt-4">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-1/2">Add To Cart</button>
+              <button onClick={() => addToCart(product)} className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-1/2">Add To Cart</button>
               <button className="bg-green-600 text-white px-4 py-2 rounded-md w-full sm:w-1/2">Buy Now</button>
             </div>
           </div>
