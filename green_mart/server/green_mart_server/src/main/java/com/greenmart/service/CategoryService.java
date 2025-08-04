@@ -12,4 +12,8 @@ public interface CategoryService {
 
 	List<CategoryResponseDTO> getAllCategories();
 
+	ApiResponse updateCategory(Long id, CategoryDTO dto);
+
+	ApiResponse deleteCategory(Long id);
+
 }

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.greenmart.custom_exceptions.ApiException;
+import com.greenmart.custom_exceptions.ResourceNotFoundException;
 import com.greenmart.dao.CategoryDao;
 import com.greenmart.dto.ApiResponse;
 import com.greenmart.dto.CategoryDTO;
@@ -67,5 +68,28 @@ public class CategoryServiceImpl implements CategoryService {
 		            return dto;
 				} )
 				.toList();
+	}
+	
+	@Override
+	public ApiResponse updateCategory(Long id, CategoryDTO dto) {
+		Category entity = categoryDao.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid category ID -- updated failed!"));
+		//duplicate name
+		if(categoryDao.existsByCatName(dto.getCatName()) && 
+		!dto.getCatName().equals(entity.getCatName())){
+			throw new ApiException("Duplicate category name - update failed");
+		}
+		//manual mapping
+		if(dto.getCatName() != null) entity.setCatName(dto.getCatName());
+		if(dto.getBgColor() != null) entity.setBgColor(dto.getBgColor());
+		return new ApiResponse("Category details updated!");
+	}
+	
+	@Override
+	public ApiResponse deleteCategory(Long id) {
+		Category category = categoryDao.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid category id"));
+		categoryDao.delete(category);
+		return new ApiResponse("deleted category details");
 	}
 }

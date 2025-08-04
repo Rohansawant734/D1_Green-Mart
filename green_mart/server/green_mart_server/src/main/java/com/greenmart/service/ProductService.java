@@ -14,6 +14,8 @@ public interface ProductService {
 
 	List<ProductResponseDTO> getAllProducts();
 
-	ProductResponseDTO updateProduct(ProductDTO dto);
+	ApiResponse updateProduct(Long id, ProductDTO dto);
+
+	ApiResponse deleteProduct(Long id);
 
 }
