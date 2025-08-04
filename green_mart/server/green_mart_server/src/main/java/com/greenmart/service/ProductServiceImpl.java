@@ -85,7 +85,7 @@ public class ProductServiceImpl implements ProductService{
 	        existingProduct.setDescription(dto.getDescription());
 	    }
 
-	    if (dto.getPrice() != null) {
+	    if (dto.getPrice() != 0.0) {
 	        existingProduct.setPrice(dto.getPrice());
 	    }
 
@@ -99,7 +99,7 @@ public class ProductServiceImpl implements ProductService{
 
 	    // 3. Image: Upload only if new file is sent
 	    if (dto.getImage() != null && !dto.getImage().isEmpty()) {
-	        String imageUrl = imageUploadService.uploadImage(dto.getImage(), imageUrl);
+	        String imageUrl = imageUploadService.uploadImage(dto.getImage(), existingProduct.getProdImgUrl());
 	        existingProduct.setProdImgUrl(imageUrl);
 	    }
 
