@@ -52,10 +52,12 @@ public class AddressServiceImpl implements AddressService{
 		// Collect list of address which are not deleted
 		List<Address> aList =  aDao.findByUserIdAndIsDeletedFalse(userId);
 		
+		// Check if list is empty or not
 		if(aList.isEmpty()) {
 			throw new NoContentException("No Addresses added yet");
 		}
 		
+		// Return the list in the form of DTO
 		return aList.stream().map(address -> modelMapper.map(address, AddressDTO.class)).toList();
 	}
 

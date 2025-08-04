@@ -4,9 +4,11 @@ import com.greenmart.entities.AddressType;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 public class AddressDTO {
 	private String adrLine1;
 	
@@ -21,4 +23,6 @@ public class AddressDTO {
 	private String zipCode;
 	
 	private AddressType addrType;	
+	
+	
 }
