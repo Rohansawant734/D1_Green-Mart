@@ -45,6 +45,8 @@ public class Address extends BaseEntity {
 	@Column(length = 30, name = "addr_type")
 	private AddressType addrType;	
 	
+	// Many Address can belong to one user
+	// Many Address <-----> 1 User
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
