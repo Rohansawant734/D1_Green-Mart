@@ -34,18 +34,24 @@ public class SecurityConfiguration {
 		// 1. disable CSRF protection
 		http.csrf(csrf -> csrf.disable());
 		// 2. any request - has to be authenticated
+//		http.authorizeHttpRequests(
+//
+//				request -> request
+//				.requestMatchers("/swagger-ui/**",
+//						"/v3/api-docs/**", "/users/**")
+//						.permitAll()
+//				.requestMatchers(HttpMethod.POST, "/categories")
+//				.permitAll()
+//				.requestMatchers(HttpMethod.GET,"/categories")
+//				.permitAll()
+//				.requestMatchers(HttpMethod.POST,"/products").permitAll()
+//				.requestMatchers(HttpMethod.POST, "/restaurants")
+//				.hasRole("ADMIN")
+//				.anyRequest()
+//					.authenticated());
 		http.authorizeHttpRequests(
-
 				request -> request
-				.requestMatchers("/swagger-ui/**",
-						"/v3/api-docs/**", "/users/**")
-						.permitAll()
-				.requestMatchers(HttpMethod.GET, "/restaurants")
-				.permitAll()
-				.requestMatchers(HttpMethod.POST, "/restaurants")
-				.hasRole("ADMIN")
-				.anyRequest()
-					.authenticated());
+					.anyRequest().permitAll());
 		// 3. disable HttpSession tracking - stateless
 		http.sessionManagement(session -> 
 		session.sessionCreationPolicy
