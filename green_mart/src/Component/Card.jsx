@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 const Card = () => {
   const offer = 600; // Example offer price for free shipping
   const shippingCharge = 199;
@@ -33,7 +34,7 @@ const Card = () => {
               >
                 <div className="flex items-center gap-4">
                   <img src={item.image[0]} alt={item.name} className="w-14 h-14 object-contain" />
-                  <div flex="flex flex-col">
+                  <div className="flex flex-col">
                     <p className="font-semibold">{item.name}</p>
                     <div className="text-sm text-red-600">₹{item.offerPrice} × {item.quantity}</div>
                   </div>
@@ -41,7 +42,7 @@ const Card = () => {
                 <div className="flex items-center gap-2 px-4">
                   <button onClick={() => updateQty(item._id, -1)} className="border px-2" > − </button>
                   <span className='font-bold'>{item.quantity}</span>
-                  <button onClick={() => {updateQty(item._id, 1) && toast.info(`Increased quantity of ${item.name}`);}} className="border px-2" > +
+                  <button onClick={() => {updateQty(item._id, 1); toast.info(`Increased quantity of ${item.name}`);}} className="border px-2" > +
                   </button>
                 </div>
                 <div className="font-bold text-red-600 " >
