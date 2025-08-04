@@ -39,7 +39,7 @@ public class User extends BaseEntity implements UserDetails{
 	@Column(length = 30, name = "last_name") // col name , varchar size
 	private String lastName;
 	
-	@Column(length = 30, unique = true) // varchar(30), unique constraint
+	@Column(length = 30, unique = true) // varchar(30), unique constraint	
 	private String email;
 	
 	@Column(length = 300, nullable = false) // not null
@@ -53,8 +53,7 @@ public class User extends BaseEntity implements UserDetails{
 	
 	// 1 User has 1 cart
 	// 1 User -----> 1 Cart
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "cart_id")
+	@OneToOne( mappedBy = "cartUser" , cascade = CascadeType.ALL, fetch = FetchType.LAZY ,orphanRemoval = true)
 	private Cart cart;
 	
 	// 1 User has 1 wishlist
