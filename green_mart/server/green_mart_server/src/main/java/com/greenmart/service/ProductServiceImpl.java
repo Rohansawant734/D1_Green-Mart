@@ -65,6 +65,7 @@ public class ProductServiceImpl implements ProductService{
 	            dto.setProimage(pro.getProdImgUrl());
 	            dto.setUnit(pro.getUnit());
 	            dto.setInStock(pro.isInStock());
+	            dto.setOfferPrice(pro.getOfferPrice());
 	            if (pro.getMyCategory() != null) {
 	                dto.setCategoryId(pro.getMyCategory().getId());
 	            }
@@ -72,59 +73,49 @@ public class ProductServiceImpl implements ProductService{
 				}).toList();
 	}
 	
+	
 	@Override
-	public ProductResponseDTO updateProduct(ProductDTO dto) {
-		Product existingProduct = productDao.findById(dto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-		 // 2. Update fields only if they are provided (non-null or non-empty)
-	    if (dto.getProdName() != null && !dto.getProdName().isBlank()) {
-	        existingProduct.setProdName(dto.getProdName());
-	    }
+	public ApiResponse updateProduct(Long id, ProductDTO dto) {
+		 Product entity = productDao.findById(id)
+	                .orElseThrow(() -> new ResourceNotFoundException("Invalid Product ID: update failed"));
 
-	    if (dto.getDescription() != null && !dto.getDescription().isBlank()) {
-	        existingProduct.setDescription(dto.getDescription());
-	    }
+	        // Duplicate name check
+	        if (productDao.existsByProdName(dto.getProdName()) && 
+	            !dto.getProdName().equals(entity.getProdName())) {
+	            throw new ApiException("Duplicate product name - update failed");
+	        }
 
-	    if (dto.getPrice() != 0.0) {
-	        existingProduct.setPrice(dto.getPrice());
-	    }
+	        // Manual mapping
+	        if (dto.getProdName() != null) entity.setProdName(dto.getProdName());
+	        if (dto.getDescription() != null) entity.setDescription(dto.getDescription());
+	        if (dto.getPrice() != null) entity.setPrice(dto.getPrice());
+	        if (dto.getUnit() != null) entity.setUnit(dto.getUnit());
+	        if (dto.getInStock() != null) entity.setInStock(dto.getInStock());
+	        if(dto.getOfferPrice() != 0) entity.setOfferPrice(dto.getOfferPrice());
 
-	    if (dto.getUnit() != null && !dto.getUnit().isBlank()) {
-	        existingProduct.setUnit(dto.getUnit());
-	    }
+	        // Set category
+	        if (dto.getCategoryId() != null) {
+	            Category category = categoryDao.findById(dto.getCategoryId())
+	                    .orElseThrow(() -> new ResourceNotFoundException("Invalid Category ID"));
+	            entity.setMyCategory(category);
+	        }
 
-	    if (dto.getInStock() != null) {
-	        existingProduct.setInStock(dto.getInStock());
-	    }
+	        // Image upload
+	        MultipartFile imageFile = dto.getImage();
+	        if (imageFile != null && !imageFile.isEmpty()) {
+	            String imageUrl = imageUploadService.uploadImage(imageFile, "products");
+	            entity.setProdImgUrl(imageUrl);
+	        }
 
-	    // 3. Image: Upload only if new file is sent
-	    if (dto.getImage() != null && !dto.getImage().isEmpty()) {
-	        String imageUrl = imageUploadService.uploadImage(dto.getImage(), existingProduct.getProdImgUrl());
-	        existingProduct.setProdImgUrl(imageUrl);
-	    }
-
-	    // 4. Category: update only if new categoryId is sent
-	    if (dto.getCategoryId() != null) {
-	        Category category = categoryDao.findById(dto.getCategoryId())
-	                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-	        existingProduct.setMyCategory(category);
-	    }
-	    
-	    Product updated = productDao.save(existingProduct);
-	    
-	    ProductResponseDTO responseDTO = new ProductResponseDTO();
-	    responseDTO.setId(updated.getId());
-	    responseDTO.setProdName(updated.getProdName());
-	    responseDTO.setDescription(updated.getDescription());
-	    responseDTO.setPrice(updated.getPrice());
-	    responseDTO.setUnit(updated.getUnit());
-	    responseDTO.setInStock(updated.isInStock());
-	    responseDTO.setProimage(updated.getProdImgUrl());
-	    responseDTO.setCategoryId(updated.getMyCategory().getId());
-	    responseDTO.setCreationDate(updated.getCreationDate());
-	    responseDTO.setUpdatedOn(updated.getUpdatedOn());
-
-	    return responseDTO;
+	        return new ApiResponse("Product details updated!");
+	}
+	
+	@Override
+	public ApiResponse deleteProduct(Long id) {
+		Product product = productDao.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("invalid product id"));
+		product.setInStock(false);
+		return new ApiResponse("Soft deleted product details");
 	}
 	
 

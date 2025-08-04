@@ -16,14 +16,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = "myProduct")
+@ToString(callSuper = true, exclude = { "myProduct", "user" })
 public class Wishlist extends BaseEntity {
-	
-	private boolean isRemoved; // for soft removal
-	
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
 	// Many Wishlist can contain the same product
 	// Many Wishlist <-----> 1 Product
 	@ManyToOne
-	@JoinColumn(name="product_id", nullable = false)
+	@JoinColumn(name = "product_id", nullable = false)
 	private Product myProduct;
 }

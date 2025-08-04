@@ -1,9 +1,17 @@
 package com.greenmart.entities;
 
-import jakarta.persistence.Column;
+ 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,15 +25,29 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = "myProduct")
+@ToString(callSuper = true, exclude = {"cartUser","items"})
 public class Cart extends BaseEntity {
-	
-	@Column(nullable = false)
-	private long quantity;
-	
-	// Many cart can contain the same product
-	// Many Cart <----> 1 Product
-	@ManyToOne
-	@JoinColumn(name="product_id",nullable = false)
-	private Product myProduct;
+	@JsonIgnore
+	 @OneToOne (fetch = FetchType.LAZY)	   
+	 @JoinColumn(name = "user_id", nullable = false)	   
+	 private User cartUser;
+	 
+	 @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,orphanRemoval = true)
+	 private List<CartItem> items = new ArrayList<>();
+	 
+	 public Cart(User user) {
+		    this.cartUser = user;
+		}
+
+	 
+	 public void addItem(CartItem item) {
+	        items.add(item);
+	        item.setCart(this);
+	    }
+
+	    public void removeItem(CartItem item) {
+	        items.remove(item);
+	        item.setCart(null);
+	    }
+	 
 }

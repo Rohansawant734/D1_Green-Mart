@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = {"myCategory", "carts", "wishLists"})
+@ToString(callSuper = true, exclude = {"myCategory", "cartItems", "wishLists"})
 public class Product extends BaseEntity {
 	@Column(name = "product_name", length = 20)
 	private String prodName;
@@ -44,7 +44,7 @@ public class Product extends BaseEntity {
 	// 1 Product can be in multiple carts
 	// 1 Product <-----> Many Carts
 	@OneToMany(mappedBy = "myProduct", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Cart> carts = new ArrayList<>();
+	private List<CartItem> cartItems = new ArrayList<>();
 	
 	// 1 Product can be in multiple wishlist
 	// 1 Product <-----> Many Wishlists

@@ -34,4 +34,5 @@ public class BaseEntity {
 	@UpdateTimestamp
 	@Column(name="updated_on")
 	private LocalDateTime updatedOn;
+	 
 }

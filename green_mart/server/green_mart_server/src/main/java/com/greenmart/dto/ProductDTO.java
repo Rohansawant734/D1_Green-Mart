@@ -13,6 +13,7 @@ public class ProductDTO extends BaseDTO {
     private Double price;
     private String unit;
     private Boolean inStock;
+    private int offerPrice;
     private Long categoryId;
     private MultipartFile image;
 }
