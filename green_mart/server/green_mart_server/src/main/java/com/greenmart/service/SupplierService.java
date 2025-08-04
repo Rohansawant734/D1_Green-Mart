@@ -1,0 +1,82 @@
+package com.greenmart.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.greenmart.entities.Supplier;
+import com.greenmart.dao.SupplierRepository;
+import com.greenmart.RequestDto.SupplierRequestDTO;
+import com.greenmart.ResponseDto.SupplierResponseDTO;
+
+@Service
+public class SupplierService {
+	 @Autowired
+	    private SupplierRepository supplierRepository;
+
+	    public SupplierResponseDTO addSupplier(Supplier supplier) {
+	    	
+	    	Supplier savedSupplier = supplierRepository.save(supplier);
+	    	SupplierResponseDTO responseDTO = new SupplierResponseDTO(
+	                savedSupplier.getName(),
+	                savedSupplier.getContactNumber(),
+	                savedSupplier.getEmail(),
+	                savedSupplier.getAddress()
+	        );
+	    	return responseDTO;
+
+}
+
+	    public List<SupplierResponseDTO> getAllSuppliers() {
+	        List<Supplier> suppliers = supplierRepository.findAll();
+	        List<SupplierResponseDTO> dtos = new ArrayList<>();
+
+	        for (Supplier supplier : suppliers) {
+	        	SupplierResponseDTO dto = new SupplierResponseDTO();
+	            dto.setName(supplier.getName());
+	            dto.setContactNumber(supplier.getContactNumber());
+	            dto.setEmail(supplier.getEmail());
+	            dto.setAddress(supplier.getAddress());
+	            dtos.add(dto);
+	        }
+
+	        return dtos;
+	    }
+	    
+	    public void deleteSupplierById(Long id) {
+	        if (!supplierRepository.existsById(id)) {
+	            throw new RuntimeException("Supplier not found");
+	        }
+	        supplierRepository.deleteById(id);
+	    }
+	    
+	    
+	    public SupplierResponseDTO updateSupplier(Long id, SupplierRequestDTO dto) {
+	    	  Supplier existingSupplier = supplierRepository.findById(id).orElse(null);
+
+		        if (existingSupplier == null) {
+		            return null; // Not found
+		        }
+		        existingSupplier.setName(dto.getName());
+		        existingSupplier.setEmail(dto.getEmail());
+		        existingSupplier.setContactNumber(dto.getContactNumber());
+		        existingSupplier.setAddress(dto.getAddress());
+		        
+	        Supplier updatedSupplier = supplierRepository.save( existingSupplier);
+
+	        SupplierResponseDTO responseDTO = new SupplierResponseDTO(
+	        		updatedSupplier.getName(),
+	        		updatedSupplier.getContactNumber(),
+	        		updatedSupplier.getEmail(),
+	        		updatedSupplier.getAddress()
+	        );
+	    	return responseDTO;
+	    }
+
+
+}
+
+		
+
