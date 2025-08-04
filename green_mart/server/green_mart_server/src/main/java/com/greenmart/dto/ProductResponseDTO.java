@@ -9,6 +9,7 @@ public class ProductResponseDTO extends BaseDTO{
 	    private String prodName;
 	    private String description;
 	    private double price;
+	    private int offerPrice;
 	    private String unit;
 	    private Boolean inStock;
 	    private Long categoryId;
