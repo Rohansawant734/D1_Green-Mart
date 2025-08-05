@@ -18,4 +18,6 @@ public interface ProductService {
 
 	ApiResponse deleteProduct(Long id);
 
+	ProductResponseDTO	getProductById(Long id);
+
 }
