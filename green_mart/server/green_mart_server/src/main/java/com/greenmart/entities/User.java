@@ -102,15 +102,28 @@ public class User extends BaseEntity implements UserDetails{
 		return this.email;
 	}
 
+	// add helper method to add address
 	public void addAddress(Address address) {
 		this.addresses.add(address);
 		address.setUser(this);
 	}
 
-	// add helper method to remove food item
+	// add helper method to remove remove address
 	public void removeAddress(Address address) {
 		this.addresses.remove(address);
 		address.setUser(null);
+	}
+	
+	// add helper method to add review
+	public void addReview(ProductReviews review) {
+		this.reviews.add(review);
+		review.setUser(this);
+	}
+	
+	// add helper method to remove review
+	public void removeReview(ProductReviews review) {
+		this.reviews.remove(review);
+		review.setUser(null);
 	}
 
 }
