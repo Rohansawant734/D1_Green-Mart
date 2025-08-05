@@ -86,8 +86,8 @@ public class AddressServiceImpl implements AddressService{
 		modelMapper.map(dto, addressEntity); // Modifying the state of the persistent address entity
 		
 		// Saved updated entity
-		aDao.save(addressEntity);
-		return new ApiResponse("Address updated");
+		Address updatedAddress = aDao.save(addressEntity);
+		return new ApiResponse("Address updated with Id " + updatedAddress.getId());
 	}
 
 
@@ -102,9 +102,25 @@ public class AddressServiceImpl implements AddressService{
 		addressEntity.setDeleted(true); // Address is soft-deleted
 		
 		// Save the isDeleted change
-		aDao.save(addressEntity);
+		Address deletedAddress = aDao.save(addressEntity);
 		
-		return new ApiResponse("Address deleted successfully") ;
+		return new ApiResponse("Address deleted successfully with Id " + deletedAddress.getId()) ;
+	}
+	
+	@Override
+	public ApiResponse restoreAddress(Long userId, Long addrId) {
+		// Checking if user is valid or not
+		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
+		
+		// Find the address
+		Address addressEntity = aDao.findByUserIdAndIdAndIsDeletedFalse(userId, addrId).orElseThrow(() -> new ResourceNotFoundException("Address not found or it does not exist"));
+		
+		addressEntity.setDeleted(false); // Address is soft-deleted
+		
+		// Save the isDeleted change
+		Address restoredAddress = aDao.save(addressEntity);
+		
+		return new ApiResponse("Address restore successfully with Id " + restoredAddress.getId()) ;
 	}
 
 	

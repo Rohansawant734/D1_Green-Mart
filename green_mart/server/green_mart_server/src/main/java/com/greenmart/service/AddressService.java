@@ -16,4 +16,6 @@ public interface AddressService {
 	 ApiResponse updateAddress(Long userId, Long addrId, AddAddressDTO dto);
 	 
 	 ApiResponse deleteAddress(Long userId, Long addrId);
+	 
+	 ApiResponse restoreAddress(Long userId, Long addrId);
 }

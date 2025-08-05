@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = {"myCategory", "cartItems", "wishLists"})
+@ToString(callSuper = true, exclude = {"myCategory", "cartItems", "wishLists", "reviews"})
 public class Product extends BaseEntity {
 	@Column(name = "product_name", length = 20)
 	private String prodName;
@@ -58,12 +58,23 @@ public class Product extends BaseEntity {
 	private Category myCategory;
 	
 	// 1 Product has many reviews
-	// 1 Product ----> Many reviews
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "product_id")
+	// 1 Product <----> Many reviews
+	@OneToMany(mappedBy = "myProduct", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductReviews> reviews = new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "supplier_id",nullable = false)
 	private Supplier supplier;
+	
+	// add helper method to add review
+	public void addReview(ProductReviews review) {
+		this.reviews.add(review);
+		review.setMyProduct(this);
+	}
+	
+	// add helper method to remove review
+	public void removeReview(ProductReviews review) {
+		this.reviews.remove(review);
+		review.setMyProduct(null);
+	}
 }
