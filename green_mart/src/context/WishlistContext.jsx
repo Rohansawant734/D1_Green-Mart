@@ -1,23 +1,39 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 const WishlistContext = createContext();
 
 export const useWishlist = () => useContext(WishlistContext);
 
+//  Replace this with dynamic user ID from auth or context
+const userID = 2;
+
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
 
-  const toggleWishlist = (product) => {
-    setWishlist((prevWishlist) => {
-    const exists = prevWishlist.some((item) => item._id === product._id);
-
-    if (exists) {
-      return prevWishlist.filter((item) => item._id !== product._id);
-    } else {
-      return [...prevWishlist, product];
+  // Fetch wishlist from backend
+  const fetchWishlist = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/wishlist/${userID}`);
+      setWishlist(response.data);
+    } catch (error) {
+      console.error("Failed to fetch wishlist", error);
     }
-  });
   };
+
+  // Toggle wishlist item (add/remove)
+  const toggleWishlist = async (product) => {
+    try {
+      await axios.post(`http://localhost:8080/wishlist/${userID}/${product._id}`);
+      fetchWishlist(); // Re-fetch updated list
+    } catch (error) {
+      console.error("Failed to toggle wishlist", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
 
   return (
     <WishlistContext.Provider value={{ wishlist, toggleWishlist }}>

@@ -10,9 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WishlistDTO {
-	 private Long id;
-	    private Long productId;
-	    private String productName;
-	    private String productImage;
-	    private int offerPrice;
+	private Long id;
+	private Long productId;
+	private String productName;
+	private String productImage;
+	private int offerPrice;
+	private String description;
 }
