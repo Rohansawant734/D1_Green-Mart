@@ -8,6 +8,7 @@ import com.greenmart.entities.User;
 
 public interface UserDao extends JpaRepository<User, Long>{
  
-
 	List<User> findByisDeletedFalse();
+	
+	boolean existsByEmail(String email);
 }

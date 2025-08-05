@@ -9,7 +9,7 @@ import com.greenmart.dto.UserResponseDTO;
 
 public interface UserService {
 	
-	ApiResponse addNewUser(AddUserDTO dto);
+	ApiResponse register(AddUserDTO dto);
 	
 	ApiResponse updateUser(Long userId,  UpdateUserDTO dto);
 	
@@ -18,4 +18,6 @@ public interface UserService {
 	List<UserResponseDTO> getAllUsers();
 	
 	UserResponseDTO findUserById(Long userId);
+	
+	ApiResponse restoreUser(Long userId);
 }
