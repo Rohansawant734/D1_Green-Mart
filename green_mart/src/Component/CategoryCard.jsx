@@ -1,6 +1,7 @@
 // src/components/CategoryCard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const CategoryCard = ({ category }) => {
   const navigate = useNavigate();
 

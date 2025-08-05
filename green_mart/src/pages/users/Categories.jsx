@@ -1,23 +1,66 @@
 import React, { useState,useEffect } from 'react';
-import { categories, dummyProducts } from '../../assets/assets';
+import axios from 'axios';
 import ProductCard from '../../Component/ProductCard';
 import myImage from '../../assets/farmer.png'
 import { useLocation } from 'react-router-dom';
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  const filterProducts = selectedCategory
-    ? dummyProducts.filter(p => p.category === selectedCategory)
-    : [];
+  //fetch all categories from backend
+  const fetchCategories = async () => {
+  try {
+    const response = await axios.get("http://localhost:8080/categories");
 
+    const formatted = response.data.map(cat => ({
+      id: cat.id,
+      text: cat.catName,
+      image: cat.catImage,
+      bgColor: cat.bgColor,
+      path: cat.catName, // used for category filtering/navigation
+    }));
+
+    setCategories(formatted);
+  } catch (err) {
+    console.error("Error fetching categories", err);
+  }
+};
+
+//fetch products from backend
+
+  const fetchProducts = async () => {
+    try{
+      const response = await axios.get("http://localhost:8080/products");
+      const formatted = response.data.map(product => ({
+        id: product.id,
+        name: product.prodName,
+        image: [product.proimage],
+        price: product.price,
+        category: product.categoryName,
+        description: product.description?.split(',').map(str => str.trim()),
+      }));
+      setProducts(formatted);
+    }catch(err){
+      console.error("Error fetching products",err);
+    }
+  }
 
   const location = useLocation();
 
   useEffect(() => {
-    if(location.state && location.state.selectedCategory){
+   fetchCategories();
+   fetchProducts();
+  },[]);
+
+  useEffect(() => {
+    if (location.state && location.state.selectedCategory) {
       setSelectedCategory(location.state.selectedCategory);
     }
-  },[location.state]);
+  }, [location.state]);
+   const filteredProducts = selectedCategory
+    ? products.filter(p => p.category === selectedCategory)
+    : [];
   return (
     <div className="p-6">
 
@@ -30,7 +73,7 @@ const Categories = () => {
           <div className="flex flex-col gap-2">
             {categories.map(cat => (
               <div
-                key={cat.path}
+                key={cat.id}
                 className={`flex items-center gap-2 p-2 rounded cursor-pointer transition hover:bg-gray-200 ${selectedCategory === cat.path ? "bg-gray-300" : ""
                   }`}
                 onClick={() => setSelectedCategory(cat.path)}
@@ -64,7 +107,7 @@ const Categories = () => {
           )}
           {/* Products Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filterProducts.map(product => (
+            {filteredProducts.map(product => (
               <ProductCard
                 key={product.id}
                 product={product}

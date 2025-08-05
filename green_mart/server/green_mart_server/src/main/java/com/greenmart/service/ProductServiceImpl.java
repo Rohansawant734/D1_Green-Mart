@@ -68,6 +68,7 @@ public class ProductServiceImpl implements ProductService{
 	            dto.setOfferPrice(pro.getOfferPrice());
 	            if (pro.getMyCategory() != null) {
 	                dto.setCategoryId(pro.getMyCategory().getId());
+	                dto.setCategoryName(pro.getMyCategory().getCatName());
 	            }
 	            return dto;
 				}).toList();
@@ -116,6 +117,22 @@ public class ProductServiceImpl implements ProductService{
 				.orElseThrow(() -> new ResourceNotFoundException("invalid product id"));
 		product.setInStock(false);
 		return new ApiResponse("Soft deleted product details");
+	}
+	
+	@Override
+	public ProductResponseDTO getProductById(Long id) {
+		Product product = productDao.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+		//map simple fields
+		ProductResponseDTO dto = modelMapper.map(product, ProductResponseDTO.class);
+		//Manually set nested and custom field
+		if(product.getMyCategory() != null) {
+			dto.setCategoryId(product.getMyCategory().getId());
+			dto.setCategoryName(product.getMyCategory().getCatName());
+		}
+		
+		dto.setProimage(product.getProdImgUrl());
+		return dto;
 	}
 	
 
