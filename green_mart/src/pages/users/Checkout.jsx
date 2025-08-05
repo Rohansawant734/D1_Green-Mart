@@ -315,9 +315,9 @@ const Checkout = () => {
               cartItems.map((item, index) => (
                 <div key={index} className="flex justify-between bg-white p-2 mb-2 shadow rounded">
                   <div className="flex items-center gap-4">
-                    <img src={item.image[0]} alt={item.name} className="w-14 h-14 object-contain" />
+                    <img src={item.imageUrl} alt={item.productName} className="w-14 h-14 object-contain" />
                     <div className="flex flex-row  gap-50 items-center">
-                      <span className="font-semibold">{item.name}</span>
+                      <span className="font-semibold">{item.productName}</span>
 
                       <span className="text-sm text-red-600">
                         ₹{item.offerPrice} × {item.quantity}

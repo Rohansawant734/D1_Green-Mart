@@ -28,7 +28,7 @@ const Your_Order = () => {
     (sum, item) => sum + item.offerPrice * item.quantity,
     0
   );
-  const shipping = subtotal >= 600 ? 0 : 50;
+  const shipping = subtotal >= 600 ? 0 : 199;
   const total = subtotal + shipping;
 
   const orderNumber = Math.floor(Math.random() * 9000) + 1000;
@@ -86,7 +86,7 @@ const Your_Order = () => {
             {order.cartItems.map((item, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 px-4 py-2 text-gray-700">
-                  {item.name} × {item.quantity}
+                  {item.productName} × {item.quantity}
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-right text-red-600 font-semibold">
                   ₹{item.offerPrice * item.quantity}
@@ -102,7 +102,7 @@ const Your_Order = () => {
             <tr>
               <td className="border border-gray-300 px-4 py-2">Shipping:</td>
               <td className="border border-gray-300 px-4 py-2 text-right">
-                {shipping === 0 ? 'Free Shipping' : `₹${shipping}`}
+                {shipping === 0 ? <span className="font-bold text-green-500">Free Shipping</span> : `₹${shipping}`}
               </td>
             </tr>
 
@@ -113,34 +113,34 @@ const Your_Order = () => {
           </tbody>
         </table>
         <table className="w-full border mt-6">
-  <thead>
-    <tr className="bg-gray-100">
-      <th className="p-3 text-left text-lg font-semibold border-2">Shipping Address</th>
-      <th className="p-3 text-left text-lg font-semibold border-2">Billing Address</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td className="p-4 border-r align-top">
-        <p className="text-gray-700">Name: {order.customer.name}</p>
-        <p className="text-gray-700">Address: {order.customer.address}</p>
-        <p className="text-gray-700">
-          Location: {order.customer.city}, {order.customer.state} {order.customer.zipCode}
-        </p>
-        <p className="text-gray-700">Phone: {order.customer.phone}</p>
-      </td>
-      
-      <td className="p-4 align-top">
-        <p className="text-gray-700">Name: {order.customer.name}</p>
-        <p className="text-gray-700">Address: {order.customer.address}</p>
-        <p className="text-gray-700">
-          Location: {order.customer.city}, {order.customer.state} {order.customer.zipCode}
-        </p>
-        <p className="text-gray-700">Phone: {order.customer.phone}</p>
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-3 text-left text-lg font-semibold border-2">Shipping Address</th>
+              <th className="p-3 text-left text-lg font-semibold border-2">Billing Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="p-4 border-r align-top">
+                <p className="text-gray-700">Name: {order.customer.name}</p>
+                <p className="text-gray-700">Address: {order.customer.address}</p>
+                <p className="text-gray-700">
+                  Location: {order.customer.city}, {order.customer.state} {order.customer.zipCode}
+                </p>
+                <p className="text-gray-700">Phone: {order.customer.phone}</p>
+              </td>
+
+              <td className="p-4 align-top">
+                <p className="text-gray-700">Name: {order.customer.name}</p>
+                <p className="text-gray-700">Address: {order.customer.address}</p>
+                <p className="text-gray-700">
+                  Location: {order.customer.city}, {order.customer.state} {order.customer.zipCode}
+                </p>
+                <p className="text-gray-700">Phone: {order.customer.phone}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
       </div>
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.greenmart.dto.CartDTO;
+import com.greenmart.dto.ApiResponse;
 import com.greenmart.service.CartService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,38 +27,38 @@ public class CartController {
 
 	private final CartService cartservice;
 
-	@GetMapping("/{userId}")
+	@GetMapping("/user/{userId}")
 	@Operation(description = "get the cart ")
 	public ResponseEntity<?> getCart(@PathVariable Long userId) {
 
-		CartDTO cartDTO = cartservice.getCartByUserId(userId);
-		return ResponseEntity.ok(cartDTO);
+		return ResponseEntity.ok(cartservice.getCartByUserId(userId));
 
 	}
 
 	@PostMapping("/add")
 	@Operation(description = "Add to cart")
-	public ResponseEntity<?> addTocart(@RequestParam Long userID, @RequestParam Long productId,
-			@RequestParam int quantity) {
-		return ResponseEntity.ok(cartservice.addItemToCart(userID, productId, quantity));
 
+	public ResponseEntity<ApiResponse> addToCart(@RequestParam Long userId, @RequestParam Long productId,
+			@RequestParam int quantity) {
+		return ResponseEntity.ok(cartservice.addItemToCart(userId, productId, quantity));
 	}
 
 	@PutMapping("/update")
 	@Operation(description = "Update the cartItems")
-	public ResponseEntity<?> updateCartItem(@RequestParam Long userId, @RequestParam Long productId,
+	public ResponseEntity<ApiResponse> updateQuantity(@RequestParam Long userId, @RequestParam Long productId,
 			@RequestParam int quantity) {
-		return ResponseEntity.ok(cartservice.updateCartItem(userId, productId, quantity));
+		return ResponseEntity.ok(cartservice.updateItemQuantity(userId, productId, quantity));
 	}
 
 	@DeleteMapping("/remove")
 	@Operation(description = "Remove the Cart")
-	public ResponseEntity<?> removeItem(@RequestParam Long userId, @RequestParam Long productId) {
+	public ResponseEntity<ApiResponse> removeFromCart(@RequestParam Long userId, @RequestParam Long productId) {
 		return ResponseEntity.ok(cartservice.removeItemFromCart(userId, productId));
 	}
 
-	@DeleteMapping("/clear/{userId}")
-	public ResponseEntity<?> clearCart(@PathVariable Long userId) {
+	@DeleteMapping("/clear")
+	@Operation(description = "Clear cart for user")
+	public ResponseEntity<ApiResponse> clearCart(@RequestParam Long userId) {
 		return ResponseEntity.ok(cartservice.clearCart(userId));
 	}
 

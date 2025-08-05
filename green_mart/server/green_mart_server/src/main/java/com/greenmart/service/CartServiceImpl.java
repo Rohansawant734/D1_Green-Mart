@@ -1,6 +1,8 @@
 package com.greenmart.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.greenmart.custom_exceptions.ResourceNotFoundException;
 import com.greenmart.dao.CartDao;
+import com.greenmart.dao.CartItemDao;
 import com.greenmart.dao.ProductDao;
 import com.greenmart.dao.UserDao;
 import com.greenmart.dto.ApiResponse;
@@ -24,110 +27,100 @@ import lombok.AllArgsConstructor;
 @Transactional
 @AllArgsConstructor
 public class CartServiceImpl implements CartService {
-	private  final CartDao cartDao;
+
+	private final CartDao cartDao;
 	private final UserDao userDao;
 	private final ProductDao productDao;
-	private ModelMapper modelMapper;
-	
-	
+	private final CartItemDao cartItemDao;
+	private final ModelMapper modelMapper;
+
 	@Override
 	public CartDTO getCartByUserId(Long userId) {
-		 User user = userDao.findById(userId)
-		            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+		User user = userDao.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found" + userId));
+		Cart cart = cartDao.findByCartUser(user).orElseGet(() -> {
+			Cart newCart = new Cart(user);
+			return cartDao.save(newCart);
+		});
 
-		    Cart cart = cartDao.findByCartUser(user)
-		            .orElseGet(() -> cartDao.save(new Cart(user)));
+		List<CartItemDTO> items = cart.getItems().stream().map(item -> {
+			CartItemDTO dto = new CartItemDTO();
+			dto.setProductId(item.getMyProduct().getId());
+			dto.setProductName(item.getMyProduct().getProdName());
+			dto.setImageUrl(item.getMyProduct().getProdImgUrl());
+			dto.setOfferPrice(item.getMyProduct().getOfferPrice());
+			dto.setQuantity(item.getQuantity());
+			return dto;
+		}).collect(Collectors.toList());
 
-		    CartDTO cartDTO = new CartDTO();
-		    cartDTO.setCartId(cart.getId());
-		    cartDTO.setUserId(userId);
+		double total = items.stream().mapToDouble(i -> i.getOfferPrice() * i.getQuantity()).sum();
 
-		    List<CartItemDTO> cartItemDTOs = cart.getItems().stream().map(item -> {
-		        CartItemDTO dto = modelMapper.map(item, CartItemDTO.class);
-
-		        // Set nested product data manually
-		        dto.setProductId(item.getMyProduct().getId());
-		        dto.setProductName(item.getMyProduct().getProdName());
-		        dto.setImageUrl(item.getMyProduct().getProdImgUrl());
-		        dto.setOfferPrice(item.getMyProduct().getOfferPrice());
-
-		        return dto;
-		    }).toList();
-
-		    cartDTO.setItems(cartItemDTOs);
-
-		    return cartDTO;
+		return new CartDTO(items, total);
 	}
 
-
 	@Override
-	public ApiResponse addItemToCart(Long userID, Long productId, int quantity) {
-		 User user = userDao.findById(userID)
-	                .orElseThrow(() -> new ResourceNotFoundException("Invalid user ID"));
-	        Product product = productDao.findById(productId)
-	                .orElseThrow(() -> new ResourceNotFoundException("Invalid product ID"));
+	public ApiResponse addItemToCart(Long userId, Long productId, int quantity) {
+		User user = userDao.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found" + userId));
+		Product product = productDao.findById(productId)
+				.orElseThrow(() -> new ResourceNotFoundException("Product not found" + productId));
 
-	        Cart cart = cartDao.findByCartUser(user).orElseGet(() -> {
-	            Cart newCart = new Cart();
-	            newCart.setCartUser(user);
-	            return cartDao.save(newCart);
-	        });
+		Cart cart = cartDao.findByCartUser(user).orElseGet(() -> cartDao.save(new Cart(user)));
 
-	        CartItem existing = cart.getItems().stream()
-	                .filter(item -> item.getMyProduct().getId().equals(productId))
-	                .findFirst()
-	                .orElse(null);
+		Optional<CartItem> existingItem = cart.getItems().stream()
+				.filter(i -> i.getMyProduct().getId().equals(productId)).findFirst();
 
-	        if (existing != null) {
-	            existing.setQuantity(existing.getQuantity() + quantity);
-	        } else {
-	            CartItem newItem = new CartItem();
-	            newItem.setCart(cart);
-	            newItem.setMyProduct(product);
-	            newItem.setQuantity(quantity);
-	            cart.getItems().add(newItem);
-	        }
-	        	cartDao.save(cart);
-	        return new ApiResponse("Item added to cart.");
+		if (existingItem.isPresent()) {
+			existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
+		} else {
+			CartItem newItem = new CartItem(quantity, cart, product);
+			cart.addItem(newItem);
+		}
+
+		cartDao.save(cart);
+		return new ApiResponse("Item added to cart");
 	}
-
-
-	@Override
-	public ApiResponse updateCartItem(Long userId, Long productId, int quantity) {
-		Cart cart = cartDao.findFullCartByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
-
-        CartItem item = cart.getItems().stream()
-                .filter(ci -> ci.getMyProduct().getId().equals(productId))
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Item not found in cart"));
-
-        item.setQuantity(quantity);
-        cartDao.save(cart);
-        return new ApiResponse("Item quantity updated.");	}
-
 
 	@Override
 	public ApiResponse removeItemFromCart(Long userId, Long productId) {
-		 Cart cart = cartDao.findFullCartByUserId(userId)
-	                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+		CartDTO cartDTO = getCartByUserId(userId);
 
-	        cart.getItems().removeIf(item -> item.getMyProduct().getId().equals(productId));
-	        return new ApiResponse("Item removed from cart.");
+		User user = userDao.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found" + userId));
+		Cart cart = cartDao.findByCartUser(user)
+				.orElseThrow(() -> new ResourceNotFoundException("Cart not found" + userId));
+
+		cart.getItems().removeIf(item -> item.getMyProduct().getId().equals(productId));
+		cartDao.save(cart);
+
+		return new ApiResponse("Item removed from cart");
 	}
 
+	@Override
+	public ApiResponse updateItemQuantity(Long userId, Long productId, int quantity) {
+		User user = userDao.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found" + userId));
+		Cart cart = cartDao.findByCartUser(user)
+				.orElseThrow(() -> new ResourceNotFoundException("Cart not found" + userId));
+
+		cart.getItems().forEach(item -> {
+			if (item.getMyProduct().getId().equals(productId)) {
+				item.setQuantity(quantity);
+			}
+		});
+
+		cartDao.save(cart);
+		return new ApiResponse("Quantity updated");
+	}
 
 	@Override
 	public ApiResponse clearCart(Long userId) {
-		 Cart cart = cartDao.findFullCartByUserId(userId)
-	                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+		Cart cart = cartDao.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("Cart not found for user " + userId));
 
-	        cart.getItems().clear();
-	        return new ApiResponse("Cart cleared.");
-	    }
-	
+		cart.getItems().clear();
+		cartDao.save(cart);
+
+		return new ApiResponse("Cart cleared successfully" + userId);
+	}
 }
-
-	
-
-
