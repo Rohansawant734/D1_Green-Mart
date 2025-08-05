@@ -1,10 +1,15 @@
 package com.greenmart.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,4 +42,7 @@ public class Supplier {
 	    @Size(max = 100, message = "Address can't exceed 100 characters")
 	    @Column(length = 100)
 	    private String address; 
+	    
+	    @OneToMany(mappedBy = "supplier",cascade = CascadeType.ALL,orphanRemoval = true)
+	    private List<Product> products = new ArrayList<>();
 }

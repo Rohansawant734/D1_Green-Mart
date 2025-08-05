@@ -15,5 +15,6 @@ public class ProductDTO extends BaseDTO {
     private Boolean inStock;
     private int offerPrice;
     private Long categoryId;
+    private Long supplierId;
     private MultipartFile image;
 }
