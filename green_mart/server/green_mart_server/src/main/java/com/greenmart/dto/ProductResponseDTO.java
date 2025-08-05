@@ -14,5 +14,7 @@ public class ProductResponseDTO extends BaseDTO{
 	    private Boolean inStock;
 	    private Long categoryId;
 	    private String categoryName;
+	    private Long supplierId;
+	    private String supplierName;
 	    private String proimage;
 }

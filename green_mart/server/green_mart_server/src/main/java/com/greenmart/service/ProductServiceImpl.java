@@ -12,11 +12,13 @@ import com.greenmart.custom_exceptions.ApiException;
 import com.greenmart.custom_exceptions.ResourceNotFoundException;
 import com.greenmart.dao.CategoryDao;
 import com.greenmart.dao.ProductDao;
+import com.greenmart.dao.SupplierRepository;
 import com.greenmart.dto.ApiResponse;
 import com.greenmart.dto.ProductDTO;
 import com.greenmart.dto.ProductResponseDTO;
 import com.greenmart.entities.Category;
 import com.greenmart.entities.Product;
+import com.greenmart.entities.Supplier;
 
 import lombok.AllArgsConstructor;
 
@@ -28,6 +30,7 @@ public class ProductServiceImpl implements ProductService{
     private final ImageUploadService imageUploadService;
 	private final ProductDao productDao;
 	private final CategoryDao categoryDao;
+	private final SupplierRepository supplierRepository;
 	private final ModelMapper modelMapper;
 	
 	@Override
@@ -39,6 +42,10 @@ public class ProductServiceImpl implements ProductService{
 			Category category = categoryDao.findById(dto.getCategoryId())
 					.orElseThrow(()-> new RuntimeException("Category not found"));
 			entity.setMyCategory(category);
+			// Set supplier
+			Supplier supplier = supplierRepository.findById(dto.getSupplierId())
+			        .orElseThrow(() -> new RuntimeException("Supplier not found"));
+			entity.setSupplier(supplier);
 			
 			//handle image
 			MultipartFile image = dto.getImage();
@@ -69,6 +76,10 @@ public class ProductServiceImpl implements ProductService{
 	            if (pro.getMyCategory() != null) {
 	                dto.setCategoryId(pro.getMyCategory().getId());
 	                dto.setCategoryName(pro.getMyCategory().getCatName());
+	            }
+	            if (pro.getSupplier() != null) {
+	                dto.setSupplierId(pro.getSupplier().getId());
+	                dto.setSupplierName(pro.getSupplier().getName());
 	            }
 	            return dto;
 				}).toList();
