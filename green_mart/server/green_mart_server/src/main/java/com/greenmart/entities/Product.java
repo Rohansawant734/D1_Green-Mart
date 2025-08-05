@@ -62,4 +62,9 @@ public class Product extends BaseEntity {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "product_id")
 	private List<ProductReviews> reviews = new ArrayList<>();
+	
+	  @ManyToOne
+	    @JoinColumn(name = "supplier_id", nullable = false)
+	    private Supplier supplier;
+
 }
