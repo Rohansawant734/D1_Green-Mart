@@ -11,7 +11,7 @@ public interface DashboardService {
 
 	Map<String, Long> getProductCountByCategory();
 
-	List<Map<String, Long>> getTopProducts();
+//	List<Map<String, Long>> getTopProducts();
 
 	Long getProductCount();
 

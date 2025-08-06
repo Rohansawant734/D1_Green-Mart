@@ -35,6 +35,7 @@ import ProductDetails from './pages/admins/ProductDetails';
 import Receipt from './pages/admins/Receipt';
 import Reviews_Rating from './pages/admins/Reviews_Rating';
 import Supplier from './pages/admins/Supplier';
+import UserDetails from './pages/admins/UserDetails';
 
 const App = () => {
   return (
@@ -78,6 +79,7 @@ const App = () => {
           <Route path="customers" element={<CustomerDetails />} />
           <Route path="payments" element={<PaymentDetails />} />
           <Route path="reviews" element={<Reviews_Rating />} />
+          <Route path="users" element={<UserDetails />} />
         </Route>
       </Routes>
 
