@@ -1,9 +1,32 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { toast } from 'react-toastify'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
+  const { login } = useAuth()
+
+  const onLogin = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+
+    const result = await login(email, password)
+
+    if(result.success){
+      toast.success('Login successful!')
+      navigate('/')
+    }
+    else{
+      toast.error(result.error)
+    }
+
+    setLoading(false)
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -24,7 +47,7 @@ function Login() {
           <Link to="/register" className="text-blue-600 hover:underline">Sign up here</Link>
         </div>
 
-        <button type="submit" className="cursor-pointer px-8 py-2 bg-green-600 hover:bg-green-900 transition text-white rounded-full relative left-33">Sign In</button>
+        <button onClick={onLogin} disabled={loading} type="button" className="cursor-pointer px-8 py-2 bg-green-600 hover:bg-green-900 transition text-white rounded-full relative left-33">{loading ? 'Logging in...' : 'Sign In'}</button>
       </div>
     </div>
   )

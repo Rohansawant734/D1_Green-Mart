@@ -39,8 +39,6 @@ public class AddUserDTO {
 	//will skipped during serialization, will write during de-serialization
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	
-	@NotNull(message = "User role is required")
-	private UserRole userRole;	
+			
 	
 }
