@@ -19,6 +19,10 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try{
             const response = await loginUser(email, password)
+
+            if(!response || !response.token){
+                throw new Error('Invalid response from server')
+            }
             const { token, ...userData} = response
 
             // Save token and user info
