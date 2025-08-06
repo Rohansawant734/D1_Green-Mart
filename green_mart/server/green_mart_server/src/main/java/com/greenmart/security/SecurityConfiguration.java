@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,11 +22,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SecurityConfiguration {
 
-    private final CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
+  private final CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
 	private final PasswordEncoder passwordEncoder;
 	private final CustomJWTFilter customJWTFilter;
-
-   
 
 	// configure spring security filter chain - as a spring bean
 	@Bean
@@ -33,7 +32,9 @@ public class SecurityConfiguration {
 		// HttpSecurity - spring sec supplied class
 		// to customize n build filter chain
 		// 1. disable CSRF protection
-		http.csrf(csrf -> csrf.disable());
+
+		http.cors(Customizer.withDefaults()).csrf(csrf -> csrf.disable());
+
 		// 2. any request - has to be authenticated
 		http.authorizeHttpRequests(
 
@@ -50,6 +51,21 @@ public class SecurityConfiguration {
 //						.requestMatchers(HttpMethod.POST, "/restaurants").hasRole("ADMIN")
 //						.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN").anyRequest()
 //						.authenticated());
+//		http.authorizeHttpRequests(
+//
+//				request -> request
+//				.requestMatchers("/swagger-ui/**",
+//						"/v3/api-docs/**", "/users/**")
+//						.permitAll()
+//				.requestMatchers(HttpMethod.POST, "/categories")
+//				.permitAll()
+//				.requestMatchers(HttpMethod.GET,"/categories")
+//				.permitAll()
+//				.requestMatchers(HttpMethod.POST,"/products").permitAll()
+//				.requestMatchers(HttpMethod.POST, "/restaurants")
+//				.hasRole("ADMIN")
+//				.anyRequest()
+//					.authenticated());
 		// 3. disable HttpSession tracking - stateless
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		// 4. To support REST APIs , disable form login
@@ -62,9 +78,11 @@ public class SecurityConfiguration {
 		return http.build();
 	}
 
+  
 	// configure AuthManager as a spring bean
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
 		return config.getAuthenticationManager();
 	}
+
 }

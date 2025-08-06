@@ -1,49 +1,100 @@
-import React, { createContext, useContext, useState } from 'react';
-import { toast } from 'react-toastify';
+import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+// Create context
 const CartContext = createContext();
 
+// Custom hook
 export const useCart = () => useContext(CartContext);
 
+// Provider component
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const userId = 1; // Replace with dynamic user ID when auth is added
 
-  const addToCart = (product) => {
-  const exist = cartItems.find(item => item._id === product._id);
+  // Fetch cart data for the user
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/cart/user/${userId}`);
+      setCartItems(response.data.items || []); // Assuming CartDTO structure
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      toast.error("Failed to load cart items");
+    }
+  };
 
-  if (exist) {
-    setCartItems(prev =>
-      prev.map(item =>
-        item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
-      )   
+ const addToCart = async (product) => {
+
+  try {
+    const response = await axios.post(
+      `http://localhost:8080/cart/add`,
+      null,
+      {
+        params: {
+          userId: userId,
+          productId: product._id,  
+          quantity: 1,
+        },
+      }
     );
-    toast.warning(`Product is already in the cart!`);  
-  } else {
-    setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    toast.success(`${product.name} added to cart..`);
+    toast.success(response.data.message || `${product.prodName} added`);
+    await fetchCart();
+  } catch (error) {
+    console.error("Add to cart error:", error);
+    toast.error(error.response?.data?.message || "Error adding to cart");
   }
 };
-  const updateQty = (id, delta) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) =>
-          item._id === id
-            ? { ...item, quantity: Math.max(item.quantity + delta, 1) }
-            : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
+  // Update quantity of product
+const updateQty = async (productId, quantity) => {
+  try {
+    await axios.put(`http://localhost:8080/cart/update`, null, {
+      params: {
+        userId: userId,
+        productId:productId,
+        quantity:quantity,
+      },
+    });
+    await fetchCart();
+  } catch (error) {
+    console.error("Update quantity error:", error);
+    toast.error("Failed to update quantity");
+  }
+};
+
+  // Remove product from cart
+  const removeFromCart = async (productId) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/cart/remove`, {
+        params: {
+          userId: userId,
+          productId: productId,
+        },
+      });
+      toast.success(response.data.message || "Removed from cart");
+      await fetchCart();
+    } catch (error) {
+      console.error("Remove from cart error:", error);
+      toast.error(error.response?.data?.message || "Error removing item");
+    }
   };
-  const removeFromCart = (id) => {
-  setCartItems((prev) => prev.filter(item => item._id !== id));
+  const clearCart = async () => {
+  try {
+    await axios.delete(`http://localhost:8080/cart/clear`, {
+      params: { userId },
+    });
+    setCartItems([]); // update local state to empty
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+  }
 };
 
-const clearCart = () => {
-  setCartItems([]);
-};
-
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, updateQty , removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQty, clearCart }}>
       {children}
     </CartContext.Provider>
   );
