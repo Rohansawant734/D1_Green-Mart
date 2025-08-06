@@ -7,11 +7,13 @@ const CartContext = createContext();
 
 // Custom hook
 export const useCart = () => useContext(CartContext);
+//loggd user userId
+const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
 // Provider component
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const userId = 1; // Replace with dynamic user ID when auth is added
+   
 
   // Fetch cart data for the user
   const fetchCart = async () => {
@@ -20,7 +22,7 @@ export const CartProvider = ({ children }) => {
       setCartItems(response.data.items || []); // Assuming CartDTO structure
     } catch (error) {
       console.error("Error fetching cart:", error);
-      toast.error("Failed to load cart items");
+      // toast.error("Failed to load cart items");
     }
   };
 
@@ -58,7 +60,7 @@ const updateQty = async (productId, quantity) => {
     await fetchCart();
   } catch (error) {
     console.error("Update quantity error:", error);
-    toast.error("Failed to update quantity");
+    // toast.error("Failed to update quantity");
   }
 };
 
@@ -71,7 +73,7 @@ const updateQty = async (productId, quantity) => {
           productId: productId,
         },
       });
-      toast.success(response.data.message || "Removed from cart");
+      //  toast.success(response.data.message || "Removed from cart");
       await fetchCart();
     } catch (error) {
       console.error("Remove from cart error:", error);
@@ -79,10 +81,15 @@ const updateQty = async (productId, quantity) => {
     }
   };
   const clearCart = async () => {
+      
   try {
     await axios.delete(`http://localhost:8080/cart/clear`, {
       params: { userId },
     });
+     
+    await fetchCart(); // Refresh cart after clearing
+      toast.success("Cart cleared successfully");
+    
     setCartItems([]); // update local state to empty
   } catch (error) {
     console.error("Error clearing cart:", error);

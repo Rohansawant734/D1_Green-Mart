@@ -34,7 +34,7 @@ const Card = () => {
 
   const handleRemove = (item) => {
     removeFromCart(item.productId);
-    toast.warn(`${item.productName} removed from cart`);
+     toast.warn(`${item.productName} removed from cart`);
   };
 
   return (
