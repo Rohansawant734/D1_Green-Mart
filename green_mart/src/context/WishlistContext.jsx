@@ -4,9 +4,8 @@ import axios from "axios";
 const WishlistContext = createContext();
 
 export const useWishlist = () => useContext(WishlistContext);
-
-//  Replace this with dynamic user ID from auth or context
-const userId = 2;
+ //   logged-in user ID
+const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);

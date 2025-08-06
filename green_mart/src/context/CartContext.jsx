@@ -7,11 +7,13 @@ const CartContext = createContext();
 
 // Custom hook
 export const useCart = () => useContext(CartContext);
+//loggd user userId
+const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
 // Provider component
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const userId = 1; // Replace with dynamic user ID when auth is added
+   
 
   // Fetch cart data for the user
   const fetchCart = async () => {
