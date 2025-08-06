@@ -32,16 +32,29 @@ public class ProductReviewController {
 	private final ProductReviewsService pRService;
 	
 	@GetMapping("/{userId}")
-	public ResponseEntity<?> getAllReviews(@PathVariable Long userId){
+	public ResponseEntity<?> getAllReviewsForUser(@PathVariable Long userId){
 		
-		List<ReviewResponseDTO> pRList = pRService.findAllReviews(userId);
+		List<ReviewResponseDTO> pRList = pRService.findAllReviewsForUser(userId);
 		return ResponseEntity.ok(pRList);
 	}
 	
 	@GetMapping("/{userId}/{reviewId}")
-	public ResponseEntity<?> getReview(@PathVariable Long userId, @PathVariable Long reviewId){
+	public ResponseEntity<?> getReviewOfUser(@PathVariable Long userId, @PathVariable Long reviewId){
 		
-		return ResponseEntity.ok(pRService.findReviewById(userId, reviewId));
+		return ResponseEntity.ok(pRService.findReviewByUserId(userId, reviewId));
+	}
+	
+	@GetMapping("/{productId}/product")
+	public ResponseEntity<?> getAllReviewsForProduct(@PathVariable Long productId){
+		
+		List<ReviewResponseDTO> pRList = pRService.findAllReviewsForProduct(productId);
+		return ResponseEntity.ok(pRList);
+	}
+	
+	@GetMapping("/{productId}/{reviewId}/product")
+	public ResponseEntity<?> getReviewOfProduct(@PathVariable Long productId, @PathVariable Long reviewId){
+		
+		return ResponseEntity.ok(pRService.findReviewByProductId(productId, reviewId));
 	}
 	
 	@PostMapping("/{userId}/{productId}")

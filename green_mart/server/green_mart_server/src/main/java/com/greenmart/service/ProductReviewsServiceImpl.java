@@ -96,8 +96,8 @@ public class ProductReviewsServiceImpl implements ProductReviewsService{
 	}
 
 	@Override
-	public List<ReviewResponseDTO> findAllReviews(Long userId) {
-		// Fidn the user by id
+	public List<ReviewResponseDTO> findAllReviewsForUser(Long userId) {
+		// Find the user by id
 		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 		
 		// Get the list of reviews by using the user id
@@ -105,7 +105,7 @@ public class ProductReviewsServiceImpl implements ProductReviewsService{
 		
 		// Check if the list is empty or not
 		if(pRList.isEmpty()) {
-			throw new NoContentException("No Reviews added yet");
+			throw new NoContentException("No Reviews added yet by user with Id " + userId);
 		}
 		
 		// Return the list in the form of dto. Manual map the user's firstname and lastname along with the name of the product
@@ -118,7 +118,7 @@ public class ProductReviewsServiceImpl implements ProductReviewsService{
 	}
 
 	@Override
-	public ReviewResponseDTO findReviewById(Long userId, Long reviewId) {
+	public ReviewResponseDTO findReviewByUserId(Long userId, Long reviewId) {
 		
 		// Find the review by using the user id and review id
 		ProductReviews pReviewsEntity = prDao.findByUserIdAndId(userId, reviewId).orElseThrow(() -> new ResourceNotFoundException("Review with the given id does not exist"));
@@ -129,6 +129,43 @@ public class ProductReviewsServiceImpl implements ProductReviewsService{
 		dto.setLastName(pReviewsEntity.getUser().getLastName());
 		dto.setProductName(pReviewsEntity.getMyProduct().getProdName());
 		
+		// Return the dto
+		return dto;
+	}
+
+	@Override
+	public List<ReviewResponseDTO> findAllReviewsForProduct(Long productId) {
+		// Find the user by id
+		Product productEntity = pDao.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Invalid product Id"));
+		
+		// Get the list of reviews by using the user id
+		List<ProductReviews> pRList = prDao.findByMyProductId(productId);
+		
+		// Check if the list is empty or not
+		if(pRList.isEmpty()) {
+			throw new NoContentException("No Reviews added yet for product with Id " + productId);
+		}
+		
+		// Return the list in the form of dto. Manual map the user's firstname and lastname along with the name of the product
+		return pRList.stream().map(review -> {
+				ReviewResponseDTO dto =  modelMapper.map(review, ReviewResponseDTO.class);
+				dto.setFirstName(review.getUser().getFirstName());
+				dto.setLastName(review.getUser().getLastName());
+				dto.setProductName(review.getMyProduct().getProdName());
+				return dto;}).toList();
+	}
+
+	@Override
+	public ReviewResponseDTO findReviewByProductId(Long productId, Long reviewId) {
+		// Find the review by using the user id and review id
+		ProductReviews pReviewsEntity = prDao.findByMyProductIdAndId(productId, reviewId).orElseThrow(() -> new ResourceNotFoundException("Review with the given id does not exist"));
+				
+		// Map the review to response dto.
+		ReviewResponseDTO dto = modelMapper.map(pReviewsEntity, ReviewResponseDTO.class);
+		dto.setFirstName(pReviewsEntity.getUser().getFirstName());
+		dto.setLastName(pReviewsEntity.getUser().getLastName());
+		dto.setProductName(pReviewsEntity.getMyProduct().getProdName());
+				
 		// Return the dto
 		return dto;
 	}

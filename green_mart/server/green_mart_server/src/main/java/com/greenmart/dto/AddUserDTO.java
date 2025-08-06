@@ -29,6 +29,10 @@ public class AddUserDTO {
 	@Email(message = "invalid email format")
 	private String email;
 	
+	@NotBlank(message = "Phone number is required")
+	@Pattern(regexp = "\\+91-\\d{10}", message = "Phone number must start with +91- followed by 10 digits")
+	private String phone;
+	
 	@NotBlank(message = "Please enter a password for your account")
 	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[#@$*]).{5,20})", 
 	message = "Invalid password format. Password must be 5-20 characters, include digits, lowercase letters, and special characters")
