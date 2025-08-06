@@ -12,9 +12,12 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 	
 	@Query("SELECT p.myCategory.catName,COUNT(p) FROM Product p GROUP BY p.myCategory.catName")
 	List<Object[]> countProductGroupByList();
-
-    @Query("SELECT p.name, SUM(ol.quantity) AS totalSales " +
-            "FROM OrderLine ol JOIN ol.product p " +
-            "GROUP BY p.name ORDER BY totalSales DESC LIMIT 5")
-	List<Object[]> findTopProducts();
+	
+	@Query(value = "SELECT p.product_name, SUM(ol.quantity) AS totalSales " +
+            "FROM order_lines ol " +
+            "JOIN products p ON ol.product_id = p.id " +
+            "GROUP BY p.product_name " +
+            "ORDER BY totalSales DESC " +
+            "LIMIT 5", nativeQuery = true)
+List<Object[]> findTopProducts();
 }
