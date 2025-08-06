@@ -1,9 +1,25 @@
 package com.greenmart.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.greenmart.entities.Product;
 
 public interface ProductDao extends JpaRepository<Product, Long> {
 	boolean existsByProdName(String prodName);
+	
+	@Query("SELECT p.myCategory.catName,COUNT(p) FROM Product p GROUP BY p.myCategory.catName")
+	List<Object[]> countProductGroupByList();
+
+	@Query(value = "SELECT p.name, SUM(ol.quantity) AS totalSales " +
+            "FROM order_line ol " +
+            "JOIN product p ON ol.product_id = p.id " +
+            "GROUP BY p.name " +
+            "ORDER BY totalSales DESC " +
+            "LIMIT 5", 
+    nativeQuery = true)
+List<Object[]> findTopProducts();
+
 }

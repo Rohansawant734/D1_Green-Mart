@@ -28,6 +28,12 @@ const Adminlayout = () => {
                 Dashboard
               </NavLink>
             </li>
+             <li>
+              <NavLink to="/admin/Users" className={navLinkStyle}>
+                <UsersIcon className="w-5 h-5" />
+                Users
+              </NavLink>
+            </li>
             <li>
               <NavLink to="/admin/categories" className={navLinkStyle}>
                 <ClipboardDocumentListIcon className="w-5 h-5" />

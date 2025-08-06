@@ -14,7 +14,11 @@ public interface ProductReviewsService {
 	
 	ApiResponse deleteReview(Long userId, Long productId, Long reviewId);
 	
-	List<ReviewResponseDTO> findAllReviews(Long userId);
+	List<ReviewResponseDTO> findAllReviewsForUser(Long userId);
 	
-	ReviewResponseDTO findReviewById(Long userId, Long reviewId);
+	ReviewResponseDTO findReviewByUserId(Long userId, Long reviewId);
+	
+	List<ReviewResponseDTO> findAllReviewsForProduct(Long productId);
+	
+	ReviewResponseDTO findReviewByProductId(Long productId, Long reviewId);
 }

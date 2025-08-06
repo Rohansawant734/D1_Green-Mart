@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.greenmart.entities.Supplier;
 import com.greenmart.RequestDto.SupplierRequestDTO;
 import com.greenmart.ResponseDto.SupplierResponseDTO;
+import com.greenmart.dto.OrderResponseDTO;
+import com.greenmart.dto.UserDTO;
+import com.greenmart.service.AdminUserService;
+import com.greenmart.service.OrderService;
 import com.greenmart.service.SupplierService;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -26,6 +30,10 @@ public class AdminController {
 	
 	 @Autowired
 	    private SupplierService supplierService;
+	 @Autowired
+	    private OrderService orderService;
+	 @Autowired
+	  private AdminUserService adminUserService;
 
 	    @PostMapping("/add-supplier")
 	    public ResponseEntity<SupplierResponseDTO> addSupplier(@RequestBody Supplier supplier) {
@@ -66,6 +74,22 @@ public class AdminController {
 	            return ResponseEntity.notFound().build();
 	        }
 	    }
+	    
+	    @GetMapping("/orders")
+	    public List<OrderResponseDTO> getAllOrders() {
+	        return orderService.getAllOrdersForAdmin();
+	    }
+	    
+	    @GetMapping("/users")
+	    public List<UserDTO> getAllActiveUsers() {
+	        return adminUserService.getAllActiveUsers();
+	    }
+
+	    @PutMapping("/users/unavailable/{id}")
+	    public String markUserUnavailable(@PathVariable Long id) {
+	        return adminUserService.markUserAsUnavailable(id);
+	    }
+
 
 
 }
