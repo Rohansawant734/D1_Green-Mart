@@ -113,7 +113,7 @@ public class AddressServiceImpl implements AddressService{
 		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 		
 		// Find the address
-		Address addressEntity = aDao.findByUserIdAndIdAndIsDeletedFalse(userId, addrId).orElseThrow(() -> new ResourceNotFoundException("Address not found or it does not exist"));
+		Address addressEntity = aDao.findByUserIdAndIdAndIsDeletedTrue(userId, addrId).orElseThrow(() -> new ResourceNotFoundException("Address not found or it does not exist"));
 		
 		addressEntity.setDeleted(false); // Address is soft-deleted
 		

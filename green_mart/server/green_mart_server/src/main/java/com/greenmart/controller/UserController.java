@@ -11,14 +11,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenmart.dto.AddUserDTO;
+import com.greenmart.dto.JWTResponseDTO;
+import com.greenmart.dto.LoginDTO;
+import com.greenmart.dto.UpdatePasswordDTO;
 import com.greenmart.dto.UpdateUserDTO;
 import com.greenmart.dto.UserResponseDTO;
 import com.greenmart.service.UserService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -35,6 +38,9 @@ public class UserController {
 	public ResponseEntity<?> getAllUsers(){
 		
 		List<UserResponseDTO> uList = userService.getAllUsers();
+		if(uList.isEmpty()) {
+			 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
 		
 		return ResponseEntity.ok(uList);
 	}
@@ -45,7 +51,7 @@ public class UserController {
 		return ResponseEntity.ok(userService.findUserById(userId));
 	}
 	
-	@PostMapping
+	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@RequestBody @Valid AddUserDTO dto){
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(dto));
@@ -69,4 +75,15 @@ public class UserController {
 		return ResponseEntity.ok(userService.restoreUser(userId));
 	}
 	
+	@PutMapping("/{userId}/password")
+	public ResponseEntity<?> updatePassword(@PathVariable Long userId, @RequestBody @Valid UpdatePasswordDTO dto){
+		
+		return ResponseEntity.ok(userService.updatePassword(userId, dto));
+	}
+	
+	@PostMapping("/signin")
+	public ResponseEntity<JWTResponseDTO> signIn(@RequestBody @Valid LoginDTO dto){
+		
+		return ResponseEntity.ok(userService.login(dto));
+	}
 }
