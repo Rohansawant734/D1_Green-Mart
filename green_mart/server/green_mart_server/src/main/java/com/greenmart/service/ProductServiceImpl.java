@@ -43,9 +43,11 @@ public class ProductServiceImpl implements ProductService{
 					.orElseThrow(()-> new RuntimeException("Category not found"));
 			entity.setMyCategory(category);
 			// Set supplier
-			Supplier supplier = supplierRepository.findById(dto.getSupplierId())
-			        .orElseThrow(() -> new RuntimeException("Supplier not found"));
-			entity.setSupplier(supplier);
+			Supplier supplier = supplierRepository.findByEmail(dto.getSupplierEmail());
+		    if (supplier == null) {
+		        throw new RuntimeException("Supplier not found with email: " + dto.getSupplierEmail());
+		    }
+		    entity.setSupplier(supplier);
 			
 			//handle image
 			MultipartFile image = dto.getImage();

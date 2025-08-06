@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import AddProductForm from '../../Component/AddProductForm'
 
 const ProductDetails = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showForm, setShowForm] = useState(false); // For toggling form
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const response = await axios.get('http://localhost:8080/products');
       setProducts(response.data);
     } catch (err) {
@@ -21,15 +24,34 @@ const ProductDetails = () => {
     fetchProducts();
   }, []);
 
+  const handleAddClick = () => setShowForm(!showForm);
+
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h3 className="text-2xl font-bold mb-6 text-gray-800">Product List</h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-2xl font-bold text-gray-800">Product List</h3>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={handleAddClick}
+        >
+          {showForm ? 'Hide Form' : 'Add Product'}
+        </button>
+      </div>
+
+      {showForm && (
+        <AddProductForm
+          onSuccess={() => {
+            setShowForm(false);
+            fetchProducts();
+          }}
+        />
+      )}
 
       {loading && <div className="text-blue-500">Loading...</div>}
       {error && <div className="text-red-500">Error: {error}</div>}
 
       {!loading && !error && (
-        <div className="overflow-auto max-h-[500px] border border-gray-300 rounded-md shadow">
+        <div className="overflow-auto max-h-[500px] border border-gray-300 rounded-md shadow mt-4">
           <table className="min-w-[1000px] w-full text-sm text-gray-800 bg-white">
             <thead className="sticky top-0 bg-gray-100 text-left text-sm font-medium text-gray-700 z-10">
               <tr>
