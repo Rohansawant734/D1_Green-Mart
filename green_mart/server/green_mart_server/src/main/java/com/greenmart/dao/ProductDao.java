@@ -21,4 +21,5 @@ public interface ProductDao extends JpaRepository<Product, Long> {
             "LIMIT 5", 
     nativeQuery = true)
 List<Object[]> findTopProducts();
+
 }
