@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.greenmart.dto.AddUserDTO;
 import com.greenmart.dto.ApiResponse;
+import com.greenmart.dto.JWTResponseDTO;
+import com.greenmart.dto.LoginDTO;
+import com.greenmart.dto.UpdatePasswordDTO;
 import com.greenmart.dto.UpdateUserDTO;
 import com.greenmart.dto.UserResponseDTO;
 
@@ -20,4 +23,8 @@ public interface UserService {
 	UserResponseDTO findUserById(Long userId);
 	
 	ApiResponse restoreUser(Long userId);
+	
+	ApiResponse updatePassword(Long userId, UpdatePasswordDTO dto);
+	
+	JWTResponseDTO login(LoginDTO dto);
 }

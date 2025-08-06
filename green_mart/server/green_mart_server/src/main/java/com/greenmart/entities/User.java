@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //import annotations from JPA
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -62,15 +64,18 @@ public class User extends BaseEntity implements UserDetails{
 
 	// User 1 <----> Many Address
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<Address> addresses = new ArrayList<>();
 
 	// 1 User <----> Many Orders
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<Order> orders = new ArrayList<>();
 
 	// 1 User can have many reviews
 	// 1 User <-----> Many reviews
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<ProductReviews> reviews = new ArrayList<>();
 
 	// parameterized ctor for sign up
@@ -124,6 +129,26 @@ public class User extends BaseEntity implements UserDetails{
 	public void removeReview(ProductReviews review) {
 		this.reviews.remove(review);
 		review.setUser(null);
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+	    return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+	    return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+	    return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+	    return !this.isDeleted(); // or return true if you don't treat deleted users as disabled
 	}
 
 }

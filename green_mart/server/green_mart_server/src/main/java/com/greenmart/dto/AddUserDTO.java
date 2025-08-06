@@ -1,7 +1,5 @@
 package com.greenmart.dto;
 
-import java.lang.reflect.AccessFlag;
-
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,11 +18,11 @@ import lombok.Setter;
 public class AddUserDTO {
 
 	@NotBlank(message = "First name is required")
-	@Length(min = 5, max = 20, message = "invalid length of first name")
+	@Length(min = 1, max = 20, message = "invalid length of first name")
 	private String firstName;
 	
 	@NotBlank(message = "Last name is required")
-	@Length(min = 5, max = 20, message = "invalid length of last name")
+	@Length(min = 1, max = 20, message = "invalid length of last name")
 	private String lastName;
 	
 	@NotBlank(message = "Email is required")
