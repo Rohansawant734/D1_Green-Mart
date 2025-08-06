@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { loginUser } from "../services/user";
+import { loginUser, registerUser } from "../services/user";
+import { toast } from "react-toastify";
+import { jwtDecode}  from "jwt-decode"
 
 const AuthContext = createContext();
 
@@ -10,8 +12,16 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() =>{
         const storedUser = localStorage.getItem('user')
+        const expiry = localStorage.getItem('tokenExpiry')
+
         if(storedUser && token){
             setAuthUser(JSON.parse(storedUser))
+            if(expiry){
+                setUpAutoLogout(parseInt(expiry));
+            }
+            else{
+                logout() // force logout if token already expired
+            }
         }
         setLoading(false)
     }, [token]);
@@ -25,13 +35,20 @@ export const AuthProvider = ({ children }) => {
             }
             const { token, ...userData} = response
 
+            const decoded = jwtDecode(token)
+            const expiration = decoded.exp * 1000 // convert from seconds to ms
+
             // Save token and user info
             localStorage.setItem('token', token)
             localStorage.setItem('user', JSON.stringify(userData))
+            localStorage.setItem('tokenExpiry', expiration)
 
             setToken(token)
             setAuthUser(userData)
             
+            // Sets auto logout timer
+            setUpAutoLogout(expiration)
+
             return { success: true };
         }
         catch(error){
@@ -43,13 +60,43 @@ export const AuthProvider = ({ children }) => {
     const logout = () =>{
         localStorage.removeItem('token')
         localStorage.removeItem('user')
+        localStorage.removeItem('tokenExpiry')
         setAuthUser(null);
         setToken(null);
     }
 
+    const register = async (firstName, lastName, email, phone, password) => {
+        try{
+            const response = await registerUser(firstName, lastName, email, phone, password)
+
+            return { success: true };
+        }
+        catch(error){
+            return{
+                success: false,
+                error: error.response?.data?.message || 'Registration failed'
+            }
+        }
+    };
+
+    const setUpAutoLogout = (expirationTime) =>{
+        const currentTime = Date.now();
+        const timeout = expirationTime - currentTime;
+
+        if(timeout > 0){
+            setTimeout(() =>{
+                logout()
+                toast.info("Session expired. Please log in again.")
+            }, timeout)
+        }
+        else{
+            logout() // force logout if token already expired
+        }
+    }
+
     return (
         <AuthContext.Provider value = {
-            { authUser, token, login, logout, loading }
+            { authUser, token, login, logout, register, loading }
         }>
             { children }
         </AuthContext.Provider>
