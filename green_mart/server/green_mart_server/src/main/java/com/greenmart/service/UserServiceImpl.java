@@ -22,6 +22,7 @@ import com.greenmart.dto.UpdatePasswordDTO;
 import com.greenmart.dto.UpdateUserDTO;
 import com.greenmart.dto.UserResponseDTO;
 import com.greenmart.entities.User;
+import com.greenmart.entities.UserRole;
 import com.greenmart.security.JwtUtils;
 
 import jakarta.transaction.Transactional;
@@ -51,6 +52,9 @@ public class UserServiceImpl implements UserService{
 		
 		// Map the add user dto to the user entity
 		User userEntity = modelMapper.map(dto, User.class);
+		
+		// Sets the role of the user to customer by default
+		userEntity.setUserRole(UserRole.CUSTOMER);
 		
 		// Encode the password before saving
 	    userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));

@@ -10,6 +10,9 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class AddressDTO {
+	
+	private Long id;
+	
 	private String adrLine1;
 	
 	private String adrLine2;
