@@ -10,7 +10,9 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <WishlistProvider>
         <CartProvider>
-          <App />
+          {/* <AddressProvider> */}
+            <App />
+          {/* </AddressProvider> */}
         </CartProvider>
       </WishlistProvider>
     </BrowserRouter>

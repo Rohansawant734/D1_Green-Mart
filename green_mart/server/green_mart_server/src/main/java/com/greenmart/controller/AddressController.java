@@ -31,43 +31,44 @@ import lombok.AllArgsConstructor;
 public class AddressController {
 
 	private final AddressService addressService;
-	
+
 	@GetMapping("/{userId}")
-	public ResponseEntity<?> listAllAddresses(@PathVariable Long userId){
+	public ResponseEntity<?> listAllAddresses(@PathVariable Long userId) {
 		List<AddressDTO> aList = addressService.getAllAddressesForUser(userId);
 		return ResponseEntity.ok(aList);
 	}
-	
+
 	@GetMapping("/{userId}/{addrId}")
-	public ResponseEntity<?> getAddress(@PathVariable Long userId, @PathVariable Long addrId){
-		
+	public ResponseEntity<?> getAddress(@PathVariable Long userId, @PathVariable Long addrId) {
+
 		return ResponseEntity.ok(addressService.findAddressById(userId, addrId));
 	}
-	
+
 	@PostMapping("/{userId}")
-	public ResponseEntity<?>  addAddress(@PathVariable Long userId, @RequestBody @Valid AddAddressDTO dto){
-		
+	public ResponseEntity<?> addAddress(@PathVariable Long userId, @RequestBody @Valid AddAddressDTO dto) {
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(addressService.addAddressToUser(userId, dto));
 	}
-	
+
 	@PutMapping("/{userId}/{addrId}")
 	@Operation(description = "Update address details(Partial or Complete)")
-	public ResponseEntity<?> updateAddress(@PathVariable Long userId, @PathVariable Long addrId, @RequestBody @Valid AddAddressDTO dto){
-		
+	public ResponseEntity<?> updateAddress(@PathVariable Long userId, @PathVariable Long addrId,
+			@RequestBody @Valid AddAddressDTO dto) {
+
 		return ResponseEntity.ok(addressService.updateAddress(userId, addrId, dto));
 	}
-	
+
 	@DeleteMapping("/{userId}/{addrId}")
 	@Operation(description = "Soft delete address")
-	public ResponseEntity<?> deleteAddress(@PathVariable Long userId, @PathVariable Long addrId){
-		
+	public ResponseEntity<?> deleteAddress(@PathVariable Long userId, @PathVariable Long addrId) {
+
 		return ResponseEntity.ok(addressService.deleteAddress(userId, addrId));
 	}
-	
+
 	@PutMapping("/{userId}/{addrId}/restore")
 	@Operation(description = "Restore address")
-	public ResponseEntity<?> restoreAddress(@PathVariable Long userId, @PathVariable Long addrId){
-		
+	public ResponseEntity<?> restoreAddress(@PathVariable Long userId, @PathVariable Long addrId) {
+
 		return ResponseEntity.ok(addressService.restoreAddress(userId, addrId));
 	}
 }
