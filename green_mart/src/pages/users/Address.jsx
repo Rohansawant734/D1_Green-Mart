@@ -5,7 +5,10 @@ import { toast } from "react-toastify";
 // const { setSelectedAddress } = useAddress();
 
 const Address = () => {
-    const userId = 1; // Replace with actual logged-in user ID
+
+     //   logged-in user ID
+    const userId = JSON.parse(localStorage.getItem("user"))?.userId;
+    
     const [addresses, setAddresses] = useState([]);
     const [form, setForm] = useState({
         adrLine1: "",
