@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useAuth } from '../context/AuthContext'
 
 function Register() {
     const [info, setInfo] = useState(
@@ -15,40 +16,30 @@ function Register() {
     )
     const { firstName, lastName, email, phone, password, confirmPassword } = info
     const navigate = useNavigate()
+    const { register } = useAuth()
 
     const onRegister = async () => {
-        if (firstName.length == 0) {
-            toast.warn("Enter your first name!!!")
+        if(!firstName || !lastName || !email || !phone || !password || !confirmPassword){
+            toast.warn("Please fill all required fields.")
+            return
         }
-        else if (lastName.length == 0) {
-            toast.warn("Enter your last name!!!")
-        }
-        else if (email.length == 0) {
-            toast.warn("Enter your first name!!!")
-        }
-        else if (phone.length == 0) {
-            toast.warn("Enter your first name!!!")
-        }
-        else if (password.length == 0) {
-            toast.warn("Enter your first name!!!")
-        }
-        else if (confirmPassword.length == 0) {
-            toast.warn("Enter your first name!!!")
-        }
-        else if (password != confirmPassword) {
-            toast.warn("Passwords do not match")
-        }
-        else {
-            const result = await registerUser(firstName, lastName, email, password, phone)
-            if (result.status == 'success') {
-                toast.success("Successfully Registered")
 
-                navigate('/')
-            } else {
-                toast.error(result.error)
-            }
+        if(password !== confirmPassword){
+            toast.warn("Passwords do not match.")
+            return
+        }
+        const fullPhone = `+91-${phone}`
+        const result = await register(firstName, lastName, email, fullPhone, password)
+
+        if(result.success){
+            toast.success("Registration successful!")
+            navigate('/login')
+        }
+        else{
+            toast.error(result.error)
         }
     }
+
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
             <div className="w-full max-w-lg bg-white border border-gray-300 shadow-xl rounded-lg p-8">
@@ -71,7 +62,10 @@ function Register() {
 
                 <div className="mb-4">
                     <label className="block mb-1 font-medium text-gray-700">Phone Number<span className="text-red-500">*</span></label>
-                    <input onChange={(e) => setInfo({ ...info, phone: e.target.value })} type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                    <div className='flex items-center'>
+                        <span className='px-3 py-2 bg-gray-200 border border-gray-300 rounded-l-md text-gray-700'>+91-</span>
+                        <input value={info.phone} onChange={(e) => setInfo({ ...info, phone: e.target.value })} type="tel" className="w-full px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                    </div>
                 </div>
 
                 <div className="mb-4">
