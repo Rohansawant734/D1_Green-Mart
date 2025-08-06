@@ -10,22 +10,22 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class AddressDTO {
-	
+ 
+
 	private Long id;
-	
+ 
 	private String adrLine1;
-	
+
 	private String adrLine2;
 
 	private String city;
-	
+
 	private String state;
-	
+
 	private String country;
-	
+
 	private String zipCode;
-	
-	private AddressType addrType;	
-	
-	
+
+	private AddressType addrType;
+
 }
