@@ -43,6 +43,9 @@ public class User extends BaseEntity implements UserDetails{
 	@Column(length = 30, unique = true) // varchar(30), unique constraint
 	private String email;
 
+	@Column(length = 15, nullable = false)// not null
+	private String phone;
+	
 	@Column(length = 300, nullable = false) // not null
 	private String password;
 

@@ -48,13 +48,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handleMethodArgumentNotValidException
 	(MethodArgumentNotValidException e) {
-		System.out.println("in handle P.L validation failures - @Valid ");
-		//create Map of rejected fields n error messages
+		System.out.println("In handle Program Logic validation failures - @Valid ");
+		//create Map of rejected fields and error messages
 		//eg - firstName - mandatory field.....
 		//1. get list of rejected fields 
 		List<FieldError> fieldErrors = e.getFieldErrors();
 		//2. Convert -> Map<Key - String fieldName , 
-		//Value - String - err mesg>
+		//Value - String - err message>
 //		fieldErrors.stream() //Stream<FieldError>
 //		.collect(Collectors.toMap
 //				(FieldError::getField,
@@ -63,9 +63,7 @@ public class GlobalExceptionHandler {
 		 fieldErrors.forEach(fieldError -> 
 		 errorMap.put(fieldError.getField(), 
 				 fieldError.getDefaultMessage()));
-		return ResponseEntity.status
-				(HttpStatus.BAD_REQUEST)
-				.body(errorMap);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
 	}
 	
 	@ExceptionHandler(Exception.class)
