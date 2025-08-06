@@ -15,8 +15,10 @@ export const AuthProvider = ({ children }) => {
         const expiry = localStorage.getItem('tokenExpiry')
 
         if(storedUser && token){
-            setAuthUser(JSON.parse(storedUser))
-            if(expiry){
+            const expirationTime = parseInt(expiry)
+            
+            if(expirationTime && Date.now() < expirationTime){
+                setAuthUser(JSON.parse(storedUser))
                 setUpAutoLogout(parseInt(expiry));
             }
             else{
