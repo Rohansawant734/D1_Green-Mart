@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
 		
 		// Check for duplicate email
 		if (uDao.existsByEmail(dto.getEmail())) {
-			throw new ApiException("Dup Email detected - User exists already!!!!");
+			throw new ApiException("Duplicate Email detected - user exists already!!!!");
 		}
 		
 		// Map the add user dto to the user entity
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService{
 		// Check for duplicate email
 		if (!userEntity.getEmail().equals(dto.getEmail()) && uDao.existsByEmail(dto.getEmail())) {
 			log.warn("Update failed: Duplicate email {}", dto.getEmail());
-			throw new ApiException("Dup Email detected - User exists already!!!!");
+			throw new ApiException("Duplicate Email detected - user exists already!!!!");
 		}
 		
 		// Modifying the state of the persistent user entity
