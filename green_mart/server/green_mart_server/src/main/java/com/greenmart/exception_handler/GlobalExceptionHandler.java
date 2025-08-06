@@ -1,7 +1,13 @@
 package com.greenmart.exception_handler;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -9,6 +15,7 @@ import com.greenmart.custom_exceptions.ApiException;
 import com.greenmart.custom_exceptions.AuthenticationException;
 import com.greenmart.custom_exceptions.NoContentException;
 import com.greenmart.custom_exceptions.ResourceNotFoundException;
+import com.greenmart.dto.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -37,9 +44,34 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResourceNotFoundException(e.getMessage()));
 	}
 	
+	// add exc handling method
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<?> handleMethodArgumentNotValidException
+	(MethodArgumentNotValidException e) {
+		System.out.println("in handle P.L validation failures - @Valid ");
+		//create Map of rejected fields n error messages
+		//eg - firstName - mandatory field.....
+		//1. get list of rejected fields 
+		List<FieldError> fieldErrors = e.getFieldErrors();
+		//2. Convert -> Map<Key - String fieldName , 
+		//Value - String - err mesg>
+//		fieldErrors.stream() //Stream<FieldError>
+//		.collect(Collectors.toMap
+//				(FieldError::getField,
+//				FieldError::getDefaultMessage);
+		 Map<String,String> errorMap=new HashMap<>();
+		 fieldErrors.forEach(fieldError -> 
+		 errorMap.put(fieldError.getField(), 
+				 fieldError.getDefaultMessage()));
+		return ResponseEntity.status
+				(HttpStatus.BAD_REQUEST)
+				.body(errorMap);
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handleException(Exception e){
 		System.out.println("In catch all exception handler");
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Exception(e.getMessage()));
 	}
+
 }
