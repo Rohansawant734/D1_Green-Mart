@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
 // Create context
 const CartContext = createContext();
 
@@ -35,7 +34,7 @@ export const CartProvider = ({ children }) => {
       {
         params: {
           userId: userId,
-          productId: product._id,  
+          productId: product._id || product.id,  
           quantity: 1,
         },
       }
