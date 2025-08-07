@@ -237,7 +237,6 @@ public class UserServiceImpl implements UserService{
 		jwtResponse.setEmail(userEntity.getEmail());
 		jwtResponse.setPhone(userEntity.getPhone());
 		jwtResponse.setUserId(userEntity.getId());
-		
 		// Return jwtResponse
 		return jwtResponse;
 	}
