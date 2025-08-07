@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate, NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { assets } from '../assets/assets'
-import { useCart } from '../context/CartContext'
+import { useCart } from '../Context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { loginUser, registerUser } from "../services/user";
+import { getUser, loginUser, registerUser, updatePassword, updateUser } from "../services/user";
 import { toast } from "react-toastify";
-import { jwtDecode}  from "jwt-decode"
+import { jwtDecode } from "jwt-decode"
 
 const AuthContext = createContext();
 
@@ -10,32 +10,41 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [token, setToken] = useState(localStorage.getItem('token'))
 
-    useEffect(() =>{
+    useEffect(() => {
         const storedUser = localStorage.getItem('user')
         const expiry = localStorage.getItem('tokenExpiry')
 
-        if(storedUser && token){
-            const expirationTime = parseInt(expiry)
-            
-            if(expirationTime && Date.now() < expirationTime){
-                setAuthUser(JSON.parse(storedUser))
-                setUpAutoLogout(parseInt(expiry));
+        if (storedUser && storedUser !== "undefined" && token) {
+            try {
+                const expirationTime = parseInt(expiry)
+
+                if (expirationTime && Date.now() < expirationTime) {
+                    setAuthUser(JSON.parse(storedUser))
+                    setUpAutoLogout(parseInt(expiry));
+                }
+                else {
+                    logout() // force logout if token already expired
+                }
             }
-            else{
-                logout() // force logout if token already expired
+            catch (e) {
+                console.error("Failed to parse stored used: ", e)
+                logout() // to prevent crashing if parse is failing
             }
+        }
+        else {
+            logout()
         }
         setLoading(false)
     }, [token]);
 
     const login = async (email, password) => {
-        try{
+        try {
             const response = await loginUser(email, password)
 
-            if(!response || !response.token){
+            if (!response || !response.token) {
                 throw new Error('Invalid response from server')
             }
-            const { token, ...userData} = response
+            const { token, ...userData } = response
 
             const decoded = jwtDecode(token)
             const expiration = decoded.exp * 1000 // convert from seconds to ms
@@ -47,19 +56,23 @@ export const AuthProvider = ({ children }) => {
 
             setToken(token)
             setAuthUser(userData)
-            
+
             // Sets auto logout timer
             setUpAutoLogout(expiration)
 
             return { success: true };
         }
-        catch(error){
-            console.error("Login failed: ", error)
-            return { success: false, error: error.response?.data?.message || 'Login failed' }
+        catch (e) {
+            console.error("Login failed, password or email is incorrect: ", e)
+            return { success: false, error: e.response?.data?.message || 'Login failed, password or email is incorrect' }
         }
     }
 
-    const logout = () =>{
+    const logout = () => {
+        if (!authUser && token) {
+            return
+        }
+
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         localStorage.removeItem('tokenExpiry')
@@ -68,39 +81,106 @@ export const AuthProvider = ({ children }) => {
     }
 
     const register = async (firstName, lastName, email, phone, password) => {
-        try{
+        try {
             const response = await registerUser(firstName, lastName, email, phone, password)
 
             return { success: true };
         }
-        catch(error){
-            return{
+        catch (e) {
+            return {
                 success: false,
-                error: error.response?.data?.message || 'Registration failed'
+                error: e.response?.data?.message || 'Registration failed due to invalid format or empty fields'
             }
         }
     };
 
-    const setUpAutoLogout = (expirationTime) =>{
+    const fetchProfile = async () => {
+        try {
+            let userId;
+
+            if (!authUser && token) {
+                const decoded = jwtDecode(token)
+                userId = decoded.userId
+            }
+            else if (authUser) {
+                userId = authUser.userId
+            }
+            else {
+                throw new Error("There is no user Id available")
+            }
+
+            const data = await getUser(userId)
+
+            localStorage.setItem("user", JSON.stringify(data))
+
+            setAuthUser(data)
+
+            return { success: true, data }
+        }
+        catch (e) {
+            console.error("Failed to get user's profile: ", e)
+            return { success: false, error: e.response?.data?.message || "Failed to fetch user" }
+        }
+    }
+
+    const updateProfile = async (firstName, lastName, email, phone) => {
+        try {
+            const updatedUser = await updateUser(authUser.userId, firstName, lastName, email, phone)
+
+            if (!updatedUser) {
+                throw new Error("Profile update failed");
+            }
+
+            // Just update the context, not localStorage
+            setAuthUser((prev) => ({
+                ...prev,
+                ...updatedUser
+            }));
+
+            toast.success("Successfully updated profile");
+
+            return { success: true };
+        }
+        catch (e) {
+            console.error("Failed to update profile: ", e)
+            return { success: false, error: e.response?.data?.message || "Failed to update profile" }
+        }
+    }
+
+    const changePassword = async (oldPassword, newPassword) => {
+        try {
+            await updatePassword(authUser.userId, oldPassword, newPassword);
+
+            toast.success("Successfully updated password")
+
+            return { success: true }
+        }
+        catch (e) {
+            return { success: false, error: e.response?.data?.message || "Failed to update password" }
+
+        }
+    }
+
+    const setUpAutoLogout = (expirationTime) => {
         const currentTime = Date.now();
         const timeout = expirationTime - currentTime;
 
-        if(timeout > 0){
-            setTimeout(() =>{
+        if (timeout > 0) {
+            setTimeout(() => {
                 logout()
                 toast.info("Session expired. Please log in again.")
             }, timeout)
         }
-        else{
+        else {
             logout() // force logout if token already expired
         }
     }
 
     return (
-        <AuthContext.Provider value = {
-            { authUser, token, login, logout, register, loading }
+        <AuthContext.Provider value={
+            { authUser, token, login, logout, register, loading, fetchProfile, updateProfile, changePassword }
         }>
-            { children }
+            {children}
         </AuthContext.Provider>
     )
 };

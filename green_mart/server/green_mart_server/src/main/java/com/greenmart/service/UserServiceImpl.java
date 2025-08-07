@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService{
 		User updatedUser = uDao.save(userEntity);
 		
 		log.info("User updated successfully with ID: {}", updatedUser.getId());
-		// Return the Api Response
-		return new ApiResponse("Successfully updated User with ID " + updatedUser.getId());
+		// any other fields like token if required
+		return new ApiResponse("Successfully updated user with Id: " + updatedUser.getId()) ;
 	}
 
 	@Override
@@ -148,8 +148,11 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		log.info("User found: {}", userEntity.getEmail());
+		
+		UserResponseDTO dto = modelMapper.map(userEntity, UserResponseDTO.class);
+		dto.setUserId(userEntity.getId());
 		// Return the user as a DTO in the response
-		return modelMapper.map(userEntity, UserResponseDTO.class);
+		return dto;
 	}
 
 	@Override
@@ -232,8 +235,8 @@ public class UserServiceImpl implements UserService{
 		jwtResponse.setFirstName(userEntity.getFirstName());
 		jwtResponse.setLastName(userEntity.getLastName());
 		jwtResponse.setEmail(userEntity.getEmail());
+		jwtResponse.setPhone(userEntity.getPhone());
 		jwtResponse.setUserId(userEntity.getId());
-		
 		// Return jwtResponse
 		return jwtResponse;
 	}
