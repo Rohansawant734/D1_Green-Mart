@@ -1,8 +1,9 @@
  import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+ 
 import { useAuth } from "./AuthContext";
-
+ 
 // Create context
 const CartContext = createContext();
 
@@ -67,6 +68,7 @@ export const CartProvider = ({ children }) => {
           userId: userId,
           productId: productId,
           quantity: quantity,
+
         },
       });
       await fetchCart();
