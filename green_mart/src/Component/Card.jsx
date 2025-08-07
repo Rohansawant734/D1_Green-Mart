@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 
 const Card = () => {
   const offer = 600;
   const shippingCharge = 199;
   const { cartItems, updateQty, removeFromCart, clearCart } = useCart();
+  const hasWarned = useRef(false);
   // useEffect(() => {
   //     console.log("Updated cartItems in component:", cartItems);
   //   }, [cartItems]);
@@ -34,8 +37,24 @@ const Card = () => {
 
   const handleRemove = (item) => {
     removeFromCart(item.productId);
-     toast.warn(`${item.productName} removed from cart`);
+    toast.warn(`${item.productName} removed from cart`);
   };
+  const { authUser } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authUser) {
+      navigate('/login'); // Redirect to login if not authenticated
+      if (!hasWarned.current) {
+        toast.warn("Please log in to view your cart");
+        hasWarned.current = true;
+      }
+    }
+  }, [authUser, navigate]);
+
+  if (!authUser) {
+    return null; // Prevent rendering before redirect
+  }
 
   return (
     <div >
@@ -175,14 +194,21 @@ const Card = () => {
           </div>
           <div className="flex justify-center">
             <Link
-              to="/checkout"
+              to={cartItems.length === 0 ? '#' : '/checkout'}
+              onClick={(e) => {
+                if (cartItems.length === 0) {
+                  e.preventDefault(); // Block navigation if the cart is empty
+                  toast.warn("Your cart is empty!");
+                }
+              }}
               className={`w-full p-3 text-center rounded ${cartItems.length === 0
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-green-600 text-white hover:bg-green-900'
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-green-600 text-white hover:bg-green-900'
                 }`}
             >
               Proceed To Checkout
             </Link>
+
           </div>
         </div>
       </div>

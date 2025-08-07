@@ -22,7 +22,7 @@ import Edit_Profile from './pages/users/Edit_Profile';
 import Address from './pages/users/Address';
 import AccountLayout from './pages/users/AccountLayout';
 import Checkout from './pages/users/Checkout'
-import FloatingStack from './Component/FloatingStack'
+ 
 
 // Admin Pages
 import Adminlayout from './pages/admins/Adminlayout';
@@ -95,7 +95,7 @@ const App = () => {
         draggable
         theme="colored"
       />
-       <FloatingStack/>
+        
     </div>
   );
 };

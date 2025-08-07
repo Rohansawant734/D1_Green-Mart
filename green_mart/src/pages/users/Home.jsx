@@ -6,6 +6,7 @@ import { useWishlist } from '../../context/WishlistContext'
 import HeroSlider from '../../Component/HeroSlider'
 import myImage from '../../assets/farmer.png'
 import axios from 'axios'
+import FloatingStack from './../../Component/FloatingStack';
 const Home = () => {
   const { wishlist, toggleWishlist } = useWishlist();
   const [products, setProducts] = useState([]);
@@ -112,7 +113,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-
+      <FloatingStack />
     </div>
   )
 }

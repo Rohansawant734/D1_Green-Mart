@@ -50,10 +50,10 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public List<AddressDTO> getAllAddressesForUser(Long userId) {
 		// Checking if user is valid or not
-		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
+		  uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 
 		// Collect list of address which are not deleted
-		List<Address> aList = aDao.findByUserIdAndIsDeletedFalse(userId);
+		List<Address> aList = aDao.findByUserId(userId);
 
 		// Check if list is empty or not
 		if (aList.isEmpty()) {
@@ -67,10 +67,10 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public AddressDTO findAddressById(Long userId, Long addrId) {
 		// Checking if user is valid or not
-		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
+		    uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 
 		// Find the address for the particular user
-		Address addressEntity = aDao.findByUserIdAndIdAndIsDeletedFalse(userId, addrId)
+		Address addressEntity = aDao.findByUserIdAndId(userId, addrId)
 				.orElseThrow(() -> new ResourceNotFoundException("Address not found or it does not exist"));
 
 		// Return it in the form of DTO
@@ -80,10 +80,10 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public ApiResponse updateAddress(Long userId, Long addrId, AddAddressDTO dto) {
 		// Checking if user is valid or not
-		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
+	            uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 
 		// Find the address
-		Address addressEntity = aDao.findByUserIdAndIdAndIsDeletedFalse(userId, addrId)
+		Address addressEntity = aDao.findByUserIdAndId(userId, addrId)
 				.orElseThrow(() -> new ResourceNotFoundException("Address not found or it does not exist"));
 
 		modelMapper.map(dto, addressEntity); // Modifying the state of the persistent address entity
@@ -95,36 +95,17 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public ApiResponse deleteAddress(Long userId, Long addrId) {
-		// Checking if user is valid or not
-		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
+	         uDao.findById(userId)
+	        .orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 
-		// Find the address
-		Address addressEntity = aDao.findByUserIdAndIdAndIsDeletedFalse(userId, addrId)
-				.orElseThrow(() -> new ResourceNotFoundException("Address not found or it does not exist"));
+	    Address address = aDao.findByUserIdAndId(userId, addrId)
+	        .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
-		addressEntity.setDeleted(true); // Address is soft-deleted
-
-		// Save the isDeleted change
-		Address deletedAddress = aDao.save(addressEntity);
-
-		return new ApiResponse("Address deleted successfully with Id " + deletedAddress.getId());
+	    aDao.delete(address); // Permanently deletes the address
+	    return new ApiResponse("Address permanently deleted");
 	}
 
-	@Override
-	public ApiResponse restoreAddress(Long userId, Long addrId) {
-		// Checking if user is valid or not
-		User userEntity = uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 
-		// Find the address
-		Address addressEntity = aDao.findByUserIdAndIdAndIsDeletedTrue(userId, addrId)
-				.orElseThrow(() -> new ResourceNotFoundException("Address not found or it does not exist"));
-
-		addressEntity.setDeleted(false); // Address is soft-deleted
-
-		// Save the isDeleted change
-		Address restoredAddress = aDao.save(addressEntity);
-
-		return new ApiResponse("Address restore successfully with Id " + restoredAddress.getId());
-	}
+	 
 
 }

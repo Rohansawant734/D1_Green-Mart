@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useWishlist } from '../../context/WishlistContext';
 import ProductCard from '../../Component/ProductCard';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Wish_List = () => {
   const { wishlist } = useWishlist();
+   const { authUser } = useAuth();
+  const navigate = useNavigate();
+  const hasWarned = useRef(false);
+
+  useEffect(() => {
+    if (!authUser) {
+      navigate('/login'); // Redirect to login if not authenticated
+      if (!hasWarned.current) {
+        toast.warn("Please log in to view your wishlist");
+        hasWarned.current = true;
+      }
+    }
+  }, [authUser, navigate]);
+
+  if (!authUser) {
+    return null; // Prevent rendering before redirect
+  }
 
   return (
     <div className='p-3'>

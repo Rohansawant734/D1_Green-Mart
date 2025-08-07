@@ -41,8 +41,6 @@ public class Address extends BaseEntity {
 	@Column(length = 20, name = "zip_code")
 	private String zipCode;
 
-	private boolean isDeleted; // for soft deleting the address
-
 	@Enumerated(EnumType.STRING) // col type - varchar : name of constant
 	@Column(length = 30, name = "addr_type")
 	private AddressType addrType;

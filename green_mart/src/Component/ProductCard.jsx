@@ -25,7 +25,7 @@ const ProductCard = ({ product, showWishlistIcon = false }) => {
           <FaHeart />
         </button>
       )}
-
+       
       <img src={product.image[0]} alt={product.name} className='w-full h-35 object-cover' />
       <div className='p-3'>
         <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>

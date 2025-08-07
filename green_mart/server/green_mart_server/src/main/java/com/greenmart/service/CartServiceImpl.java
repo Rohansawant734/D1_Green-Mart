@@ -115,12 +115,16 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public ApiResponse clearCart(Long userId) {
-		Cart cart = cartDao.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("Cart not found for user " + userId));
+	    User user = userDao.findById(userId)
+	        .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
 
-		cart.getItems().clear();
-		cartDao.save(cart);
+	    Cart cart = cartDao.findByCartUser(user)
+	        .orElseThrow(() -> new ResourceNotFoundException("Cart not found for user " + userId));
 
-		return new ApiResponse("Cart cleared successfully" + userId);
+	    cart.getItems().clear();
+	    cartDao.save(cart);
+
+	    return new ApiResponse("Cart cleared successfully for user " + userId);
 	}
+
 }

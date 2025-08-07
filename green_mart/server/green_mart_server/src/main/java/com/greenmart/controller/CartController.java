@@ -57,9 +57,9 @@ public class CartController {
 	}
 
 	@DeleteMapping("/clear")
-	@Operation(description = "Clear cart for user")
 	public ResponseEntity<ApiResponse> clearCart(@RequestParam Long userId) {
-		return ResponseEntity.ok(cartservice.clearCart(userId));
+	    return ResponseEntity.ok(cartservice.clearCart(userId));
 	}
+
 
 }
