@@ -24,6 +24,11 @@ function Register() {
             return
         }
 
+        if(!isValidPassword(password)){
+            toast.warn("Password must be 5-20 characters long, contain a lowercase letter, a number, and a special character (#, @, $, *).")
+            return
+        }
+
         if(password !== confirmPassword){
             toast.warn("Passwords do not match.")
             return
@@ -38,6 +43,11 @@ function Register() {
         else{
             toast.error(result.error)
         }
+    }
+
+    const isValidPassword = (pwd) => {
+        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[#@$*]).{5,20}$/
+        return regex.test(pwd);
     }
 
     return (
