@@ -59,16 +59,11 @@ public class AddressController {
 	}
 
 	@DeleteMapping("/{userId}/{addrId}")
-	@Operation(description = "Soft delete address")
+	@Operation(description = " delete address")
 	public ResponseEntity<?> deleteAddress(@PathVariable Long userId, @PathVariable Long addrId) {
 
 		return ResponseEntity.ok(addressService.deleteAddress(userId, addrId));
 	}
 
-	@PutMapping("/{userId}/{addrId}/restore")
-	@Operation(description = "Restore address")
-	public ResponseEntity<?> restoreAddress(@PathVariable Long userId, @PathVariable Long addrId) {
-
-		return ResponseEntity.ok(addressService.restoreAddress(userId, addrId));
-	}
+	 
 }

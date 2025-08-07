@@ -3,6 +3,7 @@ import axios from 'axios';
 import ProductCard from '../../Component/ProductCard';
 import myImage from '../../assets/farmer.png'
 import { useLocation } from 'react-router-dom';
+import FloatingStack from '../../Component/FloatingStack';
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -14,12 +15,15 @@ const Categories = () => {
     const response = await axios.get("http://localhost:8080/categories");
 
     const formatted = response.data.map(cat => ({
+      
       id: cat.id,
       text: cat.catName,
       image: cat.catImage,
       bgColor: cat.bgColor,
       path: cat.catName, // used for category filtering/navigation
     }));
+    
+
 
     setCategories(formatted);
   } catch (err) {
@@ -40,6 +44,7 @@ const Categories = () => {
         category: product.categoryName,
         description: product.description?.split(',').map(str => str.trim()),
       }));
+      
       setProducts(formatted);
     }catch(err){
       console.error("Error fetching products",err);
@@ -114,9 +119,11 @@ const Categories = () => {
                 showWishlistIcon={true}
               />
             ))}
+             
           </div>
         </div>
       </div>
+      <FloatingStack/>
     </div>
   );
 };

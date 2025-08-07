@@ -10,5 +10,7 @@ import com.greenmart.entities.User;
 public interface CartDao extends JpaRepository<Cart, Long> {
 
 	Optional<Cart> findByCartUser(User user);
+	Optional<Cart> findByCartUser_Id(Long userId);
+
 
 }

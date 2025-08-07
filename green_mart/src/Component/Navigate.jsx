@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate, NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { assets } from '../assets/assets'
-import { useCart } from '../Context/CartContext'
+import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 
@@ -10,7 +10,7 @@ function Navigate() {
     const [open, setOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('');
     const { logout, authUser } = useAuth();
-
+   
     const { cartItems } = useCart();
     const navigate = useNavigate()
 
@@ -106,6 +106,7 @@ function Navigate() {
                     {
                         // If authUser is not null then show Logout option else show Login option
                         authUser ? (
+                            
                             <div className="flex items-center gap-4">
                                 <span className="text-sm text-gray-600">Hello, {authUser.firstName}</span>
                                 <button onClick={onLogout} className="cursor-pointer px-8 py-2 bg-red-600 hover:bg-red-800 transition text-white rounded-full">

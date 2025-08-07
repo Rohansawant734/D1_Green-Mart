@@ -28,7 +28,7 @@ const ProductCard = ({ product, showWishlistIcon = false }) => {
           <FaHeart />
         </button>
       )}
-
+ 
       {/* Link wraps image and content */}
       <Link to={`/product/${product._id}`}>
         <img src={product.image?.[0]} alt={product.name} className='w-full h-35 object-cover' />
@@ -51,6 +51,7 @@ const ProductCard = ({ product, showWishlistIcon = false }) => {
         <span>Add to Cart</span>
         <FaShoppingCart className='text-lg' />
       </button>
+
     </div>
   );
 };

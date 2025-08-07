@@ -17,5 +17,5 @@ public interface AddressService {
 	 
 	 ApiResponse deleteAddress(Long userId, Long addrId);
 	 
-	 ApiResponse restoreAddress(Long userId, Long addrId);
+	 
 }
