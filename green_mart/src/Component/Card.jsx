@@ -46,7 +46,13 @@ const Card = () => {
     if (!authUser) {
       navigate('/login'); // Redirect to login if not authenticated
       if (!hasWarned.current) {
-        toast.warn("Please log in to view your cart");
+        toast.warn("You must log in to view your cart", {        
+          style: {
+            background: "#199960", // dark background
+            color: "#fff",          // white text 
+          },  
+        });
+
         hasWarned.current = true;
       }
     }
@@ -202,8 +208,8 @@ const Card = () => {
                 }
               }}
               className={`w-full p-3 text-center rounded ${cartItems.length === 0
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-green-600 text-white hover:bg-green-900'
+                ? 'bg-gray-300 cursor-not-allowed'
+                : 'bg-green-600 text-white hover:bg-green-900'
                 }`}
             >
               Proceed To Checkout
