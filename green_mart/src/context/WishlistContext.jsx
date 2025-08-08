@@ -29,19 +29,28 @@ export const WishlistProvider = ({ children }) => {
   };
 
   // Toggle wishlist item (add/remove)
-  const toggleWishlist = async (product) => {
-     if (!userId) {
-      toast.warn("Please log in to manage your wishlist");
-      return;
-    }
-    try {
-      await axios.post(`http://localhost:8080/wishlist/${userId}/${product._id}`);
-      fetchWishlist(); // Re-fetch updated list
-      toast.success(`Wishlist updated`);
-    } catch (error) {
-      console.error("Failed to toggle wishlist", error);
-    }
-  };
+ const toggleWishlist = async (product) => {
+  if (!userId) {
+    toast.warn("Please log in to manage your wishlist");
+    return;
+  }
+
+  const productId = product._id || product.id;
+
+  if (!productId) {
+    console.error("Product ID not found");
+    return;
+  }
+
+  try {
+    await axios.post(`http://localhost:8080/wishlist/${userId}/${productId}`);
+    fetchWishlist();
+    toast.success("Wishlist updated");
+  } catch (error) {
+    console.error("Failed to toggle wishlist", error);
+  }
+};
+
 
   //  Run when user logs in or out
   useEffect(() => {
