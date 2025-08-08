@@ -37,7 +37,7 @@ export const WishlistProvider = ({ children }) => {
     try {
       await axios.post(`http://localhost:8080/wishlist/${userId}/${product._id}`);
       fetchWishlist(); // Re-fetch updated list
-      toast.success(`${product.prodName} wishlist updated`);
+      toast.success(`Wishlist updated`);
     } catch (error) {
       console.error("Failed to toggle wishlist", error);
     }
