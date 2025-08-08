@@ -28,6 +28,7 @@ export async function registerUser(
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -66,6 +67,7 @@ export async function getAllUsers(){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -79,6 +81,7 @@ export async function getUser(userId){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -99,6 +102,7 @@ export async function updateUser(userId, firstName, lastName, email, phone){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -112,6 +116,7 @@ export async function deleteUser(userId){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -125,6 +130,7 @@ export async function restoreUser(userId){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -142,5 +148,6 @@ export async function updatePassword(userId, oldPassword, newPassword){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
