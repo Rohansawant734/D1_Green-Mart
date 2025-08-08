@@ -95,11 +95,9 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public ApiResponse deleteAddress(Long userId, Long addrId) {
-	         uDao.findById(userId)
-	        .orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
+	         uDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid user Id"));
 
-	    Address address = aDao.findByUserIdAndId(userId, addrId)
-	        .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+	    Address address = aDao.findByUserIdAndId(userId, addrId).orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
 	    aDao.delete(address); // Permanently deletes the address
 	    return new ApiResponse("Address permanently deleted");

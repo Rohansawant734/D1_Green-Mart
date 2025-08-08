@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greenmart.dao.ProductDao;
-import com.greenmart.dao.SupplierRepository;
+import com.greenmart.dao.SupplierDao;
 import com.greenmart.dao.UserDao;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class DashboardServiceImpl implements DashboardService{
 
 	private final UserDao userDao;;
-	private final SupplierRepository supplierDao;
+	private final SupplierDao supplierDao;
 	private final ProductDao productDao;
 	@Override
 	public Long getUserCount() {

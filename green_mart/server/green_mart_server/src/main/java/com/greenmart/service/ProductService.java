@@ -19,5 +19,7 @@ public interface ProductService {
 	ApiResponse deleteProduct(Long id);
 
 	ProductResponseDTO	getProductById(Long id);
+	
+	List<ProductResponseDTO> searchProducts(String q);
 
 }

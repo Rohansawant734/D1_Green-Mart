@@ -6,11 +6,13 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.greenmart.custom_exceptions.AccountDisabledException;
 import com.greenmart.custom_exceptions.ApiException;
 import com.greenmart.custom_exceptions.AuthenticationException;
 import com.greenmart.custom_exceptions.NoContentException;
@@ -32,6 +34,12 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthenticationException(e.getMessage()));
 	}
 	
+	@ExceptionHandler(DisabledException.class)
+	public ResponseEntity<Map<String, String>> handleDisabledException(DisabledException e) {
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                         .body(Map.of("message", e.getMessage()));
+	}
+	
 	@ExceptionHandler(NoContentException.class)
 	public ResponseEntity<?> handleNoContentException(NoContentException e){
 		System.out.println("In no content exception handler");
@@ -42,6 +50,12 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e){
 		System.out.println("In resource not found exception handler");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResourceNotFoundException(e.getMessage()));
+	}
+	
+	@ExceptionHandler(AccountDisabledException.class)
+	public ResponseEntity<Map<String, String>> handleAccountDisabledException(AccountDisabledException e){
+		System.out.println("In account disabled exception handler");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", e.getMessage()));
 	}
 	
 	// add exc handling method

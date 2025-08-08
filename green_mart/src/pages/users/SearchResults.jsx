@@ -1,42 +1,80 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
-import { dummyProducts } from '../../assets/assets'
-import ProductCard from '../../Component/ProductCard'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import ProductCard from '../../Component/ProductCard';
+
 const SearchResults = () => {
-    const location = useLocation();
-    // location.search // "?q=Milk"
+    const { keyword } = useParams();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    // new URLSearchParams(location.search).get('q') // "Milk"
+    useEffect(() => {
+        if (!keyword?.trim()) {
+            setProducts([]);
+            return;
+        }
 
-    //     .toLowerCase() // "milk"
+        const fetchProducts = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+               const response = await axios.get(`http://localhost:8080/products/search?q=${encodeURIComponent(keyword)}`);
+                console.log("Raw backend response:", response.data);
 
-    // So → query = "milk"
-    const query = new URLSearchParams(location.search).get('q')?.toLowerCase();
+                const normalized = Array.isArray(response.data)
+                    ? response.data.map(p => {
+                        console.log("Mapping product:", p);
+                        return {
+                            id: p.id,
+                            _id: p.id,
+                            name: p.prodName,
+                            description: p.description ? p.description.split('\n') : [],
+                            price: p.price,
+                            category: p.categoryName,
+                            image: p.proimage ? [p.proimage] : [],
+                        };
+                    })
+                    : [];
 
+                console.log("Normalized products for frontend:", normalized);
+                setProducts(normalized);
+            } catch (err) {
+                console.error('Error fetching products:', err);
+                setError('Failed to load products.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+    }, [keyword]);
 
-    const filterProducts = dummyProducts.filter(product =>
-        product.name.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(query)
-    );
     return (
         <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Search results for "{query}"</h2>
+            <h2 className="text-xl font-semibold mb-4">
+                Search results for "{keyword}"
+            </h2>
 
-            {filterProducts.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                    {filterProducts.map(product => (
-                        <ProductCard
-                            key={product._id}
-                            product={product}
-                            showWishlistIcon={true} // enable wishlist button
-                        />
-                    ))}
-                </div>
-            ) : (
-                <p className="text-gray-600">No matching products found.</p>
+            {loading && <p className="text-gray-500">Loading...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+
+            {!loading && !error && (
+                products.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                        {products.map(product => (
+                            <ProductCard
+                                key={product._id}
+                                product={product}
+                                showWishlistIcon={true}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-gray-600">No matching products found.</p>
+                )
             )}
         </div>
-    )
-}
+    );
+};
 
 export default SearchResults;

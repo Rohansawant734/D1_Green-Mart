@@ -44,14 +44,14 @@ public class ProductReviewController {
 		return ResponseEntity.ok(pRService.findReviewByUserId(userId, reviewId));
 	}
 	
-	@GetMapping("/{productId}/product")
+	@GetMapping("/product/{productId}")
 	public ResponseEntity<?> getAllReviewsForProduct(@PathVariable Long productId){
 		
 		List<ReviewResponseDTO> pRList = pRService.findAllReviewsForProduct(productId);
 		return ResponseEntity.ok(pRList);
 	}
 	
-	@GetMapping("/{productId}/{reviewId}/product")
+	@GetMapping("/product/{productId}/{reviewId}")
 	public ResponseEntity<?> getReviewOfProduct(@PathVariable Long productId, @PathVariable Long reviewId){
 		
 		return ResponseEntity.ok(pRService.findReviewByProductId(productId, reviewId));

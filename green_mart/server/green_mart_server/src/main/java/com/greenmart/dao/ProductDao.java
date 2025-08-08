@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.greenmart.entities.Product;
 
@@ -20,6 +21,13 @@ public interface ProductDao extends JpaRepository<Product, Long> {
             "ORDER BY totalSales DESC " +
             "LIMIT 5", 
     nativeQuery = true)
-List<Object[]> findTopProducts();
+  List<Object[]> findTopProducts();
+  
+  @Query(value = "SELECT p.* FROM products p " +
+	        "JOIN categories c ON p.category_id = c.id " +
+	        "WHERE LOWER(p.product_name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+	        "OR LOWER(c.category_name) LIKE LOWER(CONCAT('%', :keyword, '%'))",
+	       nativeQuery = true)
+	List<Product> searchByNameOrCategoryNative(@Param("keyword") String keyword);
 
 }

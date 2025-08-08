@@ -28,6 +28,7 @@ export async function registerUser(
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -49,7 +50,10 @@ export async function loginUser(email, password){
         return response.data
     }
     catch(error){
-        console.error("Exception: ", error)
+        if(error.response){
+            throw { response: error.response }
+        }
+        throw error;
     }
 }
 
@@ -63,6 +67,7 @@ export async function getAllUsers(){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -76,6 +81,7 @@ export async function getUser(userId){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -96,6 +102,7 @@ export async function updateUser(userId, firstName, lastName, email, phone){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -109,6 +116,7 @@ export async function deleteUser(userId){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -122,6 +130,7 @@ export async function restoreUser(userId){
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }
 
@@ -134,10 +143,11 @@ export async function updatePassword(userId, oldPassword, newPassword){
             newPassword
         }
 
-        const response = await axios.put(url, body)
+        const response = await axios.patch(url, body)
         return response.data
     }
     catch(error){
         console.error("Exception: ", error)
+        throw error
     }
 }

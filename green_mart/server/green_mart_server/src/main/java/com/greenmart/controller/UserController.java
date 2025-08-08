@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -75,7 +76,7 @@ public class UserController {
 		return ResponseEntity.ok(userService.restoreUser(userId));
 	}
 	
-	@PutMapping("/{userId}/password")
+	@PatchMapping("/{userId}/password")
 	public ResponseEntity<?> updatePassword(@PathVariable Long userId, @RequestBody @Valid UpdatePasswordDTO dto){
 		
 		return ResponseEntity.ok(userService.updatePassword(userId, dto));

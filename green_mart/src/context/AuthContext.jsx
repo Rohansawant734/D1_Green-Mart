@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getUser, loginUser, registerUser, updatePassword, updateUser } from "../services/user";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode"
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -9,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [authUser, setAuthUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [token, setToken] = useState(localStorage.getItem('token'))
+    const navigate = useNavigate();
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
@@ -45,7 +47,8 @@ export const AuthProvider = ({ children }) => {
                 throw new Error('Invalid response from server')
             }
             const { token, ...userData } = response
-
+            // console.log("Login response: ", response);
+            // console.log("Extracted userData: ", userData);
             const decoded = jwtDecode(token)
             const expiration = decoded.exp * 1000 // convert from seconds to ms
 
@@ -151,12 +154,10 @@ export const AuthProvider = ({ children }) => {
         try {
             await updatePassword(authUser.userId, oldPassword, newPassword);
 
-            toast.success("Successfully updated password")
-
             return { success: true }
         }
         catch (e) {
-            return { success: false, error: e.response?.data?.message || "Failed to update password" }
+            return { success: false, error: e.response?.data?.message || "Failed to update password. Old password is incorrect" }
 
         }
     }
@@ -169,10 +170,24 @@ export const AuthProvider = ({ children }) => {
             setTimeout(() => {
                 logout()
                 toast.info("Session expired. Please log in again.")
+
+                if (authUser?.userRole === 'ADMIN') {
+                    navigate('/login')
+                }
+                else {
+                    navigate('/')
+                }
             }, timeout)
         }
         else {
             logout() // force logout if token already expired
+
+            if (authUser?.userRole === 'ADMIN') {
+                navigate('/login')
+            }
+            else {
+                navigate('/')
+            }
         }
     }
 

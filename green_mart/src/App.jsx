@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import ScrollToTop from './Component/ScrollToTop';
@@ -11,6 +11,8 @@ import Register from './Component/Register';
 // User Pages
 import Home from './pages/users/Home';
 import Product_Details from './pages/users/Product_Details';
+ 
+import Wish_List from './pages/users/Wish_list';
  
 import Cart from './pages/users/Cart';
 import Categories from './pages/users/Categories';
@@ -40,10 +42,16 @@ import UserDetails from './pages/admins/UserDetails';
 
 
 const App = () => {
+  const location = useLocation()
+
+  const isAdminRoute = location.pathname.startsWith('/admin')
+  const isLoginRoute = location.pathname.startsWith('/login')
+  const isRegisterRoute = location.pathname.startsWith('/register')
+
   return (
     <div>
       <ScrollToTop />
-      <Container />
+      {!isAdminRoute && !isLoginRoute && !isRegisterRoute && <Container />}
 
       <Routes>
         {/* Auth */}
@@ -58,7 +66,7 @@ const App = () => {
         <Route path="/categories" element={<Categories />} />
         <Route path="/orders" element={<Order />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/search" element={<SearchResult />} />
+        <Route path="/search/:keyword" element={<SearchResult />} />
         <Route path='/checkout' element={<Checkout />} />
         
 
@@ -85,7 +93,7 @@ const App = () => {
         </Route>
       </Routes>
 
-      <Container2 />
+      {!isAdminRoute && !isLoginRoute && !isRegisterRoute && <Container2 />}
 
       <ToastContainer
         position="top-right"

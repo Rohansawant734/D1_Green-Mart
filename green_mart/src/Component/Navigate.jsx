@@ -41,7 +41,7 @@ function Navigate() {
         e.preventDefault();
         if (!searchQuery.trim()) return;
         //Encodes special characters so the string is safe to use in a URL. Example: "milk & honey" becomes "milk%20%26%20honey"
-        navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
         setSearchQuery('');
 
     }

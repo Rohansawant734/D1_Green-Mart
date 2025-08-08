@@ -3,12 +3,22 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
+import { FaHeart } from 'react-icons/fa';
 const ProductDetails = () => {
   const { id } = useParams(); // Get product ID from route
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const {addToCart} = useCart();
+   // get wishlist and toggleWishlist from context
+  const { wishlist, toggleWishlist } = useWishlist();
+  console.log("Wishlist items:", wishlist);
+  // Check if product is in wishlist
+  const getId = (obj) => obj._id || obj.id;
+
+const isWishlisted = product && wishlist.some(item => getId(item) === getId(product));
+
   console.log("Component mounted. Product ID from URL:", id);
   const fetchProduct = async () => {
     console.log("📡 Fetching product with ID:", id);
@@ -39,6 +49,7 @@ const ProductDetails = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 flex flex-col md:flex-row gap-8">
+      {/* Left Side - Product Image */}
       <div className="md:w-1/2 flex justify-center items-start">
         <img
           src={product.proimage}
@@ -47,7 +58,8 @@ const ProductDetails = () => {
         />
       </div>
 
-      <div className="md:w-1/2">
+      {/* Right Side - Details */}
+      <div className="md:w-1/2 relative">
         <h1 className="text-3xl font-bold mb-2">{product.prodName}</h1>
         <p className="text-gray-600 mb-1">Category: {product.categoryName}</p>
         <p className="text-gray-600 mb-1">Supplier: {product.supplierName}</p>
@@ -68,13 +80,25 @@ const ProductDetails = () => {
 
         <ul className="list-disc list-inside text-sm text-gray-700 mb-4">
           {product.description?.split(',').map((line, index) => (
-            <li key={index} className="mb-1 text-gray-600">
-              {line.trim()}
-            </li>
+            <li key={index} className="mb-1 text-gray-600">{line.trim()}</li>
           ))}
         </ul>
 
-        <button className="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600" onClick={() => addToCart(product)}>
+        {/* Wishlist Icon */}
+        <button
+          onClick={() => toggleWishlist(product)}
+          className={`absolute top-0 right-0 text-2xl ${
+            isWishlisted ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
+          }`}
+          aria-label="Toggle Wishlist"
+        >
+          <FaHeart />
+        </button>
+
+        <button
+          className="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600 mt-4"
+          onClick={() => addToCart(product)}
+        >
           Add to Cart
         </button>
       </div>

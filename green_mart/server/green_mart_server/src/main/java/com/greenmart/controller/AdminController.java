@@ -18,21 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.greenmart.entities.Supplier;
 import com.greenmart.RequestDto.SupplierRequestDTO;
 import com.greenmart.ResponseDto.SupplierResponseDTO;
-//import com.greenmart.dto.OrderResponseDTO;
-import com.greenmart.dto.UserDTO;
+import com.greenmart.dto.UserDTO; 
+import com.greenmart.dto.UserResponseDTO;
+ 
 import com.greenmart.service.AdminUserService;
 import com.greenmart.service.OrderService;
 import com.greenmart.service.SupplierService;
+
+import lombok.AllArgsConstructor;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/admin")
+@AllArgsConstructor
 public class AdminController {
 	
-	 @Autowired
-	    private SupplierService supplierService;
-	 @Autowired
-	    private OrderService orderService;
-	 @Autowired
+	  private SupplierService supplierService;
+	  private OrderService orderService;
 	  private AdminUserService adminUserService;
 
 	    @PostMapping("/add-supplier")
@@ -81,15 +83,26 @@ public class AdminController {
 //	    }
 	    
 	    @GetMapping("/users")
-	    public List<UserDTO> getAllActiveUsers() {
-	        return adminUserService.getAllActiveUsers();
+	    public ResponseEntity<?> getAllActiveUsers() {
+	    	List<UserResponseDTO> cList = adminUserService.getAllActiveUsers();
+	        return ResponseEntity.ok(cList);
 	    }
 
-	    @PutMapping("/users/unavailable/{id}")
-	    public String markUserUnavailable(@PathVariable Long id) {
-	        return adminUserService.markUserAsUnavailable(id);
+	    @DeleteMapping("/users/delete/{userId}")
+	    public ResponseEntity<?> deleteCustomer(@PathVariable Long userId) {
+	    	
+	        return ResponseEntity.ok(adminUserService.deleteCustomer(userId));
 	    }
 
-
+	    @PutMapping("/users/restore/{userId}")
+	    public ResponseEntity<?> restoreCustomer(@PathVariable Long userId){
+	    	
+	    	return ResponseEntity.ok(adminUserService.restoreCustomer(userId));
+	    }
+	    
+	    @GetMapping("/users/{userId}")
+	    public ResponseEntity<?> getCustomer(@PathVariable Long userId){
+	    	return ResponseEntity.ok(adminUserService.findUserById(userId));
+	    }
 
 }

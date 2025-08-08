@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,6 +78,14 @@ public class ProductController {
 	public ResponseEntity<?> getProductById(@PathVariable Long id){
 		return ResponseEntity.ok(productService.getProductById(id));
 	}
-	
+	@Operation(summary = "Search products by keyword", description = "Search products by matching product name or category")
+	@GetMapping("/search")
+	public ResponseEntity<?> searchProducts(@RequestParam("q") String keyword) {
+	    List<ProductResponseDTO> results = productService.searchProducts(keyword);
+	    if(results.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	    }
+	    return ResponseEntity.ok(results);
+	}
 
 }
