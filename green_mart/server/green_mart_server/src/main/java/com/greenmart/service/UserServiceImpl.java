@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -212,6 +215,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public JWTResponseDTO login(LoginDTO dto) {
+		try {
 		// User authenticated using authentication manager
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
 		
@@ -237,8 +241,22 @@ public class UserServiceImpl implements UserService{
 		jwtResponse.setEmail(userEntity.getEmail());
 		jwtResponse.setPhone(userEntity.getPhone());
 		jwtResponse.setUserId(userEntity.getId());
+		jwtResponse.setUserRole(userEntity.getUserRole().name());
 		// Return jwtResponse
 		return jwtResponse;
+		}
+		catch (DisabledException e) {
+			log.warn("Disabled account: {}", dto.getEmail());
+			throw new ApiException("Your account is disabled. Please contact support.");
+		}
+		catch (LockedException e) {
+			log.warn("Locked account: {}", dto.getEmail());
+			throw new ApiException("Your account is Locked. Please contact support.");
+		}
+		catch (BadCredentialsException e) {
+			log.warn("Invalid credentials for account: {}", dto.getEmail());
+			throw new ApiException("Invalid email or password.");
+		}
 	}
 
 }

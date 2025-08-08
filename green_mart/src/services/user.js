@@ -49,7 +49,10 @@ export async function loginUser(email, password){
         return response.data
     }
     catch(error){
-        console.error("Exception: ", error)
+        if(error.response){
+            throw { response: error.response }
+        }
+        throw error;
     }
 }
 
@@ -134,7 +137,7 @@ export async function updatePassword(userId, oldPassword, newPassword){
             newPassword
         }
 
-        const response = await axios.put(url, body)
+        const response = await axios.patch(url, body)
         return response.data
     }
     catch(error){

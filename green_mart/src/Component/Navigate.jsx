@@ -3,7 +3,7 @@ import { Link, useNavigate, NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { assets } from '../assets/assets'
 import { useCart } from '../context/CartContext'
-import { useAuth } from '../Context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 
 function Navigate() {

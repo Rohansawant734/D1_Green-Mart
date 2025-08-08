@@ -68,7 +68,19 @@ useEffect(() => {
       return
     }
 
-    await changePassword(formData.oldPassword, formData.newPassword)
+    const result = await changePassword(formData.oldPassword, formData.newPassword)
+
+    if(result.success){
+      toast.success("Successfully updated password")
+      setFormData({
+        oldPassword: '',
+        newPassword: '',
+        confirmNewPassword: ''
+      })
+    }
+    else{
+      toast.error(result.error || "Old password is incorrect")
+    }
   }
 
     const isValidPassword = (pwd) => {
@@ -82,7 +94,7 @@ useEffect(() => {
 
       <form className="space-y-5" onSubmit={onUpdateProfile}>
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Full Name</label>
+          <label className="block text-gray-700 font-medium mb-1">First Name</label>
           <input
             type="text"
             name="firstName"
@@ -93,6 +105,7 @@ useEffect(() => {
           />
         </div>
         <div>
+          <label className="block text-gray-700 font-medium mb-1">Last Name</label>
           <input
             type="text"
             name="lastName"
