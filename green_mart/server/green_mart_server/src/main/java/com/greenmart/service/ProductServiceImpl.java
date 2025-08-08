@@ -151,6 +151,31 @@ public class ProductServiceImpl implements ProductService{
 		dto.setProimage(product.getProdImgUrl());
 		return dto;
 	}
-	
+	@Override
+	public List<ProductResponseDTO> searchProducts(String q) {
+		List<Product> products = productDao.searchByNameOrCategoryNative(q);
+	    
+	    // Map to DTO list
+	    return products.stream().map(product -> {
+	        ProductResponseDTO dto = new ProductResponseDTO();
+	        dto.setId(product.getId());
+	        dto.setProdName(product.getProdName());
+	        dto.setDescription(product.getDescription());
+	        dto.setPrice(product.getPrice());
+	        dto.setOfferPrice(product.getOfferPrice());
+	        dto.setUnit(product.getUnit());
+	        dto.setInStock(product.isInStock());
+	        dto.setProimage(product.getProdImgUrl());
+	        if(product.getMyCategory() != null) {
+	            dto.setCategoryId(product.getMyCategory().getId());
+	            dto.setCategoryName(product.getMyCategory().getCatName());
+	        }
+	        if(product.getSupplier() != null) {
+	            dto.setSupplierId(product.getSupplier().getId());
+	            dto.setSupplierName(product.getSupplier().getName());
+	        }
+	        return dto;
+	    }).toList();
+	}
 
 }
