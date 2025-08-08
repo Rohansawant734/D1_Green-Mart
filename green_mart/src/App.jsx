@@ -41,11 +41,13 @@ const App = () => {
   const location = useLocation()
 
   const isAdminRoute = location.pathname.startsWith('/admin')
+  const isLoginRoute = location.pathname.startsWith('/login')
+  const isRegisterRoute = location.pathname.startsWith('/register')
 
   return (
     <div>
       <ScrollToTop />
-      {!isAdminRoute && <Container />}
+      {!isAdminRoute && !isLoginRoute && !isRegisterRoute && <Container />}
 
       <Routes>
         {/* Auth */}
@@ -87,7 +89,7 @@ const App = () => {
         </Route>
       </Routes>
 
-      {!isAdminRoute && <Container2 />}
+      {!isAdminRoute && !isLoginRoute && !isRegisterRoute && <Container2 />}
 
       <ToastContainer
         position="top-right"
