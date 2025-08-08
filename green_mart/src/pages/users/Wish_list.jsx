@@ -15,7 +15,12 @@ const Wish_List = () => {
     if (!authUser) {
       navigate('/login'); // Redirect to login if not authenticated
       if (!hasWarned.current) {
-        toast.warn("Please log in to view your wishlist");
+        toast.warn("Please log in to view your wishlist",{        
+          style: {
+            background: "#199960", // dark background
+            color: "#fff",          // white text 
+          },  
+        });
         hasWarned.current = true;
       }
     }
