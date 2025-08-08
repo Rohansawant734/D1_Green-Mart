@@ -21,7 +21,30 @@ const Address = () => {
   });
   const [editingId, setEditingId] = useState(null);
 
-  const stateOptions = ["Maharashtra", "Karnataka", "Gujarat", "Delhi"];
+  const stateOptions = [
+  "Andhra Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Tamil Nadu",
+  "Telangana",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal"
+];
+
   const countryOptions = ["India", "USA", "UK", "Canada"];
 
   useEffect(() => {
@@ -45,7 +68,7 @@ const Address = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.adrLine1 || !form.city || !form.zipCode || !form.state || !form.country) {
+    if (!form.adrLine1 || !form.adrLine2 || !form.city || !form.zipCode || !form.state || !form.country) {
       toast.error("Required fields are missing.");
       return;
     }
@@ -63,7 +86,7 @@ const Address = () => {
         await axios.post(`http://localhost:8080/address/${userId}`, form);
         toast.success("Address added.");
       }
-
+     
       setForm({
         adrLine1: "",
         adrLine2: "",

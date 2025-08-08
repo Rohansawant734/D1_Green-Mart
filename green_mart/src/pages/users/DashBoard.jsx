@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const { authUser } = useAuth();
+  console.log("Auth User in Dashboard:", authUser); // Debugging line to check authUser
   const navigate = useNavigate(); // hook to navigate programmatically
 
   if (!authUser) {

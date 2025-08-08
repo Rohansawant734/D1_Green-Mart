@@ -19,8 +19,8 @@ const AddressForm = ({
         <input type="text" name="adrLine1" value={form.adrLine1} onChange={handleChange} required className="w-full p-2 border rounded" />
       </div>
       <div>
-        <label className="block font-medium mb-1">Address Line 2</label>
-        <input type="text" name="adrLine2" value={form.adrLine2} onChange={handleChange} className="w-full p-2 border rounded" />
+        <label className="block font-medium mb-1">Address Line 2 <span className="text-red-500">*</span></label>
+        <input type="text" name="adrLine2" value={form.adrLine2} onChange={handleChange} required className="w-full p-2 border rounded" />
       </div>
       <div>
         <label className="block font-medium mb-1">City <span className="text-red-500">*</span></label>
