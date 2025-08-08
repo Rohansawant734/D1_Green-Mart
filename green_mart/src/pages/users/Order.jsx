@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const Your_Order = () => {
+const Order = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const order = location.state;
@@ -147,4 +147,4 @@ const Your_Order = () => {
   );
 };
 
-export default Your_Order;
+export default Order;

@@ -1,6 +1,6 @@
  
-import { createContext, useContext, useState } from "react";
-// export const useAddress = () => useContext(AddressContext);
+import React, { createContext, useContext, useState } from "react";
+
 const AddressContext = createContext();
 
 export const AddressProvider = ({ children }) => {
@@ -13,4 +13,4 @@ export const AddressProvider = ({ children }) => {
   );
 };
 
-
+export const useAddress = () => useContext(AddressContext);
