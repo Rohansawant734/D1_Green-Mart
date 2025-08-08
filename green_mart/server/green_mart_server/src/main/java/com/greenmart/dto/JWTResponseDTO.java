@@ -15,4 +15,5 @@ public class JWTResponseDTO {
 	private String email;
 	private String phone;
 	private Long userId;
+	private String userRole;
 }

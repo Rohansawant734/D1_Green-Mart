@@ -8,7 +8,7 @@ import com.greenmart.entities.Supplier;
 import java.util.List;
 
 
-public interface SupplierRepository extends JpaRepository<Supplier, Long> {
+public interface SupplierDao extends JpaRepository<Supplier, Long> {
 
 	Supplier findByEmail(String email);
 	}

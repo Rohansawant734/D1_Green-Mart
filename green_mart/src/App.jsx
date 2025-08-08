@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import ScrollToTop from './Component/ScrollToTop';
@@ -11,7 +11,7 @@ import Register from './Component/Register';
 // User Pages
 import Home from './pages/users/Home';
 import Product_Details from './pages/users/Product_Details';
-import Wish_List from './pages/users/Wish_List';
+import Wish_List from './pages/users/Wish_list';
 import Cart from './pages/users/Cart';
 import Categories from './pages/users/Categories';
 import Your_Order from './pages/users/Your_Order';
@@ -38,10 +38,14 @@ import Supplier from './pages/admins/Supplier';
 import UserDetails from './pages/admins/UserDetails';
 
 const App = () => {
+  const location = useLocation()
+
+  const isAdminRoute = location.pathname.startsWith('/admin')
+
   return (
     <div>
       <ScrollToTop />
-      <Container />
+      {!isAdminRoute && <Container />}
 
       <Routes>
         {/* Auth */}
@@ -83,7 +87,7 @@ const App = () => {
         </Route>
       </Routes>
 
-      <Container2 />
+      {!isAdminRoute && <Container2 />}
 
       <ToastContainer
         position="top-right"

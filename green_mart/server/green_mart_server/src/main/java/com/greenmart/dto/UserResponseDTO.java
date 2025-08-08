@@ -18,4 +18,6 @@ public class UserResponseDTO {
 	private String phone;
 	
 	private Long userId;
+	
+	private boolean deleted;	
 }

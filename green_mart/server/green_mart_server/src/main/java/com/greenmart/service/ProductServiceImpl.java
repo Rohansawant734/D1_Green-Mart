@@ -12,7 +12,7 @@ import com.greenmart.custom_exceptions.ApiException;
 import com.greenmart.custom_exceptions.ResourceNotFoundException;
 import com.greenmart.dao.CategoryDao;
 import com.greenmart.dao.ProductDao;
-import com.greenmart.dao.SupplierRepository;
+import com.greenmart.dao.SupplierDao;
 import com.greenmart.dto.ApiResponse;
 import com.greenmart.dto.ProductDTO;
 import com.greenmart.dto.ProductResponseDTO;
@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService{
     private final ImageUploadService imageUploadService;
 	private final ProductDao productDao;
 	private final CategoryDao categoryDao;
-	private final SupplierRepository supplierRepository;
+	private final SupplierDao supplierDao;
 	private final ModelMapper modelMapper;
 	
 	@Override
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService{
 					.orElseThrow(()-> new RuntimeException("Category not found"));
 			entity.setMyCategory(category);
 			// Set supplier
-			Supplier supplier = supplierRepository.findByEmail(dto.getSupplierEmail());
+			Supplier supplier = supplierDao.findByEmail(dto.getSupplierEmail());
 		    if (supplier == null) {
 		        throw new RuntimeException("Supplier not found with email: " + dto.getSupplierEmail());
 		    }

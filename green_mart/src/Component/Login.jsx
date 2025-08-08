@@ -19,7 +19,13 @@ function Login() {
 
     if(result.success){
       toast.success('Login successful!')
-      navigate('/')
+      const user = JSON.parse(localStorage.getItem('user'))
+      if(user.userRole == 'ADMIN'){
+        navigate('/admin')
+      }
+      else{
+        navigate('/')
+      }
     }
     else{
       toast.error(result.error)

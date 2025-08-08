@@ -7,18 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.greenmart.entities.Supplier;
-import com.greenmart.dao.SupplierRepository;
+import com.greenmart.dao.SupplierDao;
 import com.greenmart.RequestDto.SupplierRequestDTO;
 import com.greenmart.ResponseDto.SupplierResponseDTO;
 
 @Service
 public class SupplierService {
 	 @Autowired
-	    private SupplierRepository supplierRepository;
+	    private SupplierDao supplierDao;
 
 	    public SupplierResponseDTO addSupplier(Supplier supplier) {
 	    	
-	    	Supplier savedSupplier = supplierRepository.save(supplier);
+	    	Supplier savedSupplier = supplierDao.save(supplier);
 	    	SupplierResponseDTO responseDTO = new SupplierResponseDTO(
 	                savedSupplier.getName(),
 	                savedSupplier.getContactNumber(),
@@ -30,7 +30,7 @@ public class SupplierService {
 }
 
 	    public List<SupplierResponseDTO> getAllSuppliers() {
-	        List<Supplier> suppliers = supplierRepository.findAll();
+	        List<Supplier> suppliers = supplierDao.findAll();
 	        List<SupplierResponseDTO> dtos = new ArrayList<>();
 
 	        for (Supplier supplier : suppliers) {
@@ -46,15 +46,15 @@ public class SupplierService {
 	    }
 	    
 	    public void deleteSupplierById(Long id) {
-	        if (!supplierRepository.existsById(id)) {
+	        if (!supplierDao.existsById(id)) {
 	            throw new RuntimeException("Supplier not found");
 	        }
-	        supplierRepository.deleteById(id);
+	        supplierDao.deleteById(id);
 	    }
 	    
 	    
 	    public SupplierResponseDTO updateSupplier(Long id, SupplierRequestDTO dto) {
-	    	  Supplier existingSupplier = supplierRepository.findById(id).orElse(null);
+	    	  Supplier existingSupplier = supplierDao.findById(id).orElse(null);
 
 		        if (existingSupplier == null) {
 		            return null; // Not found
@@ -64,7 +64,7 @@ public class SupplierService {
 		        existingSupplier.setContactNumber(dto.getContactNumber());
 		        existingSupplier.setAddress(dto.getAddress());
 		        
-	        Supplier updatedSupplier = supplierRepository.save( existingSupplier);
+	        Supplier updatedSupplier = supplierDao.save( existingSupplier);
 
 	        SupplierResponseDTO responseDTO = new SupplierResponseDTO(
 	        		updatedSupplier.getName(),
