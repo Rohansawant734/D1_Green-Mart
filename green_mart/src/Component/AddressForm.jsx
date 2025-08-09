@@ -1,4 +1,7 @@
+// components/AddressForm.jsx
 import React from "react";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext"; // assuming you have this
 
 const AddressForm = ({
   form,
@@ -8,55 +11,133 @@ const AddressForm = ({
   handleSubmit,
   editingId
 }) => {
+  const { authUser } = useAuth(); // check if user is logged in
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    if (!authUser) {
+      toast.error("Please login to save an address.")
+      // return
+    }
+    else{
+      handleSubmit(e)
+    }
+  }
+
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleFormSubmit}
       className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded shadow"
     >
       <div>
-        <label className="block font-medium mb-1">Address Line 1 <span className="text-red-500">*</span></label>
-        <input type="text" name="adrLine1"  placeholder="House number and street name" value={form.adrLine1} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block font-medium mb-1">
+          Address Line 1 <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          name="adrLine1"
+          value={form.adrLine1}
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded"
+        />
       </div>
       <div>
-        <label className="block font-medium mb-1">Address Line 2 <span className="text-red-500">*</span></label>
-        <input type="text" name="adrLine2"  placeholder="Apartment, suite, unit, etc. (optional)" value={form.adrLine2} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block font-medium mb-1">
+          Address Line 2 <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          name="adrLine2"
+          value={form.adrLine2}
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded"
+        />
       </div>
       <div>
-        <label className="block font-medium mb-1">City <span className="text-red-500">*</span></label>
-        <input type="text" placeholder="Your city" name="city" value={form.city} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block font-medium mb-1">
+          City <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          name="city"
+          value={form.city}
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded"
+        />
       </div>
       <div>
-        <label className="block font-medium mb-1">State <span className="text-red-500">*</span></label>
-        <select name="state" value={form.state} onChange={handleChange} className="w-full p-2 border rounded">
+        <label className="block font-medium mb-1">
+          State <span className="text-red-500">*</span>
+        </label>
+        <select
+          name="state"
+          value={form.state}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+        >
           <option value="">Select</option>
           {stateOptions.map((state) => (
-            <option key={state} value={state}>{state}</option>
+            <option key={state} value={state}>
+              {state}
+            </option>
           ))}
         </select>
       </div>
       <div>
-        <label className="block font-medium mb-1">Country <span className="text-red-500">*</span></label>
-        <select name="country" value={form.country} onChange={handleChange} className="w-full p-2 border rounded">
+        <label className="block font-medium mb-1">
+          Country <span className="text-red-500">*</span>
+        </label>
+        <select
+          name="country"
+          value={form.country}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+        >
           <option value="">Select</option>
           {countryOptions.map((country) => (
-            <option key={country} value={country}>{country}</option>
+            <option key={country} value={country}>
+              {country}
+            </option>
           ))}
         </select>
       </div>
       <div>
-        <label className="block font-medium mb-1">Zip Code <span className="text-red-500">*</span></label>
-        <input type="text" placeholder="Your ZIP code" name="zipCode" value={form.zipCode} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block font-medium mb-1">
+          Zip Code <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          name="zipCode"
+          value={form.zipCode}
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded"
+        />
       </div>
       <div>
-        <label className="block font-medium mb-1">Address Type <span className="text-red-500">*</span></label>
-        <select name="addrType" value={form.addrType} onChange={handleChange} required className="w-full p-2 border rounded">
+        <label className="block font-medium mb-1">
+          Address Type <span className="text-red-500">*</span>
+        </label>
+        <select
+          name="addrType"
+          value={form.addrType}
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded"
+        >
           <option value="HOME">Home</option>
           <option value="OFFICE">Office</option>
           <option value="OTHER">Other</option>
         </select>
       </div>
       <div className="col-span-2 text-right">
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
           {editingId ? "Update Address" : "Add Address"}
         </button>
       </div>

@@ -9,6 +9,7 @@ import {
   ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 const AccountLayout = () => {
   const { logout, authUser } = useAuth();
 
@@ -17,9 +18,16 @@ const AccountLayout = () => {
     }`;
 
   const onLogout = () => {
-    logout()
-    toast.success('Logged out successfully!');
-    navigate('/')
+    if(!authUser){
+      toast.info('You are not logged in. Please log in first.')
+      // return
+    }
+    else{
+      logout()
+      toast.success('Logged out successfully!');
+      navigate('/')
+    }
+
   }
   return (
     <div className="grid grid-cols-12 gap-4 min-h-screen p-4 bg-green-100">
@@ -39,12 +47,6 @@ const AccountLayout = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/downloads" className={navLinkStyle}>
-                <CloudArrowDownIcon className="w-5 h-5" />
-                Downloads
-              </NavLink>
-            </li>
-            <li>
               <NavLink to="/account/addresses" className={navLinkStyle}>
                 <MapPinIcon className="w-5 h-5" />
                 Addresses
@@ -57,12 +59,12 @@ const AccountLayout = () => {
               </NavLink>
             </li>
             <li>
-              <div className="flex items-center gap-4">
-                <NavLink to="/" onClick={onLogout} className={navLinkStyle}>
+              {/* <div className="flex items-center gap-4"> */}
+                <NavLink onClick={onLogout} className='flex items-center gap-3 px-3 py-2 rounded-md text-sm font-semibold transition text-gray-800 hover:bg-green-300'>
                   <ArrowRightOnRectangleIcon className="w-5 h-5" />
                   Logout
                 </NavLink>
-              </div>
+              {/* </div> */}
             </li>
           </ul>
         </nav>
