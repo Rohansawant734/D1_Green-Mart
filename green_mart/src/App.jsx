@@ -12,7 +12,6 @@ import Register from './Component/Register';
 import Home from './pages/users/Home';
 import Product_Details from './pages/users/Product_Details';
  
-import Wish_List from './pages/users/Wish_list';
  
 import Cart from './pages/users/Cart';
 import Categories from './pages/users/Categories';
