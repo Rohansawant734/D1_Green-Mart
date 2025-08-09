@@ -1,7 +1,8 @@
 // components/AddressForm.jsx
 import React from "react";
-import { toast } from "react-toastify";
-import { useAuth } from "../context/AuthContext"; // assuming you have this
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from "../context/AuthContext";
 
 const AddressForm = ({
   form,

@@ -2,6 +2,7 @@ import React, { useEffect, useId, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getUser } from '../../services/user';
 import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const Edit_Profile = () => {
   const { authUser, fetchProfile, updateProfile, changePassword } = useAuth()
