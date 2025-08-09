@@ -1,4 +1,3 @@
-// components/AddressForm.jsx
 import React from "react";
 
 const AddressForm = ({
@@ -16,15 +15,15 @@ const AddressForm = ({
     >
       <div>
         <label className="block font-medium mb-1">Address Line 1 <span className="text-red-500">*</span></label>
-        <input type="text" name="adrLine1" value={form.adrLine1} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <input type="text" name="adrLine1"  placeholder="House number and street name" value={form.adrLine1} onChange={handleChange} required className="w-full p-2 border rounded" />
       </div>
       <div>
         <label className="block font-medium mb-1">Address Line 2 <span className="text-red-500">*</span></label>
-        <input type="text" name="adrLine2" value={form.adrLine2} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <input type="text" name="adrLine2"  placeholder="Apartment, suite, unit, etc. (optional)" value={form.adrLine2} onChange={handleChange} required className="w-full p-2 border rounded" />
       </div>
       <div>
         <label className="block font-medium mb-1">City <span className="text-red-500">*</span></label>
-        <input type="text" name="city" value={form.city} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <input type="text" placeholder="Your city" name="city" value={form.city} onChange={handleChange} required className="w-full p-2 border rounded" />
       </div>
       <div>
         <label className="block font-medium mb-1">State <span className="text-red-500">*</span></label>
@@ -46,7 +45,7 @@ const AddressForm = ({
       </div>
       <div>
         <label className="block font-medium mb-1">Zip Code <span className="text-red-500">*</span></label>
-        <input type="text" name="zipCode" value={form.zipCode} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <input type="text" placeholder="Your ZIP code" name="zipCode" value={form.zipCode} onChange={handleChange} required className="w-full p-2 border rounded" />
       </div>
       <div>
         <label className="block font-medium mb-1">Address Type <span className="text-red-500">*</span></label>

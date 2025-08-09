@@ -11,8 +11,7 @@ import Register from './Component/Register';
 // User Pages
 import Home from './pages/users/Home';
 import Product_Details from './pages/users/Product_Details';
- 
- 
+
 import Cart from './pages/users/Cart';
 import Categories from './pages/users/Categories';
 import Order from './pages/users/Order';
