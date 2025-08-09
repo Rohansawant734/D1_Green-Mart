@@ -23,7 +23,7 @@ import Edit_Profile from './pages/users/Edit_Profile';
 import Address from './pages/users/Address';
 import AccountLayout from './pages/users/AccountLayout';
 import Checkout from './pages/users/Checkout'
- 
+
 
 // Admin Pages
 import Adminlayout from './pages/admins/Adminlayout';
@@ -66,7 +66,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/search/:keyword" element={<SearchResult />} />
         <Route path='/checkout' element={<Checkout />} />
-        
+
 
         {/* User Account Routes */}
         <Route path="/account" element={<AccountLayout />}>
@@ -95,15 +95,16 @@ const App = () => {
 
       <ToastContainer
         position="top-right"
-        autoClose={1500}
-        hideProgressBar={true}
+        autoClose={2000}
+        hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         pauseOnHover
         draggable
         theme="colored"
+        transition:Bounce
       />
-        
+
     </div>
   );
 };

@@ -3,8 +3,7 @@ import axios from 'axios';
 import { useCart } from './../../context/CartContext';
 import { useAuth } from './../../context/AuthContext';
 import { useAddress } from './../../context/AddressContext';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import BillingDetails from '../../Component/BillingDetails';
 
@@ -107,7 +106,6 @@ const Checkout = () => {
 
   return (
     <>
-      <ToastContainer />
       <form
         onSubmit={handleSubmit}
         className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-8"
@@ -187,7 +185,7 @@ const Checkout = () => {
                       className="accent-green-600 w-5 h-5"
                     />
                     <span className="ml-2">
-                      {method.replace(/_/g, ' ').toLowerCase()}
+                      {method.replace(/_/g, ' ').toUpperCase()}
                     </span>
                   </label>
                 )
