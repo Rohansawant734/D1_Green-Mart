@@ -17,26 +17,7 @@ function Navigate() {
     const doLogin = () => {
         navigate('/login')
     }
-    //for the search bar while search navigate with appended as a query parameter
-    //api
-    //     useEffect(() => {
-    //     if (!query) return;
-
-    //     const fetchProducts = async () => {
-    //       try {
-    //         setLoading(true);
-    //         const res = await axios.get(`/api/products/search?q=${encodeURIComponent(query)}`);
-    //         setProducts(res.data);
-    //       } catch (err) {
-    //         console.error('Error fetching products:', err);
-    //         setProducts([]);
-    //       } finally {
-    //         setLoading(false);
-    //       }
-    //     };
-
-    //     fetchProducts();
-    //   }, [query]);
+    
     const onSearch = (e) => {
         e.preventDefault();
         if (!searchQuery.trim()) return;

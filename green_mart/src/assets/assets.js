@@ -72,6 +72,7 @@ import barley_image from "./barley_image.png";
 import banner_image from "./banner123.png";
 import fruits_video from "./fruits.mp4";
 import apple_video from "./apple.mp4";
+
 export const assets = {
   logo,
   search_icon,

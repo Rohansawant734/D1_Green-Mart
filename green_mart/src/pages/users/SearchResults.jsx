@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../../Component/ProductCard';
+import emptyProduct from '../../assets/empty_product_search.png'
 
 const SearchResults = () => {
     const { keyword } = useParams();
@@ -19,7 +20,7 @@ const SearchResults = () => {
             setLoading(true);
             setError(null);
             try {
-               const response = await axios.get(`http://localhost:8080/products/search?q=${encodeURIComponent(keyword)}`);
+                const response = await axios.get(`http://localhost:8080/products/search?q=${encodeURIComponent(keyword)}`);
                 console.log("Raw backend response:", response.data);
 
                 const normalized = Array.isArray(response.data)
@@ -50,8 +51,8 @@ const SearchResults = () => {
     }, [keyword]);
 
     return (
-        <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4">
+        <div className="p-6 mt-35">
+            <h2 className="text-xl font-semibold mb-4 text-center">
                 Search results for "{keyword}"
             </h2>
 
@@ -70,7 +71,14 @@ const SearchResults = () => {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-gray-600">No matching products found.</p>
+                    <div className="flex flex-col items-center justify-center flex-grow text-center h-[400px]">
+                        <img
+                            src={emptyProduct}
+                            alt="No Products Found"
+                            className="w-48 h-48 object-contain mb-6 opacity-70"
+                        />
+                        <p className="text-gray-600 text-lg">No matching products found.</p>
+                    </div>
                 )
             )}
         </div>
