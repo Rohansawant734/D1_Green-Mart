@@ -11,10 +11,11 @@ import Register from './Component/Register';
 // User Pages
 import Home from './pages/users/Home';
 import Product_Details from './pages/users/Product_Details';
-import Wish_List from './pages/users/Wish_list';
+
 import Cart from './pages/users/Cart';
 import Categories from './pages/users/Categories';
-import Your_Order from './pages/users/Your_Order';
+import Order from './pages/users/Order';
+import Wish_List from './pages/users/Wish_list';
 import Contact from './pages/users/Contact';
 import SearchResult from './pages/users/SearchResults';
 import DashBoard from './pages/users/DashBoard';
@@ -36,6 +37,7 @@ import Receipt from './pages/admins/Receipt';
 import Reviews_Rating from './pages/admins/Reviews_Rating';
 import Supplier from './pages/admins/Supplier';
 import UserDetails from './pages/admins/UserDetails';
+
 
 const App = () => {
   const location = useLocation()
@@ -60,7 +62,7 @@ const App = () => {
         <Route path="/wishlist" element={<Wish_List />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/categories" element={<Categories />} />
-        <Route path="/orders" element={<Your_Order />} />
+        <Route path="/orders" element={<Order />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/search/:keyword" element={<SearchResult />} />
         <Route path='/checkout' element={<Checkout />} />
@@ -69,7 +71,7 @@ const App = () => {
         {/* User Account Routes */}
         <Route path="/account" element={<AccountLayout />}>
           <Route index element={<DashBoard />} />
-          <Route path="orders" element={<Your_Order />} />
+          <Route path="orders" element={<Order />} />
           <Route path="edit-profile" element={<Edit_Profile />} />
           <Route path="addresses" element={<Address />} />
         </Route>

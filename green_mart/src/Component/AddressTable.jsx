@@ -1,8 +1,15 @@
 // components/AddressTable.jsx
 import React from "react";
 import { toast } from "react-toastify";
+import { useAddress } from "../context/AddressContext";
 
 const AddressTable = ({ addresses, handleEdit, handleDelete, userId }) => {
+  const { setSelectedAddress } = useAddress();
+
+  const handleSelect = (addr) => {
+    setSelectedAddress(addr);
+    toast.success("Address selected for delivery");
+  };
   return (
     <table className="w-full border border-gray-400 rounded overflow-hidden">
       <thead className="bg-gradient-to-r from-green-200 to-gray-200">
@@ -29,7 +36,7 @@ const AddressTable = ({ addresses, handleEdit, handleDelete, userId }) => {
               <td className="p-2 flex gap-2 items-center">
                 <button onClick={() => handleEdit(addr)} className="text-blue-600 hover:underline">Edit</button>
                 <button onClick={() => handleDelete(userId, addr.id)} className="text-red-600 hover:underline">Delete</button>
-                <button onClick={() => toast.success("Address selected for delivery")} className="text-green-700 font-semibold underline hover:text-green-900">Select</button>
+                <button onClick={() => handleSelect(addr)} className="text-green-700 font-semibold underline hover:text-green-900" > Select </button>
               </td>
             </tr>
           ))

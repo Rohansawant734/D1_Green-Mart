@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.greenmart.entities.Supplier;
 import com.greenmart.RequestDto.SupplierRequestDTO;
 import com.greenmart.ResponseDto.SupplierResponseDTO;
-import com.greenmart.dto.OrderResponseDTO;
+import com.greenmart.dto.AddUserDTO; 
 import com.greenmart.dto.UserResponseDTO;
+ 
 import com.greenmart.service.AdminUserService;
 import com.greenmart.service.OrderService;
 import com.greenmart.service.SupplierService;
@@ -75,11 +76,11 @@ public class AdminController {
 	            return ResponseEntity.notFound().build();
 	        }
 	    }
-	    
-	    @GetMapping("/orders")
-	    public List<OrderResponseDTO> getAllOrders() {
-	        return orderService.getAllOrdersForAdmin();
-	    }
+//	    
+//	    @GetMapping("/orders")
+//	    public List<OrderResponseDTO> getAllOrders() {
+//	        return orderService.getAllOrdersForAdmin();
+//	    }
 	    
 	    @GetMapping("/users")
 	    public ResponseEntity<?> getAllActiveUsers() {

@@ -1,10 +1,16 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useAddress } from '../../context/AddressContext';
 
-const Your_Order = () => {
+
+const Order = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const order = location.state;
+  const { authUser } = useAuth();
+  const { selectedAddress } = useAddress();
+  console.log('Order details:', selectedAddress);
 
   if (!order) {
     return (
@@ -54,7 +60,7 @@ const Your_Order = () => {
             </div>
             <div className="border-r border-gray-300 px-3 py-2">
               <span className="block text-xs text-gray-500">EMAIL:</span>
-              <span className="font-bold text-black">{order.email}</span>
+              <span className="font-bold text-black">{authUser?.email}</span>
             </div>
             <div className="border-r border-gray-300 px-3 py-2">
               <span className="block text-xs text-gray-500">TOTAL:</span>
@@ -122,21 +128,21 @@ const Your_Order = () => {
           <tbody>
             <tr>
               <td className="p-4 border-r align-top">
-                <p className="text-gray-700">Name: {order.customer.name}</p>
-                <p className="text-gray-700">Address: {order.customer.address}</p>
+                <p className="text-gray-700">Name: {authUser?.firstName} {authUser?.lastName}</p>
+                <p className="text-gray-700">Address: {selectedAddress?.adrLine1 || ""}, {selectedAddress?.adrLine2 || ""}</p>
                 <p className="text-gray-700">
-                  Location: {order.customer.city}, {order.customer.state} {order.customer.zipCode}
+                  Location: {selectedAddress?.city || ""}, {selectedAddress?.state} {selectedAddress?.zipCode}
                 </p>
-                <p className="text-gray-700">Phone: {order.customer.phone}</p>
+                <p className="text-gray-700">Phone: {authUser?.phone}</p>
               </td>
 
               <td className="p-4 align-top">
-                <p className="text-gray-700">Name: {order.customer.name}</p>
-                <p className="text-gray-700">Address: {order.customer.address}</p>
+                <p className="text-gray-700">Name: {authUser?.firstName} {authUser?.lastName}</p>
+                <p className="text-gray-700">Address: {selectedAddress?.adrLine1 || ""}, {selectedAddress?.adrLine2 || ""}</p>
                 <p className="text-gray-700">
-                  Location: {order.customer.city}, {order.customer.state} {order.customer.zipCode}
+                  Location: {selectedAddress?.city || ""}, {selectedAddress?.state} {selectedAddress?.zipCode}
                 </p>
-                <p className="text-gray-700">Phone: {order.customer.phone}</p>
+                <p className="text-gray-700">Phone: {authUser?.phone}</p>
               </td>
             </tr>
           </tbody>
@@ -147,4 +153,4 @@ const Your_Order = () => {
   );
 };
 
-export default Your_Order;
+export default Order;
