@@ -14,6 +14,7 @@ const Checkout = () => {
   const { authUser } = useAuth();
   const { selectedAddress } = useAddress();
   const navigate = useNavigate();
+  // console.log( "checkout"+useAuth);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -55,17 +56,17 @@ const Checkout = () => {
       toast.error('Please select a delivery address.');
       return;
     }
-    if (!authUser?.id) {
+    if (!authUser?.userId) {
       toast.error('You must be logged in to place an order.');
       return;
     }
 
     // Build order payload matching OrderRequestDTO
     const orderPayload = {
-      userId: authUser.id,
+      userId: authUser.userId,
       addressId: selectedAddress.id,
       orderLines: cartItems.map((item) => ({
-        productId: item.id,
+        productId: item.productId,
         quantity: item.quantity,
         discount: 0, // Adjust if needed
         price: item.offerPrice,
@@ -73,6 +74,7 @@ const Checkout = () => {
       paymentMethod: formData.paymentMethod, // already matches backend enum
       deliveryCharges: shipping,
     };
+    console.log('Order Payload:', orderPayload);
 
     try {
       const res = await axios.post('http://localhost:8080/orders/place', orderPayload);

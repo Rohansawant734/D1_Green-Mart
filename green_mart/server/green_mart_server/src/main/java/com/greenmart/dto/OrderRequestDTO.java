@@ -23,9 +23,9 @@ public class OrderRequestDTO {
     @NotEmpty
     private List<OrderLineDTO> orderLines;
     
-    @NotBlank
-    private PaymentMethod paymentMethod;
     @NotNull
-    @Positive
+    private PaymentMethod paymentMethod;
+   
+    
     private long deliveryCharges;
 }
