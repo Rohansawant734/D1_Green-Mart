@@ -17,26 +17,32 @@ const Edit_Profile = () => {
     userId: ''
   })
 
-useEffect(() => {
-  const loadProfile = async () => {
-    const res = await fetchProfile();
-    if (res.success && res.data) {
-      const user = res.data;
-      setFormData((prev) => ({
-        ...prev,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        userId: user.userId || ''
-      }));
-    } else {
-      toast.error(res.error || "Failed to load profile");
-    }
-  };
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (!authUser) {
+        toast.info("Please login to access your profile.")
+        // return
+      }
+      else {
+        const res = await fetchProfile();
+        if (res.success && res.data) {
+          const user = res.data;
+          setFormData((prev) => ({
+            ...prev,
+            firstName: user.firstName || '',
+            lastName: user.lastName || '',
+            email: user.email || '',
+            phone: user.phone || '',
+            userId: user.userId || ''
+          }));
+        } else {
+          toast.error(res.error || "Failed to load profile");
+        }
+      }
+    };
 
-  loadProfile();
-}, []);
+    loadProfile();
+  }, []);
 
 
   const onInputChange = (e) => {
@@ -46,47 +52,58 @@ useEffect(() => {
   const onUpdateProfile = async (e) => {
     e.preventDefault()
 
-    await updateProfile(
-      formData.firstName,
-      formData.lastName,
-      formData.email,
-      formData.phone
-    )
+    if (!authUser) {
+      toast.info("Please login to update your profile.")
+    }
+    else {
+      await updateProfile(
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.phone
+      )
+    }
 
   }
 
   const onUpdatePassword = async (e) => {
     e.preventDefault()
 
-    if (formData.newPassword !== formData.confirmNewPassword) {
-      toast.warn("New passwords do not match")
-      return
+    if (!authUser) {
+      toast.info("Please login to update your password.")
     }
-    
-    if(!isValidPassword(formData.newPassword)){
-      toast.warn("New password must be 5-20 characters long, include at least one digit, one lowercase letter, and one special character (#@$*).")
-      return
-    }
+    else {
+      if (formData.newPassword !== formData.confirmNewPassword) {
+        toast.warn("New passwords do not match")
+        return
+      }
 
-    const result = await changePassword(formData.oldPassword, formData.newPassword)
+      if (!isValidPassword(formData.newPassword)) {
+        toast.warn("New password must be 5-20 characters long, include at least one digit, one lowercase letter, and one special character (#@$*).")
+        return
+      }
 
-    if(result.success){
-      toast.success("Successfully updated password")
-      setFormData({
-        oldPassword: '',
-        newPassword: '',
-        confirmNewPassword: ''
-      })
-    }
-    else{
-      toast.error(result.error || "Old password is incorrect")
+      const result = await changePassword(formData.oldPassword, formData.newPassword)
+
+      if (result.success) {
+        toast.success("Successfully updated password")
+        setFormData({
+          oldPassword: '',
+          newPassword: '',
+          confirmNewPassword: ''
+        })
+      }
+      else {
+        toast.error(result.error || "Old password is incorrect")
+      }
+
     }
   }
 
-    const isValidPassword = (pwd) => {
-        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[#@$*]).{5,20}$/
-        return regex.test(pwd);
-    }
+  const isValidPassword = (pwd) => {
+    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[#@$*]).{5,20}$/
+    return regex.test(pwd);
+  }
 
   return (
     <div className="md:col-span-3 bg-white p-6">

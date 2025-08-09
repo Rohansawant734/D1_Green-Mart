@@ -20,6 +20,12 @@ const Adminlayout = () => {
     }`;
 
   const onLogout = () => {
+    if(!authUser){
+      toast.info("You are not logged in. Please log in first.");
+      navigate('/login')
+      return
+    }
+
     logout()
     toast.success('Logged out successfully!');
     navigate('/login')
