@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.greenmart.entities.Supplier;
 import com.greenmart.RequestDto.SupplierRequestDTO;
 import com.greenmart.ResponseDto.SupplierResponseDTO;
-
+import com.greenmart.dto.AddUserDTO; 
 import com.greenmart.dto.UserResponseDTO;
  
 import com.greenmart.service.AdminUserService;
