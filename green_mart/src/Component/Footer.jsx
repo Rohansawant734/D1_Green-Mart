@@ -13,7 +13,7 @@ function Footer() {
                         alt="Logo"
                     />
                     <p className="text-gray-700 max-w-md">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic veniam quidem porro optio. Et consequatur possimus, quas reiciendis recusandae error?
+                        Delivering fresh, quality groceries right to your doorstep. Experience the best selection with unbeatable prices and fast delivery
                     </p>
                 </div>
 

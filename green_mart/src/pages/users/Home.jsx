@@ -7,12 +7,20 @@ import HeroSlider from '../../Component/HeroSlider'
 import myImage from '../../assets/farmer.png'
 import axios from 'axios'
 import FloatingStack from './../../Component/FloatingStack';
+import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const { wishlist, toggleWishlist } = useWishlist();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories,setCategories] = useState([]);
+  const navigate = useNavigate();
+
+  const handleShopNow = () => {
+    navigate('/categories', {
+      state: { selectedCategory: 'Organic veggies' } 
+    });
+  };
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -90,7 +98,7 @@ const Home = () => {
             vehicula. In sit amet arcu libero. Proin fringilla dui sed arcu fringilla tristique eget
             ultricies elit.
           </p>
-          <button className="bg-yellow-400 text-white font-medium px-6 py-2 rounded hover:bg-yellow-500 transition">
+          <button onClick={handleShopNow} className="bg-yellow-400 text-white font-medium px-6 py-2 rounded hover:bg-yellow-500 transition">
             Shop Now
           </button>
         </div>

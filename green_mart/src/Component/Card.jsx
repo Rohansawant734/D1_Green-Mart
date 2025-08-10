@@ -39,11 +39,11 @@ const Card = () => {
     removeFromCart(item.productId);
     toast.warn(`${item.productName} removed from cart`);
   };
-  const { authUser } = useAuth();
+  const { authUser, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authUser) {
+    if (!loading && !authUser) {
       navigate('/login'); // Redirect to login if not authenticated
       if (!hasWarned.current) {
         toast.warn("You must log in to view your cart", {        
@@ -56,7 +56,7 @@ const Card = () => {
         hasWarned.current = true;
       }
     }
-  }, [authUser, navigate]);
+  }, [authUser, loading ,navigate]);
 
   if (!authUser) {
     return null; // Prevent rendering before redirect

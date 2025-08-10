@@ -37,6 +37,7 @@ import Receipt from './pages/admins/Receipt';
 import Reviews_Rating from './pages/admins/Reviews_Rating';
 import Supplier from './pages/admins/Supplier';
 import UserDetails from './pages/admins/UserDetails';
+import About from './Component/About';
 
 
 const App = () => {
@@ -64,6 +65,7 @@ const App = () => {
         <Route path="/categories" element={<Categories />} />
         <Route path="/orders" element={<Order />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
         <Route path="/search/:keyword" element={<SearchResult />} />
         <Route path='/checkout' element={<Checkout />} />
 
