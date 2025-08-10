@@ -18,7 +18,7 @@ const AddressForm = ({
     e.preventDefault()
     if (!authUser) {
       toast.error("Please login to save an address.")
-      // return
+       return;
     }
     else{
       handleSubmit(e)
@@ -40,7 +40,7 @@ const AddressForm = ({
           value={form.adrLine1}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${!form.adrLine1 && 'border-red-500'}`}
         />
       </div>
       <div>
@@ -66,7 +66,7 @@ const AddressForm = ({
           value={form.city}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+           className={`w-full p-2 border rounded ${!form.city && 'border-red-500'}`}
         />
       </div>
       <div>
@@ -77,7 +77,7 @@ const AddressForm = ({
           name="state"
           value={form.state}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${!form.state && 'border-red-500'}`}
         >
           <option value="">Select</option>
           {stateOptions.map((state) => (
@@ -95,7 +95,7 @@ const AddressForm = ({
           name="country"
           value={form.country}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${!form.country && 'border-red-500'}`}
         >
           <option value="">Select</option>
           {countryOptions.map((country) => (
@@ -115,7 +115,7 @@ const AddressForm = ({
           value={form.zipCode}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${!form.zipCode && 'border-red-500'}`}
         />
       </div>
       <div>
@@ -127,7 +127,7 @@ const AddressForm = ({
           value={form.addrType}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${!form.addrType && 'border-red-500'}`}
         >
           <option value="HOME">Home</option>
           <option value="OFFICE">Office</option>

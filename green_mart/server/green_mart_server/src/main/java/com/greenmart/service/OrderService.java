@@ -5,6 +5,7 @@ import java.util.List;
 import com.greenmart.dto.ApiResponse;
 import com.greenmart.dto.OrderDTO;
 import com.greenmart.dto.OrderRequestDTO;
+import com.greenmart.dto.OrderResponseDTO;
 import com.greenmart.dto.OrderUpdateDTO;
 
 //import java.util.List;
@@ -14,7 +15,7 @@ import com.greenmart.dto.OrderUpdateDTO;
 public interface OrderService {
 //    List<OrderResponseDTO> getAllOrdersForAdmin();
 	
-	 ApiResponse placeOrder(OrderRequestDTO requestDTO);
+	 OrderResponseDTO placeOrder(OrderRequestDTO requestDTO);
 
 	    List<OrderDTO> getOrdersByUserId(Long userId);
 

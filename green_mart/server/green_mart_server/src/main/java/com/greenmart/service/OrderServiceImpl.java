@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final ModelMapper mapper;
 
     @Override
-    public ApiResponse placeOrder(OrderRequestDTO requestDTO) {
+    public OrderResponseDTO placeOrder(OrderRequestDTO requestDTO) {
         User user = userDao.findById(requestDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -68,8 +68,8 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderLines(orderLines);
         order.setOrderAmount(totalAmount + order.getDeliveryCharges());
 
-        orderDao.save(order);
-        return new ApiResponse("Order placed successfully!");
+       Order savedOrder = orderDao.save(order);
+        return  new OrderResponseDTO("Order placed successfully!", savedOrder.getId());
     }
 
     @Override
