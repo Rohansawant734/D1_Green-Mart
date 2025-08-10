@@ -26,6 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final AddressDao addressDao;
     private final ProductDao productDao;
     private final ModelMapper mapper;
+    private final EmailService emailService;
 
     @Override
     public ApiResponse placeOrder(OrderRequestDTO requestDTO) {
@@ -69,6 +70,9 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderAmount(totalAmount + order.getDeliveryCharges());
 
         orderDao.save(order);
+
+        emailService.sendOrderConfirmationEmail(user, order);
+        
         return new ApiResponse("Order placed successfully!");
     }
 
