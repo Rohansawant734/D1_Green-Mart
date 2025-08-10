@@ -112,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentMethod(updateDTO.getPaymentMethod());
         }
 
-        // ✅ Handle address update
+        //  Handle address update
         if (updateDTO.getAddressId() != null) {
             Address newAddress = addressDao.findById(updateDTO.getAddressId())
                     .orElseThrow(() -> new ResourceNotFoundException("Address not found with ID: " + updateDTO.getAddressId()));
@@ -136,7 +136,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     
-    //  Shared mapper used by all endpoints
+ 
+    // Shared mapper used by all endpoints
     private OrderDTO mapOrderToDTO(Order order) {
         OrderDTO orderDTO = mapper.map(order, OrderDTO.class);
 
@@ -160,6 +161,7 @@ public class OrderServiceImpl implements OrderService {
             if (line.getProduct() != null) {
                 dto.setProductId(line.getProduct().getId());
                 dto.setProductName(line.getProduct().getProdName());
+                dto.setProductImage(line.getProduct().getProdImgUrl());
             }
 
             return dto;
