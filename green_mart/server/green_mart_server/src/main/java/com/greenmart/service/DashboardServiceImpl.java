@@ -44,22 +44,22 @@ public class DashboardServiceImpl implements DashboardService{
 		}
 		return map;
 	}
-//	@Override
-//	public List<Map<String, Long>> getTopProducts() {
-//	    List<Object[]> result = productDao.findTopProducts();
-//	    List<Map<String, Long>> topProducts = new ArrayList<>();
-//	    
-//	    for (Object[] row : result) {
-//	        String productName = (String) row[0];
-//	        Long totalSales = (row[1] instanceof Long)
-//	            ? (Long) row[1]
-//	            : ((Number) row[1]).longValue(); // to handle BigInteger, etc.
-//
-//	        Map<String, Long> productData = new LinkedHashMap<>();
-//	        productData.put(productName, totalSales);
-//	        topProducts.add(productData);
-//	    }
-//
-//	    return topProducts;
-	//}
+	@Override
+	public List<Map<String, Long>> getTopProducts() {
+	    List<Object[]> result = productDao.findTopProducts();
+	    List<Map<String, Long>> topProducts = new ArrayList<>();
+	    
+	    for (Object[] row : result) {
+	        String productName = (String) row[0];
+	        Long totalSales = (row[1] instanceof Long)
+	            ? (Long) row[1]
+	            : ((Number) row[1]).longValue(); // to handle BigInteger, etc.
+
+	        Map<String, Long> productData = new LinkedHashMap<>();
+	        productData.put(productName, totalSales);
+	        topProducts.add(productData);
+	    }
+
+	    return topProducts;
+	}
 }
