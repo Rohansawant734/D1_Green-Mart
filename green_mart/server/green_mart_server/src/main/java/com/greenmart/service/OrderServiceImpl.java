@@ -26,6 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final AddressDao addressDao;
     private final ProductDao productDao;
     private final ModelMapper mapper;
+    private final EmailService emailService;
 
     @Override
     public OrderResponseDTO placeOrder(OrderRequestDTO requestDTO) {
@@ -67,8 +68,9 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderLines(orderLines);
         order.setOrderAmount(totalAmount + order.getDeliveryCharges());
-
-       Order savedOrder = orderDao.save(order);
+      
+        Order savedOrder = orderDao.save(order);
+        emailService.sendOrderConfirmationEmail(user, savedOrder);
         return  new OrderResponseDTO("Order placed successfully!", savedOrder.getId());
     }
 
@@ -134,6 +136,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     
+ 
     // Shared mapper used by all endpoints
     private OrderDTO mapOrderToDTO(Order order) {
         OrderDTO orderDTO = mapper.map(order, OrderDTO.class);
