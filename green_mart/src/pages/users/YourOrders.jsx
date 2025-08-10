@@ -106,7 +106,7 @@ const YourOrders = () => {
       <div className="flex justify-between items-center">
         <div>
           <h3 className="font-bold text-xl text-gray-800">
-            Order #{order.id}
+            Order No: {order.id}
           </h3>
           <p className="text-sm text-gray-500">{order.creationDate}</p>
         </div>

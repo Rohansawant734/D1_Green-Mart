@@ -38,7 +38,7 @@ const Order = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-7xl mx-auto bg-white p-6 shadow-md rounded-md">
-        {/* ✅ Order Received Summary */}
+        {/*  Order Received Summary */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">Order received</h2>
           <p className="text-gray-600 mb-6">Thank you. Your order has been received.</p>
@@ -73,7 +73,7 @@ const Order = () => {
           </p>
         </div>
 
-        {/* ✅ Product Table */}
+        {/* Product Table */}
         <h3 className="text-2xl font-semibold mb-4">Order Details</h3>
         <table className="min-w-full border border-gray-300 text-left">
           <thead className="bg-gray-100">
