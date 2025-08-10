@@ -21,44 +21,6 @@ public class EmailService {
 		this.mailSender = mailSender;
 	}
 	
-	public void sendEmail(String to, String subject, String body) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		
-		message.setFrom("rohansawant632@gmail.com");
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(body);
-		
-		mailSender.send(message);
-		System.out.println("Email sent successfully");
-	}
-	
-	public void sendEmailWithButton(String to, String subject, String messageBody, String buttonUrl) throws MessagingException{
-		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		
-		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-		
-		helper.setFrom("rohansawant632@gmail.com");
-		helper.setTo(to);
-		helper.setSubject(subject);
-		
-		String htmlContent = "<DOCTYPE html>" +
-				"<html>" + 
-				"<body style='font-family: Arial, sans-serif;'>" + 
-				"<h2 style='color: #333;'>" + messageBody + "</h2>" + 
-				"<a href='" + buttonUrl + "' style='" + "display:inline-block;padding:12px 24px;margin-top:15px;" +
-				"background-color:#28a745;color:white;text-decoration:none;" +
-				"border-radius:6px;font-size:16px;font-weight:bold;" + 
-				"'>Browse Now</a>" + 
-				"</body>" + 
-				"</html>";
-		
-		helper.setText(htmlContent, true);
-		mailSender.send(mimeMessage);
-		System.out.println("Email sent with HTML button");
-				
-	}
-	
 	public void sendHtmlEmail(String to, String subject, String htmlBody) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -79,6 +41,42 @@ public class EmailService {
         sendHtmlEmail(user.getEmail(), subject, htmlBody);
     }
     
+    public void sendPasswordUpdateEmail(String to, String firstName) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+            helper.setTo(to);
+            helper.setSubject("Password Updated Successfully");
+
+            String htmlContent = """
+                    <html>
+                    <body style="font-family: Arial, sans-serif; line-height: 1.5;">
+                        <h2 style="color: #2E8B57;">Password Update Confirmation</h2>
+                        <p>Hi <b>%s</b>,</p>
+                        <p>Your password has been <strong>updated successfully</strong>.</p>
+                        <p>If you did not perform this change, please contact our support immediately.</p>
+                        <br/>
+                        <a href="http://localhost:5173" 
+                           style="display:inline-block; padding: 10px 15px; background-color: #2E8B57; 
+                                  color: white; text-decoration: none; border-radius: 5px;">
+                            Go to Home
+                        </a>
+                        <br/><br/>
+                        <p>Best Regards,<br/>The GreenMart Team</p>
+                    </body>
+                    </html>
+                    """.formatted(firstName);
+
+            helper.setText(htmlContent, true);
+
+            mailSender.send(mimeMessage);
+
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send password update email", e);
+        }
+    }
+
     private String buildOrderConfirmationHtml(User user, Order order) {
         StringBuilder htmlBody = new StringBuilder();
         htmlBody.append("<html><body style='font-family: Arial, sans-serif;'>")
@@ -112,5 +110,33 @@ public class EmailService {
             .append("</body></html>");
 
         return htmlBody.toString();
+    }
+    
+    public void sendWelcomeEmail(String to, String firstName) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(to);
+            helper.setSubject("Welcome to Green Mart!");
+
+            String htmlContent = "<html>" +
+                    "<body style='font-family: Arial, sans-serif;'>" +
+                    "<h2 style='color: green;'>Welcome to Green Mart, " + firstName + "!</h2>" +
+                    "<p>You have successfully registered to <b>Green Mart</b>.</p>" +
+                    "<p>We’re excited to have you with us. Happy Shopping! 🛒</p>" +
+                    "<br/>" +
+                    "<a href='http://localhost:5173' " +
+                    "style='display: inline-block; padding: 10px 20px; background-color: #28a745; " +
+                    "color: white; text-decoration: none; border-radius: 5px;'>Browse Now</a>" +
+                    "</body>" +
+                    "</html>";
+
+            helper.setText(htmlContent, true); // true for HTML content
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send welcome email", e);
+        }
     }
 }
