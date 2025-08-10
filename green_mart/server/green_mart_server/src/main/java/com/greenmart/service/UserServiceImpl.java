@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
 		User userEntity = modelMapper.map(dto, User.class);
 		
 		// Sets the role of the user to customer by default
-		userEntity.setUserRole(UserRole.CUSTOMER);
+		userEntity.setUserRole(UserRole.ADMIN);
 		
 		// Encode the password before saving
 	    userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
