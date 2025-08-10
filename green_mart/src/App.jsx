@@ -38,6 +38,7 @@ import Reviews_Rating from './pages/admins/Reviews_Rating';
 import Supplier from './pages/admins/Supplier';
 import UserDetails from './pages/admins/UserDetails';
 import About from './Component/About';
+import YourOrders from './pages/users/YourOrders';
 
 
 const App = () => {
@@ -68,6 +69,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/search/:keyword" element={<SearchResult />} />
         <Route path='/checkout' element={<Checkout />} />
+        <Route path="/your-orders" element={<YourOrders />} />
 
 
         {/* User Account Routes */}

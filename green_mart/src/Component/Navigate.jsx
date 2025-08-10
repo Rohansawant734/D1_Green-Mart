@@ -49,7 +49,7 @@ function Navigate() {
                         <Link to='/'>Home</Link>
                         <Link to='/categories'>Categories</Link>
                         <Link to='/wishlist' className="hover:text-green-600">Wishlist</Link>
-                        <Link to='/orders' className="hover:text-green-600">Your Orders</Link>
+                        <Link to='/your-orders' className="hover:text-green-600">Your Orders</Link>
                         <Link to='/contact' className="hover:text-green-600">Contact</Link>
 
                         {/* Search Bar--wil call the onSearch function on the press of the Enter Key */}
