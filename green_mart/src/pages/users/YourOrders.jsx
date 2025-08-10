@@ -96,68 +96,93 @@ const YourOrders = () => {
       
       ) : (
         <>
-          <div className="space-y-6">
-             {currentOrders.map((order) => (
+         <div className="space-y-6">
+  {currentOrders.map((order) => (
+    <div
+      key={order.id}
+      className="p-5 border rounded-xl shadow-sm bg-white hover:shadow-lg transition-all duration-200"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h3 className="font-bold text-xl text-gray-800">
+            Order #{order.id}
+          </h3>
+          <p className="text-sm text-gray-500">{order.creationDate}</p>
+        </div>
+        <span
+          className={`px-3 py-1 rounded-full text-sm font-semibold ${
+            statusColors[order.orderStatus] ||
+            "bg-gray-200 text-gray-800"
+          }`}
+        >
+          {order.orderStatus}
+        </span>
+      </div>
+
+      {/* Order Summary */}
+      <div className="mt-4 space-y-1">
+        <p className="text-lg font-medium">
+          Total:{" "}
+          <span className="text-green-600 font-bold">
+            ₹{order.orderAmount}
+          </span>
+        </p>
+        <p className="text-gray-600">
+          <span className="font-medium">Delivery Address:</span>{" "}
+          {order.deliveryAddress}
+        </p>
+      </div>
+
+      {/* Expand/Collapse Items */}
+      {expandedOrder === order.id ? (
+        <div className="mt-5 border-t pt-4">
+          <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+            Order Items
+          </h4>
+          <div className="space-y-3">
+            {order.orderLines?.map((item) => (
               <div
-                key={order.id}
-                className="p-5 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow"
+                key={item.orderLineId}
+                className="flex items-center gap-4 p-2 border rounded-lg bg-gray-50"
               >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="font-semibold text-lg">Order #{order.id}</h3>
-                    <p className="text-sm text-gray-500">{order.creationDate}</p>
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      statusColors[order.orderStatus] ||
-                      "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {order.orderStatus}
-                  </span>
-                </div>
-
-                <div className="mt-3">
-                  <p className="font-medium">
-                    Total:{" "}
-                    <span className="text-green-600 font-bold">
-                      ₹{order.orderAmount}
-                    </span>
-                  </p>
-                  <p className="text-gray-600">
-                    Delivery Address: {order.deliveryAddress}
+                {/* Product Thumbnail (placeholder if no image) */}
+                <img
+                  src={item.productImage || "https://via.placeholder.com/50"}
+                  alt={item.productName}
+                  className="w-12 h-12 rounded object-cover border"
+                />
+                <div className="flex-1">
+                  <p className="font-medium text-gray-800">{item.productName}</p>
+                  <p className="text-sm text-gray-500">
+                    Qty: {item.quantity} × ₹{item.price}
                   </p>
                 </div>
-
-                {expandedOrder === order.id ? (
-                  <div className="mt-4 border-t pt-3">
-                    <p className="font-medium mb-1">Order Items:</p>
-                    <ul className="list-disc list-inside text-gray-600 space-y-1">
-                        
-                      {order.orderLines?.map((item) => (
-                        <li key={item.orderLineId}>
-                          {item.productName} × {item.quantity} — ₹{item.price}
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      onClick={() => setExpandedOrder(null)}
-                      className="mt-3 text-blue-600 hover:underline text-sm"
-                    >
-                      Hide items ▲
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setExpandedOrder(order.id)}
-                    className="mt-3 text-blue-600 hover:underline text-sm"
-                  >
-                    View items ▼
-                  </button>
-                )}
+                <p className="font-bold text-gray-700">
+                  ₹{item.quantity * item.price}
+                </p>
               </div>
-               ))}
+            ))}
           </div>
+          <button
+            onClick={() => setExpandedOrder(null)}
+            className="mt-4 text-blue-600 hover:underline text-sm font-medium"
+          >
+            Hide items ▲
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setExpandedOrder(order.id)}
+          className="mt-4 text-blue-600 hover:underline text-sm font-medium"
+        >
+          View items ▼
+        </button>
+      )}
+    </div>
+  ))}
+</div>
+
 
           {/* Pagination Controls */}
           {totalPages > 1 && (

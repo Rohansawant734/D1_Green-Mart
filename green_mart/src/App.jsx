@@ -75,7 +75,7 @@ const App = () => {
         {/* User Account Routes */}
         <Route path="/account" element={<AccountLayout />}>
           <Route index element={<DashBoard />} />
-          <Route path="orders" element={<Order />} />
+          <Route path="your-orders" element={<YourOrders />} />
           <Route path="edit-profile" element={<Edit_Profile />} />
           <Route path="addresses" element={<Address />} />
         </Route>

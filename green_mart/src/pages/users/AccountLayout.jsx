@@ -3,7 +3,6 @@ import { Outlet, NavLink } from 'react-router-dom';
 import {
   HomeIcon,
   ShoppingCartIcon,
-  CloudArrowDownIcon,
   MapPinIcon,
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
@@ -41,7 +40,7 @@ const AccountLayout = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/account/orders" className={navLinkStyle}>
+              <NavLink to="/account/your-orders" className={navLinkStyle}>
                 <ShoppingCartIcon className="w-5 h-5" />
                 Orders
               </NavLink>
