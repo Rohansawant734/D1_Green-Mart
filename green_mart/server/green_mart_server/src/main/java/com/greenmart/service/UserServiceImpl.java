@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService{
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtils jwtUtils;
+	private final EmailService emailService;
 	
 	@Override
 	public ApiResponse register(AddUserDTO dto) {
@@ -64,6 +65,8 @@ public class UserServiceImpl implements UserService{
 		
 		// Saving the state of the user entity to be persistent from transient
 		User persistentEntityUser =  uDao.save(userEntity);
+		
+		emailService.sendEmail(dto.getEmail(), "Welcome to Green Mart!", "Hi " + dto.getFirstName() + ",\n\n" + "You have successfully registered to Green Mart.\n Happy Shopping!");
 		
 		log.info("User registered successfully with ID: {}", persistentEntityUser.getId());
 		// Return the Api Response
@@ -207,6 +210,8 @@ public class UserServiceImpl implements UserService{
 		
 		// Save the update state of the persistent entity
 		uDao.save(userEntity);
+		
+		emailService.sendEmail( userEntity.getEmail(), "Succesful password updation", "Hi " + userEntity.getFirstName() + ",\n\n" + "Your password has been updated successfully.\n I f you did not do this, contact support immediately.");
 		
 		log.info("Password updated successfully for user ID: {}", userId);
 		// Return the Api Response
