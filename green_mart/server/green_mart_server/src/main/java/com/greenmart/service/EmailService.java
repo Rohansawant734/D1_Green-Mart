@@ -85,7 +85,7 @@ public class EmailService {
             .append("<h2 style='color: #4CAF50;'>Thank you for your order, ")
             .append(user.getFirstName()).append("!</h2>")
             .append("<p>Your order ID is: <b>").append(order.getId()).append("</b></p>")
-            .append("<p>Total Amount: <b>$").append(order.getOrderAmount()).append("</b></p>")
+            .append("<p>Total Amount: <b>Rs").append(order.getOrderAmount()).append("</b></p>")
             .append("<h3>Order Details:</h3>")
             .append("<table style='border-collapse: collapse; width: 100%;'>")
             .append("<tr style='background-color: #f2f2f2;'>")
@@ -100,7 +100,7 @@ public class EmailService {
                 .append(line.getProduct().getProdName()).append("</td>")
                 .append("<td style='border: 1px solid #ddd; padding: 8px;'>")
                 .append(line.getQuantity()).append("</td>")
-                .append("<td style='border: 1px solid #ddd; padding: 8px;'>$")
+                .append("<td style='border: 1px solid #ddd; padding: 8px;'>Rs")
                 .append(line.getPrice()).append("</td>")
                 .append("</tr>");
         });
@@ -108,7 +108,7 @@ public class EmailService {
         htmlBody.append("</table>")
             .append("<br><p>We will notify you once your order is shipped.</p>")
             .append("<a href='http://localhost:5173/' style='display:inline-block;padding:10px 20px;background-color:#4CAF50;color:white;text-decoration:none;border-radius:5px;'>Browse Now</a>")
-            .append("<br><br><p>Regards,<br>GreenMart Team</p>")
+            .append("<br><br><p>Regards,<br>Green Mart</p>")
             .append("</body></html>");
 
         return htmlBody.toString();
