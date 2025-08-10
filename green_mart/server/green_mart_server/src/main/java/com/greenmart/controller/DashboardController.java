@@ -43,8 +43,8 @@ public class DashboardController {
    public ResponseEntity<Map<String, Long>> getProductsByCategory() {
        return ResponseEntity.ok(dashboardService.getProductCountByCategory());
    }
-//   @GetMapping("/products/top")
-//   public ResponseEntity<List<Map<String, Long>>> getTopProducts() {
-//       return ResponseEntity.ok(dashboardService.getTopProducts());
-//   }
+   @GetMapping("/products/top")
+   public ResponseEntity<List<Map<String, Long>>> getTopProducts() {
+       return ResponseEntity.ok(dashboardService.getTopProducts());
+   }
 }
