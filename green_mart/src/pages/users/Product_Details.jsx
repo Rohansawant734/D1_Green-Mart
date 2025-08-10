@@ -8,6 +8,7 @@ import { useCart } from '../../context/CartContext';
 import { FaHeart, FaRegStar, FaStar } from 'react-icons/fa';
 import { addReview, getAllProductReviews } from '../../services/review';
 import { useAuth } from '../../context/AuthContext';
+import RelatedProductCard from '../../Component/RelatedProductCard';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -26,7 +27,8 @@ const ProductDetails = () => {
   const [hoverRating, setHoverRating] = useState(0); // for hover preview
   const [newComment, setNewComment] = useState('');
   const [reviewLoading, setReviewLoading] = useState(false);
-
+  const [showAllReviews, setShowAllReviews] = useState(false);
+  const reviewsToShow = showAllReviews ? reviews : reviews.slice(0, 3);
   const fetchProduct = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/products/${id}`);
@@ -61,6 +63,11 @@ const ProductDetails = () => {
   const averageRating = reviews.length
     ? reviews.reduce((acc, r) => acc + r.ratings, 0) / reviews.length
     : 0;
+    const ratingCounts = [5, 4, 3, 2, 1].map(star => ({
+    star,
+    count: reviews.filter(r => r.ratings === star).length
+  }));
+  const totalRatings = reviews.length;
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -118,17 +125,8 @@ const ProductDetails = () => {
         <div className="md:w-1/2 relative flex flex-col">
           <h1 className="text-3xl font-bold mb-2">{product.prodName}</h1>
           <p className="text-gray-600 mb-1">Category: {product.categoryName}</p>
-          <p className="text-gray-600 mb-1">Supplier: {product.supplierName}</p>
           <p className="text-sm text-gray-600 mb-4">Unit: {product.unit}</p>
-
-          <p className="text-lg font-semibold text-green-700 mb-2">
-            Price: ₹{product.offerPrice || product.price}
-            {product.offerPrice && (
-              <span className="line-through text-gray-500 ml-2 text-base">
-                ₹{product.price}
-              </span>
-            )}
-          </p>
+          <p className="mt-2 font-bold text-green-600">₹{product.price}</p>
 
           <p className={`text-sm font-medium mb-4 ${product.inStock ? 'text-green-600' : 'text-red-500'}`}>
             {product.inStock ? 'In Stock' : 'Out of Stock'}
@@ -176,20 +174,28 @@ const ProductDetails = () => {
         </div>
 
         {/* Review List */}
-        <ul className="max-h-48 overflow-y-auto mb-6 space-y-2">
-          {reviews.length === 0 && (
+
+        <ul className="mb-6 space-y-2">
+          {reviewsToShow.length === 0 && (
             <li className="text-gray-500">No reviews yet. Be the first!</li>
           )}
-          {reviews.map((rev, index) => (
+          {reviewsToShow.map((rev, index) => (
             <li key={rev._id || rev.id || index} className="border p-2 rounded bg-gray-50">
-              <div className="flex items-center mb-1">
-                {[1, 2, 3, 4, 5].map((star) =>
-                  star <= rev.ratings ? (
-                    <FaStar key={star} className="text-yellow-400 text-sm" />
-                  ) : (
-                    <FaRegStar key={star} className="text-yellow-400 text-sm" />
-                  )
-                )}
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-semibold text-gray-800">
+                  {rev.firstName || rev.lastName
+                    ? `${rev.firstName || ''} ${rev.lastName || ''}`.trim()
+                    : 'Anonymous'}
+                </span>
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) =>
+                    star <= rev.ratings ? (
+                      <FaStar key={star} className="text-yellow-400 text-sm" />
+                    ) : (
+                      <FaRegStar key={star} className="text-yellow-400 text-sm" />
+                    )
+                  )}
+                </div>
               </div>
               <p className="text-gray-700 text-sm">{rev.comment}</p>
             </li>
@@ -215,10 +221,10 @@ const ProductDetails = () => {
                   className="focus:outline-none"
                 >
                   {star <= (hoverRating || newRating) ? (
-                    <FaStar className="text-yellow-400 text-2xl" /> 
+                    <FaStar className="text-yellow-400 text-2xl" />
                   ) : (
-                  <FaRegStar className="text-yellow-400 text-2xl" />
-          )}
+                    <FaRegStar className="text-yellow-400 text-2xl" />
+                  )}
                 </button>
               ))}
             </div>
@@ -243,7 +249,13 @@ const ProductDetails = () => {
             </button>
           </div>
         </form>
-
+        {/* Related Products */}
+        <div className="mt-10 border-t pt-6">
+          <RelatedProductCard
+            currentProductId={product._id || product.id}
+            category={product.categoryName}
+          />
+        </div>
       </div>
     </div>
   );
