@@ -8,7 +8,10 @@ const ProductCard = ({ product, showWishlistIcon = false }) => {
   const { addToCart } = useCart();
   const { wishlist, toggleWishlist } = useWishlist();
 
-  const isWishlisted = wishlist.some(item => item.productId === product._id);
+  const isWishlisted = wishlist.some(
+  item => item.productId === (product.id || product._id)
+);
+
 
   return (
     <div className="relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition group flex flex-col">
@@ -30,7 +33,7 @@ const ProductCard = ({ product, showWishlistIcon = false }) => {
 
 
       {/* Product Image */}
-      <Link to={`/product/${product._id}`} className="flex-grow">
+      <Link to={`/product/${product._id || product.id}`} className="flex-grow">
         <img
           src={product.image?.[0]}
           alt={product.name}
