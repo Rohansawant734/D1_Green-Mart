@@ -106,9 +106,7 @@ export const CartProvider = ({ children }) => {
         params: { userId },
       });
 
-      await fetchCart(); // Refresh cart after clearing
-      toast.success("Cart cleared successfully");
-
+      await fetchCart(); // Refresh cart after clearing  
       setCartItems([]); // update local state to empty
     } catch (error) {
       console.error("Error clearing cart:", error);

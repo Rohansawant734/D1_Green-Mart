@@ -23,7 +23,7 @@ public class OrderController {
     // User places an order
     @PostMapping("/place")
     public ResponseEntity<?> placeOrder(@Valid @RequestBody OrderRequestDTO requestDTO) {
-        ApiResponse response = orderService.placeOrder(requestDTO);
+         OrderResponseDTO response = orderService.placeOrder(requestDTO);
         return ResponseEntity.ok(response);
     }	
 
