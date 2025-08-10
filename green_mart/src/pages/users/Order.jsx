@@ -1,17 +1,11 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { useAddress } from '../../context/AddressContext';
-
+ 
 
 const Order = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const order = location.state;
-  const { authUser } = useAuth();
-  const { selectedAddress } = useAddress();
-  console.log('Order details:', selectedAddress);
-
   if (!order) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-200 py-12 px-4 sm:px-6 lg:px-8">
@@ -37,7 +31,7 @@ const Order = () => {
   const shipping = subtotal >= 600 ? 0 : 199;
   const total = subtotal + shipping;
 
-  const orderNumber = Math.floor(Math.random() * 9000) + 1000;
+   
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
   });
@@ -52,7 +46,7 @@ const Order = () => {
           <div className="bg-gray-100 p-4 rounded-md grid grid-cols-1 md:grid-cols-5 text-sm font-medium text-gray-700">
             <div className="border-r border-gray-300 px-3 py-2">
               <span className="block text-xs text-gray-500">ORDER NUMBER:</span>
-              <span className="font-bold text-black">{orderNumber}</span>
+              <span className="font-bold text-black">{order.orderNumber}</span>
             </div>
             <div className="border-r border-gray-300 px-3 py-2">
               <span className="block text-xs text-gray-500">DATE:</span>
@@ -60,7 +54,7 @@ const Order = () => {
             </div>
             <div className="border-r border-gray-300 px-3 py-2">
               <span className="block text-xs text-gray-500">EMAIL:</span>
-              <span className="font-bold text-black">{authUser?.email}</span>
+              <span className="font-bold text-black">{order.email}</span>
             </div>
             <div className="border-r border-gray-300 px-3 py-2">
               <span className="block text-xs text-gray-500">TOTAL:</span>
@@ -128,21 +122,21 @@ const Order = () => {
           <tbody>
             <tr>
               <td className="p-4 border-r align-top">
-                <p className="text-gray-700">Name: {authUser?.firstName} {authUser?.lastName}</p>
-                <p className="text-gray-700">Address: {selectedAddress?.adrLine1 || ""}, {selectedAddress?.adrLine2 || ""}</p>
+                <p className="text-gray-700">Name: {order.customer.name}</p>
+                <p className="text-gray-700">Address: { order.customer.address}</p>
                 <p className="text-gray-700">
-                  Location: {selectedAddress?.city || ""}, {selectedAddress?.state} {selectedAddress?.zipCode}
+                  Location: { order.customer.location }
                 </p>
-                <p className="text-gray-700">Phone: {authUser?.phone}</p>
+                <p className="text-gray-700">Phone: {order.customer.phone}</p>
               </td>
 
               <td className="p-4 align-top">
-                <p className="text-gray-700">Name: {authUser?.firstName} {authUser?.lastName}</p>
-                <p className="text-gray-700">Address: {selectedAddress?.adrLine1 || ""}, {selectedAddress?.adrLine2 || ""}</p>
+                <p className="text-gray-700">Name: {order.customer.name}</p>
+                <p className="text-gray-700">Address: { order.customer.address}</p>
                 <p className="text-gray-700">
-                  Location: {selectedAddress?.city || ""}, {selectedAddress?.state} {selectedAddress?.zipCode}
+                  Location: {order.customer.location}
                 </p>
-                <p className="text-gray-700">Phone: {authUser?.phone}</p>
+                <p className="text-gray-700">Phone: {order.customer.phone}</p>
               </td>
             </tr>
           </tbody>

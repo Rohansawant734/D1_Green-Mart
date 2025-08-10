@@ -9,14 +9,12 @@ const CartContext = createContext();
 
 // Custom hook
 export const useCart = () => useContext(CartContext);
-// // Get logged-in userId from localStorage
-// const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
 // Provider component
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
  const { authUser } = useAuth(); //  Use authUser from AuthContext
-  const userId = authUser?.userId; // Get userId reactively
+  const userId = authUser?.userId; // Get userId 
 
   // Fetch cart data for the user
   const fetchCart = async () => {
@@ -106,9 +104,7 @@ export const CartProvider = ({ children }) => {
         params: { userId },
       });
 
-      await fetchCart(); // Refresh cart after clearing
-      toast.success("Cart cleared successfully");
-
+      await fetchCart(); // Refresh cart after clearing  
       setCartItems([]); // update local state to empty
     } catch (error) {
       console.error("Error clearing cart:", error);

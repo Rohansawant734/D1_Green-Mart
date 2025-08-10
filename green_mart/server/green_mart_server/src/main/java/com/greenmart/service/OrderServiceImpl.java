@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final EmailService emailService;
 
     @Override
-    public ApiResponse placeOrder(OrderRequestDTO requestDTO) {
+    public OrderResponseDTO placeOrder(OrderRequestDTO requestDTO) {
         User user = userDao.findById(requestDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -68,12 +68,10 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderLines(orderLines);
         order.setOrderAmount(totalAmount + order.getDeliveryCharges());
-
-        orderDao.save(order);
-
-        emailService.sendOrderConfirmationEmail(user, order);
-        
-        return new ApiResponse("Order placed successfully!");
+      
+        Order savedOrder = orderDao.save(order);
+        emailService.sendOrderConfirmationEmail(user, savedOrder);
+        return  new OrderResponseDTO("Order placed successfully!", savedOrder.getId());
     }
 
     @Override
@@ -138,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     
-    // 🔁 Shared mapper used by all endpoints
+    //  Shared mapper used by all endpoints
     private OrderDTO mapOrderToDTO(Order order) {
         OrderDTO orderDTO = mapper.map(order, OrderDTO.class);
 

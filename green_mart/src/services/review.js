@@ -46,9 +46,6 @@ export async function getAllProductReviews(productId) {
         const url = `/reviews/product/${productId}`
 
         const response = await axios.get(url)
-
-        toast.success("Fetched product reviews successfully!", { position: "top-right" })
-
         return response.data
     } 
     catch (error) {

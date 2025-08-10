@@ -10,7 +10,7 @@ import BillingDetails from '../../Component/BillingDetails';
 const Checkout = () => {
   const offer = 600;
   const shippingCharge = 199;
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const { authUser } = useAuth();
   const { selectedAddress } = useAddress();
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ const Checkout = () => {
       orderLines: cartItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
-        discount: 0, // Adjust if needed
+        discount: 0, 
         price: item.offerPrice,
       })),
       paymentMethod: formData.paymentMethod, // already matches backend enum
@@ -79,24 +79,26 @@ const Checkout = () => {
     try {
       const res = await axios.post('http://localhost:8080/orders/place', orderPayload);
       toast.success(res.data.message || 'Order placed successfully!');
-
-      // Navigate to order confirmation or order details
+      const { orderId } = res.data;
+      clearCart(); // Clear cart after order placed
+      // Navigate to order details
       navigate('/orders', {
         state: {
-          orderNumber: Math.floor(1000 + Math.random() * 9000),
+          orderNumber: orderId,
           date: new Date().toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
           }),
-          email: formData.email,
+          email: authUser.email,
           total,
           paymentMethod: formData.paymentMethod,
           cartItems,
           customer: {
-            name: `${formData.firstName} ${formData.lastName}`,
-            address: `${selectedAddress.adrLine1}, ${selectedAddress.city}, ${selectedAddress.state} - ${selectedAddress.zipCode}`,
-            phone: formData.phone,
+            name: `${authUser.firstName} ${authUser.lastName}`,
+            address: `${selectedAddress.adrLine1},  ${selectedAddress.adrLine2 || ''}, `,
+            location: `${selectedAddress.city}, ${selectedAddress.state} - ${selectedAddress.zipCode}`,
+            phone: authUser.phone,
           },
         },
       });
