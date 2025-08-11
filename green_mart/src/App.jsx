@@ -105,7 +105,6 @@ const App = () => {
         closeOnClick
         pauseOnHover
         draggable
-        theme="colored"
         transition:Bounce
       />
 

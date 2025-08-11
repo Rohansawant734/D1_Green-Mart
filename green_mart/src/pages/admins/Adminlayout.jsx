@@ -78,7 +78,7 @@ const Adminlayout = () => {
                 Suppliers
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink to="/admin/payments" className={navLinkStyle}>
                 <CurrencyDollarIcon className="w-5 h-5" />
                 Payment Status
@@ -89,7 +89,7 @@ const Adminlayout = () => {
                 <StarIcon className="w-5 h-5" />
                 Reviews & Ratings
               </NavLink>
-            </li>
+            </li> */}
             <li>
               <NavLink to="/login" onClick={onLogout} className={navLinkStyle}>
                 <ArrowRightOnRectangleIcon className="w-5 h-5" />
