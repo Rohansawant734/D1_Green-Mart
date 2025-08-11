@@ -1,7 +1,5 @@
 package com.greenmart.dto;
 
-import java.lang.reflect.AccessFlag;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 

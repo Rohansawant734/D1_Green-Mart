@@ -2,8 +2,6 @@ package com.greenmart.service;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.greenmart.dto.ApiResponse;
 import com.greenmart.dto.ProductDTO;
 import com.greenmart.dto.ProductResponseDTO;

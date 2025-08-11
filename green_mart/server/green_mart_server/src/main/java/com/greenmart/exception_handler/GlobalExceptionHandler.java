@@ -17,7 +17,6 @@ import com.greenmart.custom_exceptions.ApiException;
 import com.greenmart.custom_exceptions.AuthenticationException;
 import com.greenmart.custom_exceptions.NoContentException;
 import com.greenmart.custom_exceptions.ResourceNotFoundException;
-import com.greenmart.dto.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
