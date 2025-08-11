@@ -24,7 +24,7 @@ ChartJS.register(
 const AdminDashboard = () => {
   const [userCount, setUserCount] = useState(0);
   const [supplierCount, setSupplierCount] = useState(0);
-  const [productCount, setProductCount] = useState(0); // ✅ new state
+  const [productCount, setProductCount] = useState(0); //  new state
   const [categoryCounts, setCategoryCounts] = useState({});
   const [topProductsData, setTopProductsData] = useState(null);
 

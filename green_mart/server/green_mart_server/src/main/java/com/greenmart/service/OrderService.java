@@ -8,12 +8,10 @@ import com.greenmart.dto.OrderRequestDTO;
 import com.greenmart.dto.OrderResponseDTO;
 import com.greenmart.dto.OrderUpdateDTO;
 
-//import java.util.List;
-
-//import com.greenmart.dto.OrderResponseDTO;
+ 
 
 public interface OrderService {
-//    List<OrderResponseDTO> getAllOrdersForAdmin();
+ 
 	
 	 OrderResponseDTO placeOrder(OrderRequestDTO requestDTO);
 
